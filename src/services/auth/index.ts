@@ -58,15 +58,13 @@ export const loginUser = async (data: loginUserInput) => {
 
   const otp = await createAuth(user?._id!, 5);
 
-  const message = `Your SkillSwap OTP is ${otp}`;
-
   if (user.email) {
-    await sendEmail({
+    if(!await sendEmail({
       from: "calebazumah9@gmail.com",
       to: user.email,
-      subject: "Verify your email",
+      subject: "Your Bora Capitals Advisors otp code",
       htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
-    });
+    })) throw createError.InternalServerError("Failed to send OTP code at the moment, please try again later.")
   }
 
   return {
@@ -74,77 +72,21 @@ export const loginUser = async (data: loginUserInput) => {
   };
 };
 
-/**
- * Updates a user's password by verifying the old password.
- * @param data - The input data for changing a user's password.
- * @throws error if the old password is incorrect or if the OTP cannot be sent.
- * @returns An object containing a message.
- */
-// export const updatePassword = async (data: ChangePasswordInput) => {
-//   const { userId, oldPassword, newPassword } = data;
+export const forgetPasswordOtp = async (email: string) => {
+  const user = await getUserByEmail(email);
 
-//   const user = await getUserById(userId);
+  const otp = await createAuth(user?._id!, 5);
 
-//   const isMatch = comparePassword(oldPassword, user?.password);
+  if (user.email) {
+    if(!await sendEmail({
+      from: "calebazumah9@gmail.com",
+      to: user.email,
+      subject: "Bora Capitals Advisors otp code",
+      htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
+    })) throw createError.InternalServerError("Failed to send OTP code at the moment, please try again later.")
+  }
 
-//   if (!isMatch) throw createError.BadRequest("Old password is incorrect");
-
-//   const hash = await hashPassword(newPassword);
-
-//   await passwordModel.findOneAndUpdate(
-//     { userId },
-//     { userId, password: hash },
-//     { upsert: true }
-//   );
-
-//   const otp = await createAuth(user._id, 5);
-
-//   const message = `Your change password OTP is ${otp}`;
-
-//   if (!(await sendNaloSms({ to: user?.phoneNumber!, message }))) {
-//     throw createError.InternalServerError(
-//       "Failed to send OTP code at the moment, please try again later."
-//     );
-//   }
-
-//   return {
-//     message: "Please check your phone for the OTP to change your password.",
-//   };
-// };
-
-/**
- * Handles the forget password functionality.
- * @param data - The input data for forgetting a user's password.
- * @throws error if the user does not exist or if the OTP cannot be sent.
- * @returns An object containing a message.
- */
-// export const changeNewPassword = async (data: NewPasswordInput) => {
-//   const { phoneNumber, newPassword } = data;
-
-//   console.log(phoneNumber)
-
-//   const user = await getUserByPhoneOrEmail(phoneNumber);
-
-//   console.log(user);
-
-//   const hash = await hashPassword(newPassword);
-
-//   await passwordModel.findOneAndUpdate(
-//     { userId: user?._id },
-//     { userId: user?._id, password: hash },
-//     { upsert: true }
-//   );
-
-//   const otp = await createAuth(user?._id!, 5);
-
-//   const message = `Your change password OTP is ${otp}`;
-
-//   if (!(await sendNaloSms({ to: user?.phoneNumber!, message }))) {
-//     throw createError.InternalServerError(
-//       "Failed to send OTP code at the moment, please try again later."
-//     );
-//   }
-//   return {
-//     message: "Please check your phone for the OTP to change your password.",
-//   };
-// };
+  return {
+    message: "Please check your phone for the OTP to change your password.",
+  };
+};

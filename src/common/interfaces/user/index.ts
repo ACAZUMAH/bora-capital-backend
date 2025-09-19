@@ -21,3 +21,8 @@ export interface loginUserInput {
     email: string;
     password: string
 }
+
+export interface resetPasswordInput {
+    userId: string | Types.ObjectId;
+    newPassword: string;
+}

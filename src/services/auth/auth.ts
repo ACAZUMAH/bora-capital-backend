@@ -39,7 +39,6 @@ export const verifyOtpAndSignJwt = async (otp: string) => {
     if(new Date(auth.expiresIn) < new Date()) throw createError.BadRequest("Otp expired")
 
     const user = await getUserById(auth.userId)
-    //await updateIsAuthenticated(user._id, true)
 
     const token = jwtSign({ id: user._id })
 

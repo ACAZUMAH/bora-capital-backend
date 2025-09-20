@@ -1,8 +1,9 @@
-import { createUserInput } from "src/common/interfaces";
+import { createUserInput, resetPasswordInput } from "src/common/interfaces";
 import { validateCreateUserData } from "./validations/validateSignUpData";
 import { userModel } from "src/models";
 import { Types } from "mongoose";
 import createError from "http-errors";
+import { hashPassword } from "src/common/helpers";
 
 export const createUser = async (data: createUserInput) => {
   validateCreateUserData(data);
@@ -35,4 +36,23 @@ export const getUserByEmail = async (email: string) => {
   if (!user) throw createError.NotFound("User not found");
 
   return user;
+};
+
+export const resetPassword = async (data: resetPasswordInput) => {
+  const { userId, newPassword } = data;
+
+  if (!Types.ObjectId.isValid(userId))
+    throw createError.BadRequest("Invalid user ID");
+
+  const hash = await hashPassword(newPassword);
+
+  const user = await userModel.findByIdAndUpdate(
+    userId,
+    { password: hash },
+    { new: true }
+  );
+
+  if (!user) throw createError.NotFound("User not found");
+
+  return { message: "Password reset successfully" };
 };

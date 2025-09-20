@@ -68,7 +68,7 @@ export const loginUser = async (data: loginUserInput) => {
   }
 
   return {
-    message: "User created successfully, please check your phone for the OTP.",
+    message: "Please check your mail for verification code.",
   };
 };
 

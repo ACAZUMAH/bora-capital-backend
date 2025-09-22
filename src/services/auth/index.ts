@@ -68,7 +68,7 @@ export const loginUser = async (data: loginUserInput) => {
   }
 
   return {
-    message: "Please check your mail for verification code.",
+    message: "Please check your mail for verification code",
   };
 };
 

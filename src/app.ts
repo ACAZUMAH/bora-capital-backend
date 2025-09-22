@@ -1,3 +1,4 @@
+require("express-async-errors");
 import { createExpressApp } from "./server/createExpressApp";
 import http from "http";
 import logger from "./loggers/logger";

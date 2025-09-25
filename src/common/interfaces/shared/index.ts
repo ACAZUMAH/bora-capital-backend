@@ -1,5 +1,7 @@
-import e from "express";
-
+import { Express } from "express";
+import { Server } from "http";
+import { GraphQLSchema } from "graphql";
+import { BaseContext } from "@apollo/server"
 declare global {
   namespace Express {
     interface Request {
@@ -7,4 +9,20 @@ declare global {
       token?: string;
     }
   }
+}
+
+export interface GraphqlServer {
+  app: Express;
+  httpServer: Server;
+  schema: GraphQLSchema
+}
+
+export interface GraphqlContext extends BaseContext {
+  user?: any;
+  token?: string;
+}
+
+export interface GraphqlSubscriptionServer {
+  httpServer: Server;
+  schema: GraphQLSchema;
 }

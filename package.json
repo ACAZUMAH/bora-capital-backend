@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@apollo/server": "^5.0.0",
+    "@as-integrations/express4": "^1.1.2",
     "@graphql-codegen/cli": "^6.0.0",
     "@graphql-codegen/typescript": "^5.0.0",
     "@graphql-codegen/typescript-resolvers": "^5.0.0",
@@ -43,8 +44,10 @@
     "nodemailer": "^7.0.6",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "rollbar": "^2.26.4",
     "tsconfig-paths": "^4.2.0",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.27.1",

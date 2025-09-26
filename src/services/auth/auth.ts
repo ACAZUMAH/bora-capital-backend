@@ -1,8 +1,9 @@
 import { Types } from "mongoose";
 import { generateOtp, jwtSign } from "src/common/helpers";
 import { authModel } from "src/models";
-import createError from "http-errors"
+import createError from "http-errors";
 import { getUserById } from "../users";
+import { AuthInput } from "src/common/interfaces";
 /**
  * Creates or updates an authentication record for a user with a unique OTP.
  * @param userId - The ID of the user for whom the OTP is being generated.
@@ -10,19 +11,20 @@ import { getUserById } from "../users";
  * @returns The generated OTP as a string.
  * @throws Will throw an error if the database operation fails.
  */
-export const createAuth = async (userId: string | Types.ObjectId, len: number) => {
-  let otp = generateOtp(len);
+export const createAuth = async (data: AuthInput) => {
+  let otp = generateOtp(data.len);
   while (await authModel.exists({ otp })) {
-    otp = generateOtp(len);
+    otp = generateOtp(data.len);
   }
   const expiresIn = new Date(Date.now() + 1 * 60 * 60 * 1000);
+
   await authModel.findOneAndUpdate(
-    { userId },
-    { userId, otp, expiresIn },
+    { userId: data.userId },
+    { userId: data.userId, otp, expiresIn, otpPurpose: data.otpPurpose },
     { upsert: true }
   );
 
-  return otp
+  return otp;
 };
 
 /**
@@ -32,15 +34,16 @@ export const createAuth = async (userId: string | Types.ObjectId, len: number) =
  * @throws Will throw an error if the OTP is invalid or expired.
  */
 export const verifyOtpAndSignJwt = async (otp: string) => {
-    const auth = await authModel.findOneAndDelete({ otp })
+  const auth = await authModel.findOneAndDelete({ otp });
 
-    if(!auth) throw createError.BadRequest("Invalid otp")
-    
-    if(new Date(auth.expiresIn) < new Date()) throw createError.BadRequest("Otp expired")
+  if (!auth) throw createError.BadRequest("Invalid otp");
 
-    const user = await getUserById(auth.userId)
+  if (new Date(auth.expiresIn) < new Date())
+    throw createError.BadRequest("Otp expired");
 
-    const token = jwtSign({ id: user._id })
+  const user = await getUserById(auth.userId);
 
-    return { user, token }
-}
+  const token = jwtSign({ id: user._id });
+
+  return { user, token };
+};

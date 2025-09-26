@@ -5,6 +5,7 @@ import { createAuth } from "./auth";
 import { sendEmail } from "../notifications";
 import { getSendOtpEmailTemplate } from "../notifications/template";
 import createError from "http-errors";
+import { OtpPurpose } from "src/common/enums";
 
 /**
  * Registers a new user by creating their account, hashing their password, and generating an OTP.
@@ -20,15 +21,13 @@ export const register = async (data: createUserInput) => {
 
   const hash = await hashPassword(password);
   const user = await createUser({ ...data, password: hash });
-  const otp = await createAuth(user._id, 5);
-
-  const message = `Your Bora Capitals Advisors otp code is ${otp}`;
+  const otp = await createAuth({ userId: user._id!, len: 5, otpPurpose: OtpPurpose.SIGNUP });
 
   if (user.email) {
     await sendEmail({
       from: "calebazumah9@gmail.com",
       to: user.email,
-      subject: "Verify your email",
+      subject: "Your Bora Capitals Advisors otp code",
       htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
     });
   }
@@ -56,7 +55,7 @@ export const loginUser = async (data: loginUserInput) => {
 
   if (!isMatch) throw createError.BadRequest("Invalid credentials");
 
-  const otp = await createAuth(user?._id!, 5);
+  const otp = await createAuth({ userId: user._id!, len: 5, otpPurpose: OtpPurpose.SIGNIN });
 
   if (user.email) {
     if(!await sendEmail({
@@ -72,10 +71,16 @@ export const loginUser = async (data: loginUserInput) => {
   };
 };
 
+/**
+ * Sends a forgot password OTP to the user's email.
+ * @param email - user's email
+ * @returns A message indicating that the OTP has been sent.
+ * @throws Will throw an error if the user with the provided email does not exist or if sending the email fails.
+ */
 export const forgetPasswordOtp = async (email: string) => {
   const user = await getUserByEmail(email);
 
-  const otp = await createAuth(user?._id!, 5);
+  const otp = await createAuth({ userId: user?._id!, len: 5, otpPurpose: OtpPurpose.FORGOT_PASSWORD });
 
   if (user.email) {
     if(!await sendEmail({

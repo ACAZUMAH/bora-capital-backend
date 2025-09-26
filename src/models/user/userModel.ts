@@ -1,11 +1,20 @@
 import { Schema, model } from "mongoose";
 import { UserDocument } from "../../common/interfaces/user";
+import { role } from "src/common/enums";
+import { biometricSchema } from "../biometric/biometricModel";
+import { deviceSchema } from "../devices/deviceModel";
 
-const userSchema = new Schema<UserDocument>({
+const userSchema = new Schema<UserDocument>(
+  {
     fullName: { type: String },
     email: { type: String, required: true, unique: true },
     phoneNumber: { type: String, unique: true },
+    role: { type: String, enum: Object.values(role) },
+    biometric: { type: biometricSchema },
+    devices: { type: [deviceSchema], default: [] },
     password: { type: String, required: true },
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
-export const userModel = model<UserDocument>("User", userSchema);
+export const userModel = model<UserDocument>("Users", userSchema);

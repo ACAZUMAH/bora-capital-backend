@@ -6,3 +6,5 @@ dist
 combined.log
 
 errors.log
+
+.vscode

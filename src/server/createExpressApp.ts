@@ -46,7 +46,7 @@ export const createExpressApp = () => {
   app.use(helmet.hidePoweredBy());
   app.disable("x-powered-by");
 
-  app.use("*", cors());
+  app.use("/*\w", cors());
   app.use(cors(corsOptions));
 
   app.get("/", (_req, res) => {

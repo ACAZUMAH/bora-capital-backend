@@ -9,6 +9,4 @@ export interface PreferencesDocument {
   language: string;
   timezone: string;
   notificationsEnabled: boolean;
-  createdAt: Date;
-  updatedAt: Date;
 }

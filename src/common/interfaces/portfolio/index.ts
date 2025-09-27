@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
+import { HoldingsDocument } from "../holdings";
 
-export interface portfolioDocument {
+export interface PortfolioDocument {
   _id: string | Types.ObjectId;
   userId: string | Types.ObjectId;
   name: string;
@@ -8,9 +9,9 @@ export interface portfolioDocument {
   currency: string;
   asOf: Date;
 
-  holdings: [];
+  holdings: Array<HoldingsDocument>;
 
-  transactions: [];
+  transactions: Array<{}>;
 
   createdAt: Date;
   updatedAt: Date;

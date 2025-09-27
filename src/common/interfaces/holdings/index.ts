@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 
-export interface holdingsDocument {
+export interface HoldingsDocument {
   _id: string | Types.ObjectId;
   fundId: string | Types.ObjectId;
   symbol: string;
   name: string;
   quantity: number;
-  averagePurchasePrice: number;
+  purchasePrice: number;
   currentPrice: number;
   currentValue: number;
   unrealizedGainLoss: number;

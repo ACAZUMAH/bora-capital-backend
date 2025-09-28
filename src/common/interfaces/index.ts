@@ -6,3 +6,5 @@ export * from "./devices";
 export * from "./preferences";
 export * from "./portfolio";
 export * from "./transactions";
+export * from "./files";
+export * from "./signature";

@@ -5,6 +5,7 @@ export interface TransactionsDocument {
   _id: string | Types.ObjectId;
   userId: string | Types.ObjectId;
   fundId: string | Types.ObjectId;
+  portfolioId: string | Types.ObjectId;
   type: TransactionType;
   amount: number;
   currency: string;

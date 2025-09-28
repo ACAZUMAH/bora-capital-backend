@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { PortfolioDocument } from "src/common/interfaces";
 import { holdingsSchema } from "../holdings/holdingsModel";
 
@@ -13,4 +13,9 @@ export const portfolioSchema = new Schema<PortfolioDocument>(
     holdings: { type: [holdingsSchema], default: [] },
   },
   { timestamps: true }
+);
+
+export const PortfolioModel = model<PortfolioDocument>(
+  "Portfolios",
+  portfolioSchema
 );

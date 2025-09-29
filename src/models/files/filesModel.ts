@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { DocumentsType } from "src/common/enums";
+import { Collections, DocumentsType } from "src/common/enums";
 import { FilesDocument } from "src/common/interfaces";
 
 const filesSchema = new Schema<FilesDocument>({
@@ -10,4 +10,4 @@ const filesSchema = new Schema<FilesDocument>({
   mimeType: { type: String, required: true },
 }, { timestamps: true });
 
-export const uploadsSchema = model<FilesDocument>("Files", filesSchema); 
+export const uploadsSchema = model<FilesDocument>(Collections.Files, filesSchema); 

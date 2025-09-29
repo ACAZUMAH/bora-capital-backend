@@ -8,3 +8,5 @@ export * from "./portfolio";
 export * from "./transactions";
 export * from "./files";
 export * from "./signature";
+export * from "./holdings";
+export * from "./kycRecords";

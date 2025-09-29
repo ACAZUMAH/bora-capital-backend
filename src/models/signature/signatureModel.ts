@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { Collections } from "src/common/enums";
 import { digitalSignature } from "src/common/interfaces";
 
 const digitalSignatureSchema = new Schema<digitalSignature>({
@@ -9,6 +10,6 @@ const digitalSignatureSchema = new Schema<digitalSignature>({
 }, { timestamps: true });
 
 export const SignatureModel = model<digitalSignature>(
-  "Signatures",
+  Collections.Signatures,
   digitalSignatureSchema
 );

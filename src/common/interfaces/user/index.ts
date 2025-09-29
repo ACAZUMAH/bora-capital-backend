@@ -3,6 +3,7 @@ import { role } from "src/common/enums";
 import { BiometricDocument } from "../biometric";
 import { DeviceDocument } from "../devices";
 import { PreferencesDocument } from "../preferences";
+import { KycRecordsDocument } from "../kycRecords";
 
 export interface UserDocument {
   id: string | Types.ObjectId;
@@ -13,6 +14,7 @@ export interface UserDocument {
   biometric?: BiometricDocument
   devices?: [DeviceDocument]
   preferences?: PreferencesDocument
+  kycRecords?: Array<KycRecordsDocument>
   password: string;
   createdAt: Date;
   updatedAt: Date;

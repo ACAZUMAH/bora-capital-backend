@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { OtpPurpose } from "src/common/enums";
+import { Collections, OtpPurpose } from "src/common/enums";
 import { AuthDocument } from "src/common/interfaces";
 
 
@@ -10,4 +10,4 @@ const authSchema = new Schema<AuthDocument>({
     otpPurpose: { type: String, enum: Object.values(OtpPurpose), required: true }
 })
 
-export const authModel = model<AuthDocument>("auth", authSchema)
+export const authModel = model<AuthDocument>(Collections.Auth, authSchema)

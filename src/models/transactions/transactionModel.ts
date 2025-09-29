@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { TransactionStatus, TransactionType } from "src/common/enums";
+import { Collections, TransactionStatus, TransactionType } from "src/common/enums";
 import { TransactionsDocument } from "src/common/interfaces";
 
 const transactionSchema = new Schema<TransactionsDocument>(
@@ -30,6 +30,6 @@ const transactionSchema = new Schema<TransactionsDocument>(
 );
 
 export const TransactionModel = model<TransactionsDocument>(
-  "Transactions",
+  Collections.Transactions,
   transactionSchema
 );

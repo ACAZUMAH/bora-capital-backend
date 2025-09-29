@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import { PortfolioDocument } from "src/common/interfaces";
 import { holdingsSchema } from "../holdings/holdingsModel";
+import { Collections } from "src/common/enums";
 
 export const portfolioSchema = new Schema<PortfolioDocument>(
   {
@@ -16,6 +17,6 @@ export const portfolioSchema = new Schema<PortfolioDocument>(
 );
 
 export const PortfolioModel = model<PortfolioDocument>(
-  "Portfolios",
+  Collections.Portfolios,
   portfolioSchema
 );

@@ -4,9 +4,10 @@ export enum Collections {
     Preferences = "preferences",
     Portfolios = "portfolios",
     Transactions = "transactions",
-    Files = "files",
+    Documents = "documents",
     Signatures = "signatures",
     Holdings = "holdings",
     KycRecords = "kycRecords",
-    Biometric = "biometrics"
+    Biometric = "biometrics",
+    Goals = "goals",
 }

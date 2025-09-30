@@ -4,7 +4,7 @@ import { TransactionsDocument } from "src/common/interfaces";
 
 const transactionSchema = new Schema<TransactionsDocument>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "Users", required: true },
+    userId: { type: Schema.Types.ObjectId, ref: Collections.Users, required: true },
     fundId: { type: Schema.Types.ObjectId, ref: "Funds", required: true },
     portfolioId: { type: Schema.Types.ObjectId, ref: "Portfolios", required: true },
     type: {

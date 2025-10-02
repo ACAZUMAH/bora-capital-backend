@@ -11,8 +11,6 @@ export interface PortfolioDocument {
 
   holdings: Array<HoldingsDocument>;
 
-  transactions: Array<{}>;
-
   createdAt: Date;
   updatedAt: Date;
 }

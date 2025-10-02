@@ -12,3 +12,5 @@ export * from "./holdings";
 export * from "./kycRecords";
 export * from "./goals";
 export * from "./resources";
+export * from "./funds";
+export * from "./graphql/graphql";

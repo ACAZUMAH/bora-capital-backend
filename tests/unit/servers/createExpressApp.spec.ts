@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { createExpressApp } from "src/server";
+import { createExpressApp } from "src/servers";
 import request from "supertest";
 
 describe("Express App checks", () => {

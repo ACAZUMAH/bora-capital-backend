@@ -6,13 +6,13 @@ import { PreferencesDocument } from "../preferences";
 import { KycRecordsDocument } from "../kycRecords";
 
 export interface UserDocument {
-  id: string | Types.ObjectId;
+  _id: string | Types.ObjectId;
   fullName: string;
   email: string;
   phoneNumber?: string;
   role: role;
   biometric?: BiometricDocument
-  devices?: [DeviceDocument]
+  devices?: Array<DeviceDocument>
   preferences?: PreferencesDocument
   kycRecords?: Array<KycRecordsDocument>
   password: string;

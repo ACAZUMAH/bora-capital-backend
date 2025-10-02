@@ -5,7 +5,6 @@
     "esModuleInterop": true,
     "target": "esnext",
     "noImplicitAny": true,
-    //"ignoreDeprecations": "6.0",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
@@ -18,7 +17,7 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/", "tests",],
+  "include": ["src/", "tests"],
   "exclude": ["node_modules", "dist"],
   "ts-node": { "files": true }
 }

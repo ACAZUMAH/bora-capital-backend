@@ -10,4 +10,5 @@ export enum Collections {
     KycRecords = "kycRecords",
     Biometric = "biometrics",
     Goals = "goals",
+    Funds = "funds",
 }

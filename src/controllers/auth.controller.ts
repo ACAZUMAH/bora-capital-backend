@@ -30,7 +30,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
 
 export const resetUserPassword = async (req: Request, res: Response) => {
   const response = await resetPassword({
-    userId: req.user._id,
+    userId: req?.user?._id!,
     newPassword: req.body.newPassword,
   });
 

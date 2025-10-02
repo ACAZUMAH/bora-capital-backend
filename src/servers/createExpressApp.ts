@@ -37,16 +37,16 @@ const corsOptions = {
 export const createExpressApp = () => {
   const app = express();
 
-  app.use(express.urlencoded({ extended: true }));
-
   app.use(express.json({ limit: "50mb" }));
+
+  app.use(express.urlencoded({ extended: true }));
 
   app.use(helmet(helmetOptions));
 
   app.use(helmet.hidePoweredBy());
   app.disable("x-powered-by");
 
-  app.use("/*\w", cors());
+  app.use("/*splat", cors());
   app.use(cors(corsOptions));
 
   app.get("/", (_req, res) => {

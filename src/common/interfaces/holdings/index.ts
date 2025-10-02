@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 export interface HoldingsDocument {
   _id: string | Types.ObjectId;
   fundId: string | Types.ObjectId;
+  portfolioId: string | Types.ObjectId;
   symbol: string;
   name: string;
   quantity: number;

@@ -3,8 +3,8 @@ import { verifyToken } from "./verifyTokens";
 import { errorHandler } from "./errorHandler";
 
 const middlewares = [
-  //verifyToken,
-  errorHandler
+  verifyToken,
+  //errorHandler
 ];
 
 export const applyMiddlewares = (app: Express) => {

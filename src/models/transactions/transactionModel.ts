@@ -1,12 +1,28 @@
 import { model, Schema } from "mongoose";
-import { Collections, TransactionStatus, TransactionType } from "src/common/enums";
+import {
+  Collections,
+  TransactionStatus,
+  TransactionType,
+} from "src/common/enums";
 import { TransactionsDocument } from "src/common/interfaces";
 
 const transactionSchema = new Schema<TransactionsDocument>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: Collections.Users, required: true },
-    fundId: { type: Schema.Types.ObjectId, ref: "Funds", required: true },
-    portfolioId: { type: Schema.Types.ObjectId, ref: "Portfolios", required: true },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: Collections.Users,
+      required: true,
+    },
+    fundId: {
+      type: Schema.Types.ObjectId,
+      ref: Collections.Funds,
+      required: true,
+    },
+    portfolioId: {
+      type: Schema.Types.ObjectId,
+      ref: Collections.Portfolios,
+      required: true,
+    },
     type: {
       type: String,
       enum: Object.values(TransactionType),

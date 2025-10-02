@@ -2,10 +2,11 @@ import { Express } from "express";
 import { Server } from "http";
 import { GraphQLSchema } from "graphql";
 import { BaseContext } from "@apollo/server"
+import { UserDocument } from "../user";
 declare global {
   namespace Express {
     interface Request {
-      user?: any;
+      user?: UserDocument;
       token?: string;
     }
   }
@@ -18,7 +19,8 @@ export interface GraphqlServer {
 }
 
 export interface GraphqlContext extends BaseContext {
-  user?: any;
+  ip: string;
+  user?: UserDocument;
   token?: string;
 }
 

@@ -1,7 +1,15 @@
-import { shield } from "graphql-shield";
+import { allow, shield } from "graphql-shield";
+import { authShield } from "./auth";
 
-export const permissions = shield({
-  Query: {
+export const permissions = shield(
+  {
+    Query: {},
+    Mutation: {
+      ...authShield.Mutation,
+    },
   },
-  mutation: {}
-});
+  {
+    fallbackRule: allow,
+    allowExternalErrors: true,
+  }
+);

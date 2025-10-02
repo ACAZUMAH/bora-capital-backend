@@ -10,3 +10,11 @@ export interface PreferencesDocument {
   timezone: string;
   notificationsEnabled: boolean;
 }
+
+export interface PreferencesInput {
+  theme?: Theme;
+  currency?: string;
+  language?: string;
+  timezone?: string;
+  notificationsEnabled?: boolean;
+}

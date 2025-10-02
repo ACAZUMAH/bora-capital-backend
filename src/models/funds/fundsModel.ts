@@ -14,4 +14,4 @@ const fundsSchema = new Schema<FundsDocument>(
   { timestamps: true }
 );
 
-export const FundsModel = model<FundsDocument>(Collections.Funds, fundsSchema);
+export const fundsModel = model<FundsDocument>(Collections.Funds, fundsSchema);

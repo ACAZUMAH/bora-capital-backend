@@ -1,4 +1,4 @@
-import { createUserInput, loginUserInput } from "src/common/interfaces";
+import { CreateUserInput, loginUserInput } from "src/common/interfaces";
 import { checkUserExist, createUser, getUserByEmail } from "../users";
 import { comparePassword, hashPassword } from "src/common/helpers";
 import { createAuth } from "./auth";
@@ -14,7 +14,7 @@ import { OtpPurpose } from "src/common/enums";
  * @returns An object containing the created user and the generated OTP if in development mode.
  * @throws Will throw an error if the phone number or email already exists.
  */
-export const register = async (data: createUserInput) => {
+export const register = async (data: CreateUserInput) => {
   const { email, password } = data;
 
   await checkUserExist(email);
@@ -77,7 +77,7 @@ export const loginUser = async (data: loginUserInput) => {
  * @returns A message indicating that the OTP has been sent.
  * @throws Will throw an error if the user with the provided email does not exist or if sending the email fails.
  */
-export const forgetPasswordOtp = async (email: string) => {
+export const sendForgetPasswordOtp = async (email: string) => {
   const user = await getUserByEmail(email);
 
   const otp = await createAuth({ userId: user?._id!, len: 5, otpPurpose: OtpPurpose.FORGOT_PASSWORD });

@@ -18,7 +18,7 @@ export const StartServer = async () => {
 
   await connectDB();
   applyMiddlewares(expressApp);
-  applyRoutes(expressApp);
+  //applyRoutes(expressApp);
 
   await createGraphqlServer({ app: expressApp, httpServer, schema });
 

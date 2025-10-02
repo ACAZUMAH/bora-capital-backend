@@ -11,4 +11,4 @@ const documentsSchema = new Schema<DocumentsDocument>({
   mimeType: { type: String, required: true },
 }, { timestamps: true });
 
-export const uploadsSchema = model<DocumentsDocument>(Collections.Documents, documentsSchema); 
+export const documentsModel = model<DocumentsDocument>(Collections.Documents, documentsSchema); 

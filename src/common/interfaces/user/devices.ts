@@ -8,3 +8,9 @@ export interface DeviceDocument {
     createdAt: Date
     updatedAt: Date
 }
+
+export interface DeviceInput {
+    refreshToken: string
+    deviceId: string
+    lastUsed?: Date
+}

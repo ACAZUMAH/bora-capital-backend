@@ -7,5 +7,5 @@ export const deviceSchema = new Schema<DeviceDocument>(
     deviceId: { type: String, required: true },
     lastUsed: { type: Date, default: Date.now },
   },
-  { timestamps: true }
+  { _id: false, timestamps: true }
 );

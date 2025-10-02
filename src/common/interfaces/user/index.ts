@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 import { role } from "src/common/enums";
-import { BiometricDocument } from "../biometric";
-import { DeviceDocument } from "../devices";
-import { PreferencesDocument } from "../preferences";
-import { KycRecordsDocument } from "../kycRecords";
+import { BiometricDocument } from "./biometric";
+import { DeviceDocument, DeviceInput } from "./devices";
+import { PreferencesDocument, PreferencesInput } from "./preferences";
+//import { KycRecordsDocument } from "../kycRecords";
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
@@ -14,25 +14,28 @@ export interface UserDocument {
   biometric?: BiometricDocument
   devices?: Array<DeviceDocument>
   preferences?: PreferencesDocument
-  kycRecords?: Array<KycRecordsDocument>
+  //kycRecords?: Array<KycRecordsDocument>
   password: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface createUserInput {
+export interface CreateUserInput {
   fullName: string;
   email: string;
   phoneNumber?: string;
   password: string;
 }
 
-export interface loginUserInput {
-  email: string;
-  password: string;
-}
-
-export interface resetPasswordInput {
+export interface ResetPasswordInput {
   userId: string | Types.ObjectId;
   newPassword: string;
+}
+
+export interface UpdateUserInput {
+  fullName?: string | null;
+  phoneNumber?: string | null;
+  devices?: Array<DeviceInput> | null;
+  preferences?: PreferencesInput | null;
+  biometric?: BiometricDocument | null;
 }

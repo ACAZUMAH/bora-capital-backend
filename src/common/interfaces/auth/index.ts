@@ -14,3 +14,8 @@ export interface AuthInput {
     len: number
     otpPurpose: OtpPurpose
 }
+
+export interface loginUserInput {
+  email: string;
+  password: string;
+}

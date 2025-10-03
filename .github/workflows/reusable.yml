@@ -1,0 +1,44 @@
+# reusable ci
+
+name: CI (reusable)
+
+on:
+  workflow_call:
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  ci:
+    name: CI
+    runs-on: unbuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with: 
+            path: |
+              node_modules
+              .yarn/cache
+            key: ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: |
+                ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build 
+        run: CI=false yarn build
+
+      - name: Test
+        run: yarn test
+

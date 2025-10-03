@@ -95,3 +95,5 @@ export const sendForgetPasswordOtp = async (email: string) => {
     message: "Please check your phone for the OTP to change your password.",
   };
 };
+
+export const biometricAuth = async (userId: string) => {}

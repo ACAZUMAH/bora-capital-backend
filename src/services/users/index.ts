@@ -8,6 +8,7 @@ import { userModel } from "src/models";
 import { Types } from "mongoose";
 import createError from "http-errors";
 import { hashPassword } from "src/common/helpers";
+import { createPortfolio } from "../portfolio";
 
 /**
  * @description create new user
@@ -21,6 +22,12 @@ export const createUser = async (data: CreateUserInput) => {
   validateCreateUserData(data);
 
   const user = await userModel.create({ ...data });
+
+  await createPortfolio({
+    userId: user._id,
+    name: "Main Portfolio",
+    currency: "GHS",
+  });
 
   return user;
 };

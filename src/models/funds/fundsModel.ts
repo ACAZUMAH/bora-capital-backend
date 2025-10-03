@@ -8,8 +8,8 @@ const fundsSchema = new Schema<FundsDocument>(
     description: { type: String },
     symbol: { type: String, required: true, unique: true },
     objective: { type: String },
-    inceptionDate: { type: Date },
-    baseCurrency: { type: String, required: true },
+    inceptionDate: { type: Date, default: Date.now },
+    baseCurrency: { type: String, default: "GHS", required: true },
   },
   { timestamps: true }
 );

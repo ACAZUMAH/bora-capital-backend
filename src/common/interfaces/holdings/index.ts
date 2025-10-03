@@ -10,7 +10,8 @@ export interface HoldingsDocument {
   purchasePrice: number;
   currentPrice: number;
   currentValue: number;
-  unrealizedGainLoss: number;
+  unrealizedPL: number;
+  realizedPL: number;
   currency: string;
   lastPricedAt: Date;
   createdAt: Date;

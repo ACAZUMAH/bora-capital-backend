@@ -91,6 +91,33 @@ export const resetPassword = async (data: ResetPasswordInput) => {
 };
 
 /**
- *
+ * @description update user details
+ * @param data.userId - id of the user
+ * @param data.fullName - full name of the user
+ * @param data.phoneNumber - phone number of the user
+ * @param data.devices - devices of the user
+ * @param data.preferences - preferences of the user
+ * @param data.biometric - biometric of the user
+ * @returns updated user object
  */
-export const updateUser = async (data: UpdateUserInput) => {};
+export const updateUser = async (data: UpdateUserInput) => {
+  const user = await getUserById(data.userId);
+
+  const update: Record<string, any> = {};
+
+  if (data.fullName) update.fullName = data.fullName;
+  if (data.phoneNumber) update.phoneNumber = data.phoneNumber;
+  if (data.devices?.length) update.devices = data.devices;
+  if (data.preferences) update.preferences = data.preferences;
+  if (data.biometric) update.biometric = data.biometric;
+
+  const updated = await userModel.findByIdAndUpdate(
+    user._id,
+    {
+      $set: update,
+    },
+    { new: true }
+  );
+
+  return updated;
+};

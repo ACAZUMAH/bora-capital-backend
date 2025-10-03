@@ -69,11 +69,13 @@ export const userTypeDefs = `#graphql
     }
 
     input UpdateUserInput {
+        id: ID!
+        
         fullName: String
         phoneNumber: String
-        devices: [deviceInput]
-        biometric: biometricInput
-        preferences: preferencesInput
+        devices: [DeviceInput]
+        biometric: BiometricInput
+        preferences: PreferencesInput
     }
 
     extend type Mutation {

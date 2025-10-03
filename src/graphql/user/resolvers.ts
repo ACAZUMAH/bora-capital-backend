@@ -1,7 +1,8 @@
-import * as GraphqlTypes from "src/common/interfaces";
+import { GraphqlContext } from "src/common/interfaces";
+import * as GraphqlTypes from "src/common/interfaces/graphql";
 import * as UserService from "src/services/users";
 
-const me = (_: any, __: any, { user }: GraphqlTypes.GraphqlContext) => {
+const me = (_: any, __: any, { user }: GraphqlContext) => {
   return UserService.getUserById(`${user?._id}`);
 };
 

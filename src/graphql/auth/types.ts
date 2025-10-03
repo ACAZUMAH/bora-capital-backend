@@ -1,6 +1,6 @@
 export const authTypeDefs = `#graphql
     type authenticated {
-       user: String,
+       user: User,
        token: String!
     }
 

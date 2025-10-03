@@ -33,6 +33,7 @@ export interface ResetPasswordInput {
 }
 
 export interface UpdateUserInput {
+  userId: string | Types.ObjectId;
   fullName?: string | null;
   phoneNumber?: string | null;
   devices?: Array<DeviceInput> | null;

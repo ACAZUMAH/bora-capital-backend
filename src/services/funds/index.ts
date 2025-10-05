@@ -18,9 +18,7 @@ import createError from "http-errors";
 export const createFund = async (data: CreateFundInput) => {
   validateFundData(data);
 
-  const funds = fundsModel.create({
-    ...data,
-  });
+  const funds = fundsModel.create({ ...data });
 
   return funds;
 };

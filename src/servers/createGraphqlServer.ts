@@ -9,12 +9,13 @@ import { createGraphqlSubscriptionServer } from "./createGraphqlSubscriptionServ
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { formatGraphqlErrors } from "./formatGraphqlErrors";
 import { json } from "express";
+import { createDataLoaders } from "src/dataLoaders";
 
 const context: ContextFunction<
   [ExpressContextFunctionArgument],
   GraphqlContext
 > = async ({ req }) => {
-  return { ...req, ip: String(req.ips[0] || req.ip) };
+  return { ...req, ...createDataLoaders(), ip: String(req.ips[0] || req.ip) };
 };
 
 export const createGraphqlServer = async ({

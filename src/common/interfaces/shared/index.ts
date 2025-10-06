@@ -8,6 +8,7 @@ declare global {
     interface Request {
       user?: UserDocument;
       token?: string;
+      clientApp?: ClientApp;
     }
   }
 }
@@ -22,9 +23,16 @@ export interface GraphqlContext extends BaseContext {
   ip: string;
   user?: UserDocument;
   token?: string;
+  clientApp?: ClientApp;
 }
 
 export interface GraphqlSubscriptionServer {
   httpServer: Server;
   schema: GraphQLSchema;
+}
+
+export interface ClientApp {
+  key: string;
+  name: string;
+  domain: string;
 }

@@ -15,7 +15,7 @@ export interface AuthInput {
     otpPurpose: OtpPurpose
 }
 
-export interface loginUserInput {
+export interface SigninInput {
   email: string;
   password: string;
 }

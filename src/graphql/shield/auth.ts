@@ -1,4 +1,3 @@
-import { resetUserPassword } from "src/controllers";
 import { isAuthenticated, rateLimitRule } from "./general";
 
 export const authShield = {

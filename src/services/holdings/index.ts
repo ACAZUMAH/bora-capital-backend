@@ -1,11 +1,12 @@
 import {
   CreateHoldingsInput,
+  HoldingsDocument,
   HoldingsFilters,
   UpdateHoldingsInput,
 } from "src/common/interfaces";
 import { validateHoldingsData } from "./validate";
 import { holdingsModel } from "src/models";
-import { isValidObjectId, PipelineStage, Types } from "mongoose";
+import { FilterQuery, isValidObjectId, PipelineStage, Types } from "mongoose";
 import createError from "http-errors";
 import {
   getPageConnection,
@@ -108,20 +109,40 @@ export const getHoldings = async (filters: HoldingsFilters) => {
   const page = getSanitizePage(filters.page);
   const skip = getSanitizeOffset(limit, page);
 
-  const query: Record<string, any> = {
+  const query: FilterQuery<HoldingsDocument> = {
     ...(filters.portfolioId && { portfolioId: filters.portfolioId }),
     ...(filters.fundId && { fundId: filters.fundId }),
     ...(filters.search && { name: { $regex: filters.search, $options: "i" } }),
   };
 
-  const pipeline: PipelineStage[] = [
-    { $match: query },
-    { $sort: { createdAt: -1 } },
-    { $skip: skip },
-    { $limit: limit },
-  ];
+  // const pipeline: PipelineStage[] = [
+  //   { $match: query },
+  //   { $sort: { createdAt: -1 } },
+  //   { $skip: skip },
+  //   { $limit: limit },
+  // ];
 
-  const holdings = await holdingsModel.aggregate(pipeline);
+  const holdings = await holdingsModel.find(query, null, {
+    skip,
+    limit,
+    sort: { createdAt: -1 },
+  });
 
   return getPageConnection(holdings, page, limit);
+};
+
+/**
+ * @description Get holdings by portfolio ID
+ * @param portfolioId - ID of the portfolio
+ * @returns Array of holdings belonging to the portfolio
+ */
+export const getHoldingsByPortfolioId = async (
+  portfolioId: string | Types.ObjectId
+) => {
+  if (!isValidObjectId(portfolioId))
+    throw createError.BadRequest("Invalid portfolio ID");
+
+  const holdings = await holdingsModel.find({ portfolioId }).populate("fundId");
+
+  return holdings;
 };

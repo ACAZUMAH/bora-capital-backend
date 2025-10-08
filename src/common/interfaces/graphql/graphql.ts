@@ -85,6 +85,13 @@ export type Scalars = {
   Void: { input: any; output: any; }
 };
 
+export type Allocation = {
+  __typename?: 'Allocation';
+  assetClass: Scalars['String']['output'];
+  percentage: Scalars['Float']['output'];
+  totalValue: Scalars['Float']['output'];
+};
+
 export type BiometricInput = {
   deviceId?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -108,6 +115,39 @@ export type Devices = {
   deviceId?: Maybe<Scalars['String']['output']>;
   lastUsed?: Maybe<Scalars['DateTime']['output']>;
   refreshToken?: Maybe<Scalars['String']['output']>;
+};
+
+export type Holdings = {
+  __typename?: 'Holdings';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  currency: Scalars['String']['output'];
+  currentPrice: Scalars['Float']['output'];
+  currentValue: Scalars['Float']['output'];
+  fundId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  lastPricedAt?: Maybe<Scalars['DateTime']['output']>;
+  name: Scalars['String']['output'];
+  portfolioId: Scalars['ID']['output'];
+  purchasePrice: Scalars['Float']['output'];
+  quantity: Scalars['Float']['output'];
+  realizedPL: Scalars['Float']['output'];
+  symbol: Scalars['String']['output'];
+  unrealizedPL: Scalars['Float']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type HoldingsConnection = {
+  __typename?: 'HoldingsConnection';
+  edges: Array<Holdings>;
+  pageInfo: PageInfo;
+};
+
+export type HoldingsFilters = {
+  fundId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  portfolioId?: InputMaybe<Scalars['ID']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Mutation = {
@@ -151,6 +191,26 @@ export type MutationVerifyOtpAndCompleteAuthArgs = {
   otp: Scalars['String']['input'];
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  hasNextPage: Scalars['Boolean']['output'];
+  limit: Scalars['Int']['output'];
+  page: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+};
+
+export type Portfolio = {
+  __typename?: 'Portfolio';
+  asOf?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  currency: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId: Scalars['ID']['output'];
+  valuation?: Maybe<Scalars['Float']['output']>;
+};
+
 export type Preferences = {
   __typename?: 'Preferences';
   currency?: Maybe<Scalars['String']['output']>;
@@ -171,10 +231,40 @@ export type PreferencesInput = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
+  getAssetAllocations: Array<Allocation>;
+  getHoldings: HoldingsConnection;
+  getHoldingsById: Holdings;
+  getPortfolioById: Portfolio;
+  getPortfoliosByUserId: Array<Portfolio>;
   getUserById: User;
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
   me: User;
+};
+
+
+export type QueryGetAssetAllocationsArgs = {
+  portfolioId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetHoldingsArgs = {
+  filters: HoldingsFilters;
+};
+
+
+export type QueryGetHoldingsByIdArgs = {
+  holdingsId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetPortfolioByIdArgs = {
+  portfolioId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetPortfoliosByUserIdArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -318,6 +408,7 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']['output']>;
+  Allocation: ResolverTypeWrapper<Allocation>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   BiometricInput: BiometricInput;
   Biometrics: ResolverTypeWrapper<Biometrics>;
@@ -336,12 +427,16 @@ export type ResolversTypes = {
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
+  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   GUID: ResolverTypeWrapper<Scalars['GUID']['output']>;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   HSL: ResolverTypeWrapper<Scalars['HSL']['output']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']['output']>;
   HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']['output']>;
   Hexadecimal: ResolverTypeWrapper<Scalars['Hexadecimal']['output']>;
+  Holdings: ResolverTypeWrapper<Holdings>;
+  HoldingsConnection: ResolverTypeWrapper<HoldingsConnection>;
+  HoldingsFilters: HoldingsFilters;
   IBAN: ResolverTypeWrapper<Scalars['IBAN']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   IP: ResolverTypeWrapper<Scalars['IP']['output']>;
@@ -350,6 +445,7 @@ export type ResolversTypes = {
   IPv6: ResolverTypeWrapper<Scalars['IPv6']['output']>;
   ISBN: ResolverTypeWrapper<Scalars['ISBN']['output']>;
   ISO8601Duration: ResolverTypeWrapper<Scalars['ISO8601Duration']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']['output']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']['output']>;
@@ -372,8 +468,10 @@ export type ResolversTypes = {
   NonPositiveFloat: ResolverTypeWrapper<Scalars['NonPositiveFloat']['output']>;
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']['output']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']['output']>;
+  PageInfo: ResolverTypeWrapper<PageInfo>;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']['output']>;
   Port: ResolverTypeWrapper<Scalars['Port']['output']>;
+  Portfolio: ResolverTypeWrapper<Portfolio>;
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']['output']>;
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']['output']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']['output']>;
@@ -411,6 +509,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber']['output'];
+  Allocation: Allocation;
   BigInt: Scalars['BigInt']['output'];
   BiometricInput: BiometricInput;
   Biometrics: Biometrics;
@@ -429,12 +528,16 @@ export type ResolversParentTypes = {
   DeweyDecimal: Scalars['DeweyDecimal']['output'];
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
+  Float: Scalars['Float']['output'];
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
   HSL: Scalars['HSL']['output'];
   HSLA: Scalars['HSLA']['output'];
   HexColorCode: Scalars['HexColorCode']['output'];
   Hexadecimal: Scalars['Hexadecimal']['output'];
+  Holdings: Holdings;
+  HoldingsConnection: HoldingsConnection;
+  HoldingsFilters: HoldingsFilters;
   IBAN: Scalars['IBAN']['output'];
   ID: Scalars['ID']['output'];
   IP: Scalars['IP']['output'];
@@ -443,6 +546,7 @@ export type ResolversParentTypes = {
   IPv6: Scalars['IPv6']['output'];
   ISBN: Scalars['ISBN']['output'];
   ISO8601Duration: Scalars['ISO8601Duration']['output'];
+  Int: Scalars['Int']['output'];
   JSON: Scalars['JSON']['output'];
   JSONObject: Scalars['JSONObject']['output'];
   JWT: Scalars['JWT']['output'];
@@ -465,8 +569,10 @@ export type ResolversParentTypes = {
   NonPositiveFloat: Scalars['NonPositiveFloat']['output'];
   NonPositiveInt: Scalars['NonPositiveInt']['output'];
   ObjectID: Scalars['ObjectID']['output'];
+  PageInfo: PageInfo;
   PhoneNumber: Scalars['PhoneNumber']['output'];
   Port: Scalars['Port']['output'];
+  Portfolio: Portfolio;
   PositiveFloat: Scalars['PositiveFloat']['output'];
   PositiveInt: Scalars['PositiveInt']['output'];
   PostalCode: Scalars['PostalCode']['output'];
@@ -502,6 +608,12 @@ export type ResolversParentTypes = {
 export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
   name: 'AccountNumber';
 }
+
+export type AllocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Allocation'] = ResolversParentTypes['Allocation']> = {
+  assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  percentage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
@@ -590,6 +702,29 @@ export interface HexColorCodeScalarConfig extends GraphQLScalarTypeConfig<Resolv
 export interface HexadecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
   name: 'Hexadecimal';
 }
+
+export type HoldingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Holdings'] = ResolversParentTypes['Holdings']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  currentPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  currentValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lastPricedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  purchasePrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  realizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  unrealizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+};
+
+export type HoldingsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['HoldingsConnection'] = ResolversParentTypes['HoldingsConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['Holdings']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+};
 
 export interface IbanScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IBAN'], any> {
   name: 'IBAN';
@@ -713,6 +848,13 @@ export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'ObjectID';
 }
 
+export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  page?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
 export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber';
 }
@@ -720,6 +862,17 @@ export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<Resolve
 export interface PortScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Port'], any> {
   name: 'Port';
 }
+
+export type PortfolioResolvers<ContextType = any, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
+  asOf?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  valuation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+};
 
 export interface PositiveFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PositiveFloat'], any> {
   name: 'PositiveFloat';
@@ -743,6 +896,11 @@ export type PreferencesResolvers<ContextType = any, ParentType extends Resolvers
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
+  getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
+  getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
+  getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
+  getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -841,6 +999,7 @@ export type AuthenticatedResolvers<ContextType = any, ParentType extends Resolve
 
 export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
+  Allocation?: AllocationResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Biometrics?: BiometricsResolvers<ContextType>;
   Byte?: GraphQLScalarType;
@@ -862,6 +1021,8 @@ export type Resolvers<ContextType = any> = {
   HSLA?: GraphQLScalarType;
   HexColorCode?: GraphQLScalarType;
   Hexadecimal?: GraphQLScalarType;
+  Holdings?: HoldingsResolvers<ContextType>;
+  HoldingsConnection?: HoldingsConnectionResolvers<ContextType>;
   IBAN?: GraphQLScalarType;
   IP?: GraphQLScalarType;
   IPCPatent?: GraphQLScalarType;
@@ -891,8 +1052,10 @@ export type Resolvers<ContextType = any> = {
   NonPositiveFloat?: GraphQLScalarType;
   NonPositiveInt?: GraphQLScalarType;
   ObjectID?: GraphQLScalarType;
+  PageInfo?: PageInfoResolvers<ContextType>;
   PhoneNumber?: GraphQLScalarType;
   Port?: GraphQLScalarType;
+  Portfolio?: PortfolioResolvers<ContextType>;
   PositiveFloat?: GraphQLScalarType;
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;

@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 import { Collections } from "src/common/enums";
 import { HoldingsDocument } from "src/common/interfaces/holdings";
 
-export const holdingsSchema = new Schema<HoldingsDocument>(
+const holdingsSchema = new Schema<HoldingsDocument>(
   {
     fundId: {
       type: Schema.Types.ObjectId,
@@ -27,6 +27,8 @@ export const holdingsSchema = new Schema<HoldingsDocument>(
   },
   { timestamps: true }
 );
+
+holdingsSchema.index({ fundId: 1, portfolioId: 1, symbol: 1 }, { unique: true });
 
 export const holdingsModel = model<HoldingsDocument>(
   Collections.Holdings,

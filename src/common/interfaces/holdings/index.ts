@@ -46,9 +46,9 @@ export interface UpdateHoldingsInput {
 }
 
 export interface HoldingsFilters {
-  limit?: number;
-  page?: number;
-  fundId?: string | Types.ObjectId;
-  portfolioId?: string | Types.ObjectId;
-  search?: string;
+  limit?: number | null;
+  page?: number | null;
+  fundId?: string | Types.ObjectId | null;
+  portfolioId?: string | Types.ObjectId | null;
+  search?: string | null;
 }

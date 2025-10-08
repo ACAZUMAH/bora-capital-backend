@@ -8,15 +8,27 @@ import {
   typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
 } from "graphql-scalars";
+import { portfolioResolvers, portfolioTypeDefs } from "./portfolio";
+import { holdingsTypeDefs } from "./holdings/typeDefs";
+import { holdingsResolvers } from "./holdings/resolvers";
 //import { printSchema } from "graphql";
 
-const typeDefs = [generalTypeDefs, authTypeDefs, userTypeDefs, scalarTypeDefs];
+const typeDefs = [
+  generalTypeDefs,
+  authTypeDefs,
+  userTypeDefs,
+  scalarTypeDefs,
+  portfolioTypeDefs,
+  holdingsTypeDefs,
+];
 
 const resolvers = [
   generalResolvers,
   authResolvers,
   UserResolvers,
   scalarResolvers,
+  portfolioResolvers,
+  holdingsResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

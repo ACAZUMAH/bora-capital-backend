@@ -14,3 +14,10 @@ export enum TransactionStatus {
     FAILED = "FAILED",
     CANCELLED = "CANCELLED"
 }
+
+export enum PaymentMethod {
+    BANK_TRANSFER = "BANK_TRANSFER",
+    CARD = "CARD",
+    CASH = "CASH",
+    MOBILE_MONEY = "MOBILE_MONEY"
+}

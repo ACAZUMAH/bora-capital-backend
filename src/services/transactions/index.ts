@@ -3,14 +3,23 @@ import {
   TransactionsDocument,
   TransactionsFilters,
 } from "src/common/interfaces";
-import { validateTransaction } from "./validate";
 import { TransactionModel } from "src/models";
 import { getUserById } from "../users";
 import { getFundById } from "../funds";
 import { getPortfolioById } from "../portfolio";
 import { FilterQuery, isValidObjectId, Types } from "mongoose";
 import createError from "http-errors";
-import { getPageConnection, getSanitizeLimit, getSanitizeOffset, getSanitizePage } from "src/common/helpers";
+import {
+  getPageConnection,
+  getSanitizeLimit,
+  getSanitizeOffset,
+  getSanitizePage,
+} from "src/common/helpers";
+import { UpdateTransactionInput } from "src/common/interfaces/graphql";
+import {
+  validateCreateTransactionData,
+  validateUpdateTransactionData,
+} from "./validate";
 
 /**
  * @description Create a new transaction
@@ -25,11 +34,13 @@ import { getPageConnection, getSanitizeLimit, getSanitizeOffset, getSanitizePage
  * @param data.bankAccountId - (Optional) ID of the bank account
  * @param data.reference - (Optional) Reference for the transaction
  * @param data.description - (Optional) Description of the transaction
- * @param data.status - (Optional) Status of the transaction
+ * @param data.paymentStatus - (Optional) Status of the transaction
+ * @param data.paymentMethod - (Optional) Payment method of the transaction
+ * @param data.transactionDate - (Optional) Date of the transaction
  * @returns The created transaction
  */
 export const createTransaction = async (data: CreateTransactionInput) => {
-  validateTransaction(data);
+  validateCreateTransactionData(data);
 
   const user = await getUserById(data.userId);
 
@@ -63,7 +74,47 @@ export const getTransactionById = async (id: string | Types.ObjectId) => {
   return transaction;
 };
 
-export const updateTransaction = async () => {}
+/**
+ * @description Update a transaction
+ * @param data.id - ID of the transaction to update
+ * @param data.type - (Optional) Updated type of the transaction
+ * @param data.amount - (Optional) Updated amount of the transaction
+ * @param data.currency - (Optional) Updated currency of the transaction
+ * @param data.quantity - (Optional) Updated quantity of the transaction
+ * @param data.providerId - (Optional) Updated ID of the provider
+ * @param data.bankAccountId - (Optional) Updated ID of the bank account
+ * @param data.reference - (Optional) Updated reference for the transaction
+ * @param data.description - (Optional) Updated description of the transaction
+ * @param data.paymentStatus - (Optional) Updated status of the transaction
+ * @param data.paymentMethod - (Optional) Updated payment method of the transaction
+ * @param data.transactionDate - (Optional) Updated date of the transaction
+ * @returns The updated transaction
+ */
+export const updateTransaction = async (data: UpdateTransactionInput) => {
+  validateUpdateTransactionData(data);
+
+  const updateRecord: Record<string, any> = {
+    ...(data.type && { type: data.type }),
+    ...(data.amount && { amount: data.amount }),
+    ...(data.currency && { currency: data.currency }),
+    ...(data.quantity && { quantity: data.quantity }),
+    ...(data.providerId && { providerId: data.providerId }),
+    ...(data.bankAccountId && { bankAccountId: data.bankAccountId }),
+    ...(data.reference && { reference: data.reference }),
+    ...(data.description && { description: data.description }),
+    ...(data.paymentStatus && { paymentStatus: data.paymentStatus }),
+    ...(data.paymentMethod && { paymentMethod: data.paymentMethod }),
+    ...(data.transactionDate && { transactionDate: data.transactionDate }),
+  };
+
+  return await TransactionModel.findByIdAndUpdate(
+    data.id,
+    {
+      $set: updateRecord,
+    },
+    { new: true, lean: true }
+  );
+};
 
 /**
  * @description Get transactions based on filters
@@ -87,12 +138,14 @@ export const getTransactions = async (filters: TransactionsFilters) => {
     ...(filters.providerId && { providerId: filters.providerId }),
     ...(filters.type && { type: filters.type }),
     ...(filters.status && { status: filters.status }),
-    ...(filters.search && { $or: [
+    ...(filters.search && {
+      $or: [
         { type: { $regex: filters.search, $options: "i" } },
         { reference: { $regex: filters.search, $options: "i" } },
         { description: { $regex: filters.search, $options: "i" } },
         { status: { $regex: filters.search, $options: "i" } },
-    ] }),
+      ],
+    }),
   };
 
   const limit = getSanitizeLimit(filters.limit);

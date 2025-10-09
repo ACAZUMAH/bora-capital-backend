@@ -3,8 +3,12 @@ import addFormats from "ajv-formats";
 import addErrors from "ajv-errors";
 import createError from "http-errors";
 import { isValidObjectId } from "mongoose";
-import { TransactionType } from "src/common/enums";
-import { CreateTransactionInput } from "src/common/interfaces";
+import { TransactionStatus, TransactionType } from "src/common/enums";
+import {
+  CreateTransactionInput,
+  TransactionsDocument,
+} from "src/common/interfaces";
+import { UpdateTransactionInput } from "src/common/interfaces/graphql";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -23,6 +27,7 @@ const schema = {
     bankAccountId: { type: "string", minLength: 1 },
     reference: { type: "string", minLength: 1, maxLength: 100 },
     description: { type: "string", minLength: 1, maxLength: 500 },
+    paymentStatus: { type: "string", enum: Object.values(TransactionStatus) },
   },
 
   required: ["type", "amount", "currency", "quantity"],
@@ -48,7 +53,7 @@ const schema = {
   },
 };
 
-export const validateTransaction = (data: CreateTransactionInput) => {
+export const validateCreateTransactionData = (data: CreateTransactionInput) => {
   if (!isValidObjectId(data.userId))
     throw createError.BadRequest("Invalid user ID");
   if (!isValidObjectId(data.fundId))
@@ -62,4 +67,24 @@ export const validateTransaction = (data: CreateTransactionInput) => {
   if (!isValid) {
     createError(400, ajv.errorsText(validate.errors, { separator: ", " }));
   }
+};
+
+export const validateUpdateTransactionData = (
+  data: UpdateTransactionInput,
+  transaction?: TransactionsDocument
+) => {
+  if (!isValidObjectId(data.id))
+    throw createError.BadRequest("Invalid transaction ID");
+
+  if (data.type && !Object.values(TransactionType).includes(data.type))
+    throw createError.BadRequest(
+      "Type must be one of the predefined transaction types"
+    );
+
+  if (data.amount !== undefined && data?.amount! <= 0)
+    throw createError.BadRequest("Amount must be a non-negative number");
+
+  if (data.quantity !== undefined && data?.quantity! <= 0)
+    throw createError.BadRequest("Quantity must be a non-negative number");
+
 };

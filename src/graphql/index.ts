@@ -11,6 +11,7 @@ import {
 import { portfolioResolvers, portfolioTypeDefs } from "./portfolio";
 import { holdingsTypeDefs } from "./holdings/typeDefs";
 import { holdingsResolvers } from "./holdings/resolvers";
+import { transactionsResolvers, transactionsTypeDefs } from "./transactions";
 //import { printSchema } from "graphql";
 
 const typeDefs = [
@@ -20,6 +21,7 @@ const typeDefs = [
   scalarTypeDefs,
   portfolioTypeDefs,
   holdingsTypeDefs,
+  transactionsTypeDefs
 ];
 
 const resolvers = [
@@ -29,6 +31,7 @@ const resolvers = [
   scalarResolvers,
   portfolioResolvers,
   holdingsResolvers,
+  transactionsResolvers
 ];
 
 const executableSchema = makeExecutableSchema({

@@ -37,7 +37,7 @@
     "express": "^5.1.0",
     "faker": "^6.6.6",
     "global": "^4.4.0",
-    "googleapis": "^160.0.0",
+    "googleapis": "^161.0.0",
     "graphql": "^16.11.0",
     "graphql-middleware": "^6.1.35",
     "graphql-rate-limit": "^3.3.0",

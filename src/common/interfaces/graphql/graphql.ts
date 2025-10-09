@@ -104,6 +104,23 @@ export type Biometrics = {
   expiresAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type CreateTransactionInput = {
+  PaymentStatus?: InputMaybe<TransactionStatus>;
+  amount: Scalars['Float']['input'];
+  bankAccountId?: InputMaybe<Scalars['ID']['input']>;
+  currency: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  fundId: Scalars['ID']['input'];
+  paymentMethod?: InputMaybe<PaymentMethod>;
+  portfolioId: Scalars['ID']['input'];
+  providerId?: InputMaybe<Scalars['String']['input']>;
+  quantity: Scalars['Float']['input'];
+  reference?: InputMaybe<Scalars['String']['input']>;
+  transactionDate?: InputMaybe<Scalars['DateTime']['input']>;
+  type: TransactionType;
+  userId: Scalars['ID']['input'];
+};
+
 export type DeviceInput = {
   deviceId: Scalars['String']['input'];
   lastUsed?: InputMaybe<Scalars['DateTime']['input']>;
@@ -153,12 +170,19 @@ export type HoldingsFilters = {
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
+  createTransaction: Transaction;
   forgetPassword: AuthResponse;
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
   signup: AuthResponse;
+  updateTransaction: Transaction;
   updateUser: User;
   verifyOtpAndCompleteAuth: Authenticated;
+};
+
+
+export type MutationCreateTransactionArgs = {
+  data: CreateTransactionInput;
 };
 
 
@@ -182,6 +206,11 @@ export type MutationSignupArgs = {
 };
 
 
+export type MutationUpdateTransactionArgs = {
+  data: UpdateTransactionInput;
+};
+
+
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
 };
@@ -198,6 +227,13 @@ export type PageInfo = {
   page: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
 };
+
+export enum PaymentMethod {
+  BANK_TRANSFER = 'BANK_TRANSFER',
+  CARD = 'CARD',
+  CASH = 'CASH',
+  MOBILE_MONEY = 'MOBILE_MONEY'
+}
 
 export type Portfolio = {
   __typename?: 'Portfolio';
@@ -236,6 +272,7 @@ export type Query = {
   getHoldingsById: Holdings;
   getPortfolioById: Portfolio;
   getPortfoliosByUserId: Array<Portfolio>;
+  getTransactionById: Transaction;
   getUserById: User;
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
@@ -268,6 +305,11 @@ export type QueryGetPortfoliosByUserIdArgs = {
 };
 
 
+export type QueryGetTransactionByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
 export type QueryGetUserByIdArgs = {
   userId: Scalars['ID']['input'];
 };
@@ -287,6 +329,57 @@ export enum Theme {
   DARK = 'DARK',
   LIGHT = 'LIGHT'
 }
+
+export type Transaction = {
+  __typename?: 'Transaction';
+  amount: Scalars['Float']['output'];
+  bankAccountId?: Maybe<Scalars['ID']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  currency: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  fundId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  portfolioId: Scalars['ID']['output'];
+  providerId?: Maybe<Scalars['String']['output']>;
+  quantity: Scalars['Float']['output'];
+  reference: Scalars['String']['output'];
+  status: TransactionStatus;
+  transactionDate: Scalars['DateTime']['output'];
+  type: TransactionType;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userId: Scalars['ID']['output'];
+};
+
+export enum TransactionStatus {
+  CANCELLED = 'CANCELLED',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING'
+}
+
+export enum TransactionType {
+  BUY = 'BUY',
+  DEPOSIT = 'DEPOSIT',
+  FEE = 'FEE',
+  SELL = 'SELL',
+  TRANSFER = 'TRANSFER',
+  WITHDRAWAL = 'WITHDRAWAL'
+}
+
+export type UpdateTransactionInput = {
+  amount?: InputMaybe<Scalars['Float']['input']>;
+  bankAccountId?: InputMaybe<Scalars['ID']['input']>;
+  currency?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
+  paymentMethod?: InputMaybe<PaymentMethod>;
+  paymentStatus?: InputMaybe<TransactionStatus>;
+  providerId?: InputMaybe<Scalars['String']['input']>;
+  quantity?: InputMaybe<Scalars['Float']['input']>;
+  reference?: InputMaybe<Scalars['String']['input']>;
+  transactionDate?: InputMaybe<Scalars['DateTime']['input']>;
+  type?: InputMaybe<TransactionType>;
+};
 
 export type UpdateUserInput = {
   biometric?: InputMaybe<BiometricInput>;
@@ -416,6 +509,7 @@ export type ResolversTypes = {
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
+  CreateTransactionInput: CreateTransactionInput;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']['output']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>;
   DID: ResolverTypeWrapper<Scalars['DID']['output']>;
@@ -469,6 +563,7 @@ export type ResolversTypes = {
   NonPositiveInt: ResolverTypeWrapper<Scalars['NonPositiveInt']['output']>;
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']['output']>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
+  PaymentMethod: PaymentMethod;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']['output']>;
   Port: ResolverTypeWrapper<Scalars['Port']['output']>;
   Portfolio: ResolverTypeWrapper<Portfolio>;
@@ -491,11 +586,15 @@ export type ResolversTypes = {
   Time: ResolverTypeWrapper<Scalars['Time']['output']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']['output']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
+  Transaction: ResolverTypeWrapper<Transaction>;
+  TransactionStatus: TransactionStatus;
+  TransactionType: TransactionType;
   URL: ResolverTypeWrapper<Scalars['URL']['output']>;
   USCurrency: ResolverTypeWrapper<Scalars['USCurrency']['output']>;
   UUID: ResolverTypeWrapper<Scalars['UUID']['output']>;
   UnsignedFloat: ResolverTypeWrapper<Scalars['UnsignedFloat']['output']>;
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']['output']>;
+  UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
   UtcOffset: ResolverTypeWrapper<Scalars['UtcOffset']['output']>;
@@ -517,6 +616,7 @@ export type ResolversParentTypes = {
   Byte: Scalars['Byte']['output'];
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
+  CreateTransactionInput: CreateTransactionInput;
   Cuid: Scalars['Cuid']['output'];
   Currency: Scalars['Currency']['output'];
   DID: Scalars['DID']['output'];
@@ -590,11 +690,13 @@ export type ResolversParentTypes = {
   Time: Scalars['Time']['output'];
   TimeZone: Scalars['TimeZone']['output'];
   Timestamp: Scalars['Timestamp']['output'];
+  Transaction: Transaction;
   URL: Scalars['URL']['output'];
   USCurrency: Scalars['USCurrency']['output'];
   UUID: Scalars['UUID']['output'];
   UnsignedFloat: Scalars['UnsignedFloat']['output'];
   UnsignedInt: Scalars['UnsignedInt']['output'];
+  UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   User: User;
   UtcOffset: Scalars['UtcOffset']['output'];
@@ -808,10 +910,12 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
+  updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
   verifyOtpAndCompleteAuth?: Resolver<ResolversTypes['authenticated'], ParentType, ContextType, RequireFields<MutationVerifyOtpAndCompleteAuthArgs, 'otp'>>;
 };
@@ -901,6 +1005,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
   getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
+  getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -946,6 +1051,25 @@ export interface TimeZoneScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
   name: 'Timestamp';
 }
+
+export type TransactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = {
+  amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  bankAccountId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  providerId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  reference?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['TransactionStatus'], ParentType, ContextType>;
+  transactionDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['TransactionType'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+};
 
 export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
   name: 'URL';
@@ -1071,6 +1195,7 @@ export type Resolvers<ContextType = any> = {
   Time?: GraphQLScalarType;
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
+  Transaction?: TransactionResolvers<ContextType>;
   URL?: GraphQLScalarType;
   USCurrency?: GraphQLScalarType;
   UUID?: GraphQLScalarType;

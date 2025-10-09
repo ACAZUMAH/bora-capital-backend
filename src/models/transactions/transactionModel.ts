@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import {
   Collections,
+  PaymentMethod,
   TransactionStatus,
   TransactionType,
 } from "src/common/enums";
@@ -35,12 +36,13 @@ const transactionSchema = new Schema<TransactionsDocument>(
     bankAccountId: { type: Schema.Types.ObjectId, ref: "BankAccounts" },
     reference: { type: String, required: true, unique: true },
     description: { type: String },
-    status: {
+    paymentStatus: {
       type: String,
       enum: Object.values(TransactionStatus),
       required: true,
     },
-    executedAt: { type: Date, required: true },
+    paymentMethod: { type: String, enum: Object.values(PaymentMethod) },
+    transactionDate: { type: Date, required: true },
   },
   { timestamps: true }
 );

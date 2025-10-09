@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { TransactionStatus, TransactionType } from "src/common/enums";
+import { PaymentMethod, TransactionStatus, TransactionType } from "src/common/enums";
 
 export interface TransactionsDocument {
   _id: string | Types.ObjectId;
@@ -14,8 +14,9 @@ export interface TransactionsDocument {
   bankAccountId: string | Types.ObjectId;
   reference: string;
   description: string;
-  status: TransactionStatus;
-  executedAt: Date;
+  paymentStatus: TransactionStatus;
+  paymentMethod: PaymentMethod;
+  transactionDate: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -32,8 +33,10 @@ export interface CreateTransactionInput {
   bankAccountId?: string | null;
   reference?: string | null;
   description?: string | null;
-  status?: TransactionStatus | null;
+  paymentStatus?: TransactionStatus | null;
+  paymentMethod?: PaymentMethod | null;
 }
+export interface UpdateTransactionInput {}
 
 export interface TransactionsFilters {
   limit?: number;

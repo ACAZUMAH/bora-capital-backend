@@ -26,7 +26,7 @@ export const sendVerificationEmail = async (data: emailParams) => {
       subject: data.subject,
       html: data.htmlContent,
     });
-    console.log("Message sent:", info.messageId);
+    console.log("Message sent:", info);
     return true;
   } catch (error) {
     console.error("Error sending email:", error);

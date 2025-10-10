@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export interface FundsPerformance {
+export interface FundsPerformanceDocument {
     _id: string | Types.ObjectId
     fundId: string | Types.ObjectId
     date: Date

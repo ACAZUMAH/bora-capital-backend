@@ -15,11 +15,15 @@ import {
   getSanitizeOffset,
   getSanitizePage,
 } from "src/common/helpers";
-import { UpdateTransactionInput } from "src/common/interfaces/graphql";
+import {
+  UpdateTransactionInput,
+} from "src/common/interfaces/graphql";
 import {
   validateCreateTransactionData,
   validateUpdateTransactionData,
 } from "./validate";
+import { startOfDay } from "date-fns";
+import { endOfDay } from "date-fns";
 
 /**
  * @description Create a new transaction
@@ -102,7 +106,6 @@ export const updateTransaction = async (data: UpdateTransactionInput) => {
     ...(data.bankAccountId && { bankAccountId: data.bankAccountId }),
     ...(data.reference && { reference: data.reference }),
     ...(data.description && { description: data.description }),
-    ...(data.paymentStatus && { paymentStatus: data.paymentStatus }),
     ...(data.paymentMethod && { paymentMethod: data.paymentMethod }),
     ...(data.transactionDate && { transactionDate: data.transactionDate }),
   };
@@ -146,6 +149,13 @@ export const getTransactions = async (filters: TransactionsFilters) => {
         { status: { $regex: filters.search, $options: "i" } },
       ],
     }),
+    ...(filters.startDate &&
+      filters.endDate && {
+        transactionDate: {
+          $gte: startOfDay(filters.startDate),
+          $lte: endOfDay(filters.endDate),
+        },
+      }),
   };
 
   const limit = getSanitizeLimit(filters.limit);

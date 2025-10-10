@@ -11,4 +11,7 @@ export enum Collections {
     Biometric = "biometrics",
     Goals = "goals",
     Funds = "funds",
+    FundsPerformance = "fundsPerformance",
+    Notifications = "notifications",
+    AuditLogs = "auditLogs",
 }

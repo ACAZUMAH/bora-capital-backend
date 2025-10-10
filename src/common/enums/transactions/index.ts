@@ -5,7 +5,7 @@ export enum TransactionType {
     TRANSFER = "TRANSFER",
     BUY = "BUY",
     SELL = "SELL",
-    FEE = "FEE"
+    //FEE = "FEE"
 }
 
 export enum TransactionStatus {

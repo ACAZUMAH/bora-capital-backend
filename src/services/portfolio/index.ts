@@ -3,7 +3,7 @@ import {
   UpdatePortfolioInput,
 } from "src/common/interfaces";
 import { validatePortfolio } from "./validate";
-import { PortfolioModel } from "src/models";
+import { portfolioModel } from "src/models";
 import { isValidObjectId, Types } from "mongoose";
 import createError from "http-errors";
 import { getHoldingsByPortfolioId } from "../holdings";
@@ -18,7 +18,7 @@ import { getHoldingsByPortfolioId } from "../holdings";
 export const createPortfolio = async (data: CreatePortfolioInput) => {
   validatePortfolio(data);
 
-  const portfolio = await PortfolioModel.create({
+  const portfolio = await portfolioModel.create({
     ...data,
   });
 
@@ -44,7 +44,7 @@ export const UpdatePortfolio = async (data: UpdatePortfolioInput) => {
   if (data.valuation) record.valuation = data.valuation;
   if (data.asOf) record.asOf = data.asOf;
 
-  const portfolio = await PortfolioModel.findByIdAndUpdate(
+  const portfolio = await portfolioModel.findByIdAndUpdate(
     port._id,
     { $set: record },
     { new: true }
@@ -64,7 +64,7 @@ export const UpdatePortfolio = async (data: UpdatePortfolioInput) => {
 export const getPortfolioById = async (id: string | Types.ObjectId) => {
   if (isValidObjectId(id)) throw createError.BadRequest("Invalid portfolio ID");
 
-  const portfolio = await PortfolioModel.findById(id);
+  const portfolio = await portfolioModel.findById(id);
 
   if (!portfolio) throw createError.NotFound("Portfolio not found");
 
@@ -81,11 +81,16 @@ export const getPortfoliosByUserId = async (
 ) => {
   if (isValidObjectId(userId)) throw createError.BadRequest("Invalid user ID");
 
-  const portfolios = await PortfolioModel.find({ userId });
+  const portfolios = await portfolioModel.find({ userId });
 
   return portfolios;
 };
 
+/**
+ * @description Calculate asset allocations for a given portfolio
+ * @param portfolioId - ID of the portfolio
+ * @returns Array of asset allocations with asset class, total value, and percentage
+ */
 export const calculateAssetAllocations = async (
   portfolioId: string | Types.ObjectId
 ) => {

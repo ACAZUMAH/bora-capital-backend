@@ -13,7 +13,7 @@ export const portfolioSchema = new Schema<PortfolioDocument>(
   { timestamps: true }
 );
 
-export const PortfolioModel = model<PortfolioDocument>(
+export const portfolioModel = model<PortfolioDocument>(
   Collections.Portfolios,
   portfolioSchema
 );

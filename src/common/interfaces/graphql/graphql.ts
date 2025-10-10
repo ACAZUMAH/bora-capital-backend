@@ -176,6 +176,7 @@ export type Mutation = {
   signin: AuthResponse;
   signup: AuthResponse;
   updateTransaction: Transaction;
+  updateTransactionStatus: Transaction;
   updateUser: User;
   verifyOtpAndCompleteAuth: Authenticated;
 };
@@ -208,6 +209,11 @@ export type MutationSignupArgs = {
 
 export type MutationUpdateTransactionArgs = {
   data: UpdateTransactionInput;
+};
+
+
+export type MutationUpdateTransactionStatusArgs = {
+  data: UpdateTransactionStatusInput;
 };
 
 
@@ -273,6 +279,7 @@ export type Query = {
   getPortfolioById: Portfolio;
   getPortfoliosByUserId: Array<Portfolio>;
   getTransactionById: Transaction;
+  getTransactions: TransactionConnection;
   getUserById: User;
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
@@ -307,6 +314,11 @@ export type QueryGetPortfoliosByUserIdArgs = {
 
 export type QueryGetTransactionByIdArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetTransactionsArgs = {
+  filters: TransactionFilters;
 };
 
 
@@ -350,6 +362,26 @@ export type Transaction = {
   userId: Scalars['ID']['output'];
 };
 
+export type TransactionConnection = {
+  __typename?: 'TransactionConnection';
+  edges: Array<Transaction>;
+  pageInfo: PageInfo;
+};
+
+export type TransactionFilters = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  fundId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  portfolioId?: InputMaybe<Scalars['ID']['input']>;
+  providerId?: InputMaybe<Scalars['String']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<TransactionStatus>;
+  type?: InputMaybe<TransactionType>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export enum TransactionStatus {
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
@@ -360,7 +392,6 @@ export enum TransactionStatus {
 export enum TransactionType {
   BUY = 'BUY',
   DEPOSIT = 'DEPOSIT',
-  FEE = 'FEE',
   SELL = 'SELL',
   TRANSFER = 'TRANSFER',
   WITHDRAWAL = 'WITHDRAWAL'
@@ -425,6 +456,11 @@ export type SignupInput = {
   fullName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phoneNumber: Scalars['String']['input'];
+};
+
+export type UpdateTransactionStatusInput = {
+  id: Scalars['ID']['input'];
+  status: TransactionStatus;
 };
 
 
@@ -587,6 +623,8 @@ export type ResolversTypes = {
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']['output']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   Transaction: ResolverTypeWrapper<Transaction>;
+  TransactionConnection: ResolverTypeWrapper<TransactionConnection>;
+  TransactionFilters: TransactionFilters;
   TransactionStatus: TransactionStatus;
   TransactionType: TransactionType;
   URL: ResolverTypeWrapper<Scalars['URL']['output']>;
@@ -603,6 +641,7 @@ export type ResolversTypes = {
   authenticated: ResolverTypeWrapper<Authenticated>;
   signinInput: SigninInput;
   signupInput: SignupInput;
+  updateTransactionStatusInput: UpdateTransactionStatusInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -691,6 +730,8 @@ export type ResolversParentTypes = {
   TimeZone: Scalars['TimeZone']['output'];
   Timestamp: Scalars['Timestamp']['output'];
   Transaction: Transaction;
+  TransactionConnection: TransactionConnection;
+  TransactionFilters: TransactionFilters;
   URL: Scalars['URL']['output'];
   USCurrency: Scalars['USCurrency']['output'];
   UUID: Scalars['UUID']['output'];
@@ -705,6 +746,7 @@ export type ResolversParentTypes = {
   authenticated: Authenticated;
   signinInput: SigninInput;
   signupInput: SignupInput;
+  updateTransactionStatusInput: UpdateTransactionStatusInput;
 };
 
 export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
@@ -916,6 +958,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
   updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
+  updateTransactionStatus?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionStatusArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
   verifyOtpAndCompleteAuth?: Resolver<ResolversTypes['authenticated'], ParentType, ContextType, RequireFields<MutationVerifyOtpAndCompleteAuthArgs, 'otp'>>;
 };
@@ -1006,6 +1049,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
   getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
   getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
+  getTransactions?: Resolver<ResolversTypes['TransactionConnection'], ParentType, ContextType, RequireFields<QueryGetTransactionsArgs, 'filters'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1069,6 +1113,11 @@ export type TransactionResolvers<ContextType = any, ParentType extends Resolvers
   type?: Resolver<ResolversTypes['TransactionType'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+};
+
+export type TransactionConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['TransactionConnection'] = ResolversParentTypes['TransactionConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
 export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
@@ -1196,6 +1245,7 @@ export type Resolvers<ContextType = any> = {
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
   Transaction?: TransactionResolvers<ContextType>;
+  TransactionConnection?: TransactionConnectionResolvers<ContextType>;
   URL?: GraphQLScalarType;
   USCurrency?: GraphQLScalarType;
   UUID?: GraphQLScalarType;

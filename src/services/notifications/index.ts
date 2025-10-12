@@ -1,4 +1,4 @@
-import { sendVerificationEmail } from "./nodeMailer";
+import { sendVerificationEmail } from './nodeMailer';
 
 interface emailContent {
   from: string;

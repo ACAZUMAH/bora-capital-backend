@@ -1,17 +1,18 @@
-import { makeExecutableSchema } from "@graphql-tools/schema";
-import { generalTypeDefs, generalResolvers } from "./general";
-import { applyMiddleware } from "graphql-middleware";
-import { permissions } from "./shield";
-import { authResolvers, authTypeDefs } from "./auth";
-import { UserResolvers, userTypeDefs } from "./user";
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { generalTypeDefs, generalResolvers } from './general';
+import { applyMiddleware } from 'graphql-middleware';
+import { permissions } from './shield';
+import { authResolvers, authTypeDefs } from './auth';
+import { UserResolvers, userTypeDefs } from './user';
 import {
   typeDefs as scalarTypeDefs,
   resolvers as scalarResolvers,
-} from "graphql-scalars";
-import { portfolioResolvers, portfolioTypeDefs } from "./portfolio";
-import { holdingsTypeDefs } from "./holdings/typeDefs";
-import { holdingsResolvers } from "./holdings/resolvers";
-import { transactionsResolvers, transactionsTypeDefs } from "./transactions";
+} from 'graphql-scalars';
+import { portfolioResolvers, portfolioTypeDefs } from './portfolio';
+import { holdingsTypeDefs } from './holdings/typeDefs';
+import { holdingsResolvers } from './holdings/resolvers';
+import { transactionsResolvers, transactionsTypeDefs } from './transactions';
+import { fundsResolvers, fundsTypeDefs } from './funds';
 //import { printSchema } from "graphql";
 
 const typeDefs = [
@@ -21,7 +22,8 @@ const typeDefs = [
   scalarTypeDefs,
   portfolioTypeDefs,
   holdingsTypeDefs,
-  transactionsTypeDefs
+  transactionsTypeDefs,
+  fundsTypeDefs,
 ];
 
 const resolvers = [
@@ -31,7 +33,8 @@ const resolvers = [
   scalarResolvers,
   portfolioResolvers,
   holdingsResolvers,
-  transactionsResolvers
+  transactionsResolvers,
+  fundsResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

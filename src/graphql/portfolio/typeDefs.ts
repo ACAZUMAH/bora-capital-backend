@@ -23,4 +23,4 @@ export const portfolioTypeDefs = `#graphql
         getPortfoliosByUserId(userId: ID!): [Portfolio!]!
         getAssetAllocations(portfolioId: ID!): [Allocation!]!
     }
-`
+`;

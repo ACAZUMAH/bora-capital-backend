@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
-import { Collections, OtpPurpose } from "src/common/enums";
-import { AuthDocument } from "src/common/interfaces";
+import { Schema, model } from 'mongoose';
+import { Collections, OtpPurpose } from 'src/common/enums';
+import { AuthDocument } from 'src/common/interfaces';
 
 const authSchema = new Schema<AuthDocument>({
   userId: {

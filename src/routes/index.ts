@@ -1,7 +1,7 @@
-import { Router, Express } from "express";
-import { authRouter } from "./auth.router";
-import { verifyToken } from "src/middlewares/verifyTokens";
-import { resetRouter } from "./reset.router";
+import { Router, Express } from 'express';
+import { authRouter } from './auth.router';
+import { verifyToken } from 'src/middlewares/verifyTokens';
+import { resetRouter } from './reset.router';
 
 interface Routes {
   path: string;
@@ -11,18 +11,18 @@ interface Routes {
 
 const routes: Routes[] = [
   {
-    path: "/auth",
+    path: '/auth',
     router: authRouter,
   },
   {
-    path: '/reset', 
+    path: '/reset',
     router: resetRouter,
-    verifyToken: true
-  }
+    verifyToken: true,
+  },
 ];
 
 export const applyRoutes = (app: Express) => {
-  routes.map((route) => {
+  routes.map(route => {
     if (route.verifyToken) {
       app.use(route.path, verifyToken, route.router);
     } else {
@@ -30,4 +30,3 @@ export const applyRoutes = (app: Express) => {
     }
   });
 };
-

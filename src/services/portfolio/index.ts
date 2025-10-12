@@ -1,12 +1,12 @@
 import {
   CreatePortfolioInput,
   UpdatePortfolioInput,
-} from "src/common/interfaces";
-import { validatePortfolio } from "./validate";
-import { portfolioModel } from "src/models";
-import { isValidObjectId, Types } from "mongoose";
-import createError from "http-errors";
-import { getHoldingsByPortfolioId } from "../holdings";
+} from 'src/common/interfaces';
+import { validatePortfolio } from './validate';
+import { portfolioModel } from 'src/models';
+import { isValidObjectId, Types } from 'mongoose';
+import createError from 'http-errors';
+import { getHoldingsByPortfolioId } from '../holdings';
 
 /**
  * @description Create a new portfolio for a user
@@ -51,7 +51,7 @@ export const UpdatePortfolio = async (data: UpdatePortfolioInput) => {
   );
 
   if (!portfolio)
-    throw createError.InternalServerError("Could not update portfolio");
+    throw createError.InternalServerError('Could not update portfolio');
 
   return portfolio;
 };
@@ -62,11 +62,11 @@ export const UpdatePortfolio = async (data: UpdatePortfolioInput) => {
  * @returns portfolio object
  */
 export const getPortfolioById = async (id: string | Types.ObjectId) => {
-  if (isValidObjectId(id)) throw createError.BadRequest("Invalid portfolio ID");
+  if (isValidObjectId(id)) throw createError.BadRequest('Invalid portfolio ID');
 
   const portfolio = await portfolioModel.findById(id);
 
-  if (!portfolio) throw createError.NotFound("Portfolio not found");
+  if (!portfolio) throw createError.NotFound('Portfolio not found');
 
   return portfolio;
 };
@@ -79,7 +79,7 @@ export const getPortfolioById = async (id: string | Types.ObjectId) => {
 export const getPortfoliosByUserId = async (
   userId: string | Types.ObjectId
 ) => {
-  if (isValidObjectId(userId)) throw createError.BadRequest("Invalid user ID");
+  if (isValidObjectId(userId)) throw createError.BadRequest('Invalid user ID');
 
   const portfolios = await portfolioModel.find({ userId });
 
@@ -95,7 +95,7 @@ export const calculateAssetAllocations = async (
   portfolioId: string | Types.ObjectId
 ) => {
   if (!isValidObjectId(portfolioId))
-    throw createError.BadRequest("Invalid portfolio ID");
+    throw createError.BadRequest('Invalid portfolio ID');
 
   const holdings = await getHoldingsByPortfolioId(portfolioId);
 
@@ -111,14 +111,14 @@ export const calculateAssetAllocations = async (
     // Narrow the union at runtime before accessing assetClass.
     const fund = holding.fundId as any;
     const assetClass =
-      fund && typeof fund === "object" && "assetClass" in fund
+      fund && typeof fund === 'object' && 'assetClass' in fund
         ? (fund.assetClass as string)
-        : "Unclassified";
+        : 'Unclassified';
 
     allocations[assetClass] = (allocations[assetClass] || 0) + value;
   }
 
-  return Object.keys(allocations).map((assetClass) => ({
+  return Object.keys(allocations).map(assetClass => ({
     assetClass: assetClass,
     totalValue: allocations[assetClass],
     percentage: totalValue ? (allocations[assetClass] / totalValue) * 100 : 0,

@@ -1,11 +1,11 @@
-import { model, Schema } from "mongoose";
+import { model, Schema } from 'mongoose';
 import {
   Collections,
   PaymentMethod,
   TransactionStatus,
   TransactionType,
-} from "src/common/enums";
-import { TransactionsDocument } from "src/common/interfaces";
+} from 'src/common/enums';
+import { TransactionsDocument } from 'src/common/interfaces';
 
 const transactionSchema = new Schema<TransactionsDocument>(
   {
@@ -30,10 +30,10 @@ const transactionSchema = new Schema<TransactionsDocument>(
       required: true,
     },
     amount: { type: Number, required: true },
-    currency: { type: String, default: "GHS" },
+    currency: { type: String, default: 'GHS' },
     quantity: { type: Number, required: true },
     providerId: { type: String },
-    bankAccountId: { type: Schema.Types.ObjectId, ref: "BankAccounts" },
+    bankAccountId: { type: Schema.Types.ObjectId, ref: 'BankAccounts' },
     reference: { type: String, required: true, unique: true },
     description: { type: String },
     paymentStatus: {

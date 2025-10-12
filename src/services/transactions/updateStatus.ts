@@ -1,16 +1,16 @@
-import { UpdateTransactionStatusInput } from "src/common/interfaces/graphql";
-import { getTransactionById } from ".";
-import { getHoldingsByFundAndPortfolioIds } from "../holdings";
-import { getFundById } from "../funds";
-import mongoose from "mongoose";
-import { TransactionStatus, TransactionType } from "src/common/enums";
+import { UpdateTransactionStatusInput } from 'src/common/interfaces/graphql';
+import { getTransactionById } from '.';
+import { getHoldingsByFundAndPortfolioIds } from '../holdings';
+import { getFundById } from '../funds';
+import mongoose from 'mongoose';
+import { TransactionStatus, TransactionType } from 'src/common/enums';
 import {
   FundsPerformanceModel,
   holdingsModel,
   portfolioModel,
   TransactionModel,
-} from "src/models";
-import createError from "http-errors";
+} from 'src/models';
+import createError from 'http-errors';
 
 /**
  * @description Update the status of a transaction and adjust holdings and portfolio valuation accordingly
@@ -115,7 +115,7 @@ export const updateTransactionStatus = async (
         }
         if (trx.type === TransactionType.SELL) {
           if (!holding || holding.quantity < trx.quantity)
-            throw createError.BadRequest("Insufficient holdings to sell");
+            throw createError.BadRequest('Insufficient holdings to sell');
 
           const newQuantity = holding.quantity - trx.quantity;
           const costBasis = trx.quantity * holding.avgPurchasePrice;
@@ -205,10 +205,9 @@ export const updateTransactionStatus = async (
     return result;
   } catch (error) {
     throw createError.InternalServerError(
-      "Transaction failed, please try again"
+      'Transaction failed, please try again'
     );
   } finally {
     await sessions.endSession();
   }
 };
- 

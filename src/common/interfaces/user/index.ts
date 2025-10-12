@@ -1,8 +1,8 @@
-import { Types } from "mongoose";
-import { role } from "src/common/enums";
-import { BiometricDocument } from "./biometric";
-import { DeviceDocument, DeviceInput } from "./devices";
-import { PreferencesDocument, PreferencesInput } from "./preferences";
+import { Types } from 'mongoose';
+import { role } from 'src/common/enums';
+import { BiometricDocument } from './biometric';
+import { DeviceDocument, DeviceInput } from './devices';
+import { PreferencesDocument, PreferencesInput } from './preferences';
 //import { KycRecordsDocument } from "../kycRecords";
 
 export interface UserDocument {
@@ -11,9 +11,9 @@ export interface UserDocument {
   email: string;
   phoneNumber?: string;
   role: role;
-  biometric?: BiometricDocument
-  devices?: Array<DeviceDocument>
-  preferences?: PreferencesDocument
+  biometric?: BiometricDocument;
+  devices?: Array<DeviceDocument>;
+  preferences?: PreferencesDocument;
   //kycRecords?: Array<KycRecordsDocument>
   password: string;
   createdAt: Date;

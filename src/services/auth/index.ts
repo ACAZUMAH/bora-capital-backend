@@ -1,13 +1,13 @@
-import { ClientApp, CreateUserInput, SigninInput } from "src/common/interfaces";
-import { checkUserExist, createUser, getUserByEmail } from "../users";
-import { comparePassword, hashPassword } from "src/common/helpers";
-import { createAuth } from "./auth";
-import { sendEmail } from "../notifications";
-import { getSendOtpEmailTemplate } from "../notifications/template";
-import createError from "http-errors";
-import { OtpPurpose } from "src/common/enums";
-import { validateSigninAccess } from "./validateAuthAccess";
-import { rollbar } from "src/loggers/rollbar";
+import { ClientApp, CreateUserInput, SigninInput } from 'src/common/interfaces';
+import { checkUserExist, createUser, getUserByEmail } from '../users';
+import { comparePassword, hashPassword } from 'src/common/helpers';
+import { createAuth } from './auth';
+import { sendEmail } from '../notifications';
+import { getSendOtpEmailTemplate } from '../notifications/template';
+import createError from 'http-errors';
+import { OtpPurpose } from 'src/common/enums';
+import { validateSigninAccess } from './validateAuthAccess';
+import { rollbar } from 'src/loggers/rollbar';
 
 /**
  * @description Signup a new user by creating their account.
@@ -31,20 +31,20 @@ export const register = async (data: CreateUserInput) => {
 
   if (user.email) {
     await sendEmail({
-      from: "calebazumah9@gmail.com",
+      from: 'calebazumah9@gmail.com',
       to: user.email,
-      subject: "Your Bora Capitals Advisors otp code",
+      subject: 'Your Bora Capitals Advisors otp code',
       htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
-    }).catch((error) => {
-      rollbar.error("Error sending signup otp email", { error, user });
+    }).catch(error => {
+      rollbar.error('Error sending signup otp email', { error, user });
       throw createError.InternalServerError(
-        "Failed to send OTP code at the moment, please try again later."
+        'Failed to send OTP code at the moment, please try again later.'
       );
     });
   }
 
   return {
-    message: "User created successfully, please check your phone for the OTP.",
+    message: 'User created successfully, please check your phone for the OTP.',
   };
 };
 
@@ -65,11 +65,11 @@ export const signin = async (data: SigninInput, app: ClientApp) => {
     throw createError.Forbidden(`You do not have access to ${app.name}.`);
   }
 
-  if (!user) throw createError.BadRequest("Invalid credentials");
+  if (!user) throw createError.BadRequest('Invalid credentials');
 
   const isMatch = await comparePassword(password, user?.password);
 
-  if (!isMatch) throw createError.BadRequest("Invalid credentials");
+  if (!isMatch) throw createError.BadRequest('Invalid credentials');
 
   const otp = await createAuth({
     userId: user._id!,
@@ -79,20 +79,20 @@ export const signin = async (data: SigninInput, app: ClientApp) => {
 
   if (user.email) {
     await sendEmail({
-      from: "calebazumah9@gmail.com",
+      from: 'calebazumah9@gmail.com',
       to: user.email,
-      subject: "Your Bora Capitals Advisors otp code",
+      subject: 'Your Bora Capitals Advisors otp code',
       htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
-    }).catch((error) => {
-      rollbar.error("Error sending signin otp email", { error, user });
+    }).catch(error => {
+      rollbar.error('Error sending signin otp email', { error, user });
       throw createError.InternalServerError(
-        "Failed to send OTP code at the moment, please try again later."
+        'Failed to send OTP code at the moment, please try again later.'
       );
     });
   }
 
   return {
-    message: "Please check your mail for verification code",
+    message: 'Please check your mail for verification code',
   };
 };
 
@@ -113,19 +113,19 @@ export const sendForgetPasswordOtp = async (email: string) => {
 
   if (user.email) {
     await sendEmail({
-      from: "calebazumah9@gmail.com",
+      from: 'calebazumah9@gmail.com',
       to: user.email,
-      subject: "Bora Capitals Advisors otp code",
+      subject: 'Bora Capitals Advisors otp code',
       htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
-    }).catch((error) => {
-      rollbar.error("Error sending forgot password otp email", { error, user });
+    }).catch(error => {
+      rollbar.error('Error sending forgot password otp email', { error, user });
       throw createError.InternalServerError(
-        "Failed to send OTP code at the moment, please try again later."
+        'Failed to send OTP code at the moment, please try again later.'
       );
     });
   }
 
   return {
-    message: "Please check your phone for the OTP to change your password.",
+    message: 'Please check your phone for the OTP to change your password.',
   };
 };

@@ -1,9 +1,9 @@
-import { Types } from "mongoose";
-import { generateOtp, jwtSign } from "src/common/helpers";
-import { authModel } from "src/models";
-import createError from "http-errors";
-import { getUserById } from "../users";
-import { AuthInput } from "src/common/interfaces";
+import { Types } from 'mongoose';
+import { generateOtp, jwtSign } from 'src/common/helpers';
+import { authModel } from 'src/models';
+import createError from 'http-errors';
+import { getUserById } from '../users';
+import { AuthInput } from 'src/common/interfaces';
 /**
  * Creates or updates an authentication record for a user with a unique OTP.
  * @param userId - The ID of the user for whom the OTP is being generated.
@@ -36,10 +36,10 @@ export const createAuth = async (data: AuthInput) => {
 export const verifyOtpAndSignJwt = async (otp: string) => {
   const auth = await authModel.findOneAndDelete({ otp });
 
-  if (!auth) throw createError.BadRequest("Invalid otp");
+  if (!auth) throw createError.BadRequest('Invalid otp');
 
   if (new Date(auth.expiresIn) < new Date())
-    throw createError.BadRequest("Otp expired");
+    throw createError.BadRequest('Otp expired');
 
   const user = await getUserById(auth.userId);
 

@@ -1,5 +1,5 @@
-import * as GraphqlTypes from "src/common/interfaces/graphql";
-import * as services from "src/services/transactions";
+import * as GraphqlTypes from 'src/common/interfaces/graphql';
+import * as services from 'src/services/transactions';
 
 const getTransactions = () => {};
 

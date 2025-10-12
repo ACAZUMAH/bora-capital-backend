@@ -1,12 +1,12 @@
-import express from "express";
-import helmet, { HelmetOptions } from "helmet";
-import cors from "cors";
+import express from 'express';
+import helmet, { HelmetOptions } from 'helmet';
+import cors from 'cors';
 import {
   isDevelopment,
   isProduction,
   isStaging,
   productionWhitelist,
-} from "src/common/constants";
+} from 'src/common/constants';
 
 const helmetOptions: HelmetOptions = {
   contentSecurityPolicy: false,
@@ -37,24 +37,24 @@ const corsOptions = {
 export const createExpressApp = () => {
   const app = express();
 
-  app.use(express.json({ limit: "50mb" }));
+  app.use(express.json({ limit: '50mb' }));
 
   app.use(express.urlencoded({ extended: true }));
 
   app.use(helmet(helmetOptions));
 
   app.use(helmet.hidePoweredBy());
-  app.disable("x-powered-by");
+  app.disable('x-powered-by');
 
-  app.use("/*splat", cors());
+  app.use('/*splat', cors());
   app.use(cors(corsOptions));
 
-  app.get("/", (_req, res) => {
-    return res.status(200).json({ message: "Hello World!" });
+  app.get('/', (_req, res) => {
+    return res.status(200).json({ message: 'Hello World!' });
   });
 
-  app.get("/health", (_req, res) => {
-    return res.status(200).json({ status: "ok" });
+  app.get('/health', (_req, res) => {
+    return res.status(200).json({ status: 'ok' });
   });
 
   return app;

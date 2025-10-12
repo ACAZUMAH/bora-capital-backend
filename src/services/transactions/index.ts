@@ -2,28 +2,26 @@ import {
   CreateTransactionInput,
   TransactionsDocument,
   TransactionsFilters,
-} from "src/common/interfaces";
-import { TransactionModel } from "src/models";
-import { getUserById } from "../users";
-import { getFundById } from "../funds";
-import { getPortfolioById } from "../portfolio";
-import { FilterQuery, isValidObjectId, Types } from "mongoose";
-import createError from "http-errors";
+} from 'src/common/interfaces';
+import { TransactionModel } from 'src/models';
+import { getUserById } from '../users';
+import { getFundById } from '../funds';
+import { getPortfolioById } from '../portfolio';
+import { FilterQuery, isValidObjectId, Types } from 'mongoose';
+import createError from 'http-errors';
 import {
   getPageConnection,
   getSanitizeLimit,
   getSanitizeOffset,
   getSanitizePage,
-} from "src/common/helpers";
-import {
-  UpdateTransactionInput,
-} from "src/common/interfaces/graphql";
+} from 'src/common/helpers';
+import { UpdateTransactionInput } from 'src/common/interfaces/graphql';
 import {
   validateCreateTransactionData,
   validateUpdateTransactionData,
-} from "./validate";
-import { startOfDay } from "date-fns";
-import { endOfDay } from "date-fns";
+} from './validate';
+import { startOfDay } from 'date-fns';
+import { endOfDay } from 'date-fns';
 
 /**
  * @description Create a new transaction
@@ -69,11 +67,11 @@ export const createTransaction = async (data: CreateTransactionInput) => {
  */
 export const getTransactionById = async (id: string | Types.ObjectId) => {
   if (isValidObjectId(id))
-    throw createError.BadRequest("Invalid transaction ID");
+    throw createError.BadRequest('Invalid transaction ID');
 
   const transaction = await TransactionModel.findById(id, null, { lean: true });
 
-  if (!transaction) throw createError.NotFound("Transaction not found");
+  if (!transaction) throw createError.NotFound('Transaction not found');
 
   return transaction;
 };
@@ -143,10 +141,10 @@ export const getTransactions = async (filters: TransactionsFilters) => {
     ...(filters.status && { status: filters.status }),
     ...(filters.search && {
       $or: [
-        { type: { $regex: filters.search, $options: "i" } },
-        { reference: { $regex: filters.search, $options: "i" } },
-        { description: { $regex: filters.search, $options: "i" } },
-        { status: { $regex: filters.search, $options: "i" } },
+        { type: { $regex: filters.search, $options: 'i' } },
+        { reference: { $regex: filters.search, $options: 'i' } },
+        { description: { $regex: filters.search, $options: 'i' } },
+        { status: { $regex: filters.search, $options: 'i' } },
       ],
     }),
     ...(filters.startDate &&

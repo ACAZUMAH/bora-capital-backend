@@ -16,6 +16,8 @@ export const portfolioTypeDefs = `#graphql
         createdAt: DateTime
         updatedAt: DateTime
 
+        # user relation
+        user: User
     }
 
     extend type Query {

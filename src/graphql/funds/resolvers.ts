@@ -1,5 +1,6 @@
 import * as GraphqlTypes from 'src/common/interfaces/graphql';
 import * as Services from 'src/services/funds';
+import { idResolver } from '../general';
 
 const createFund = (_: any, args: GraphqlTypes.MutationCreateFundArgs) => {
   return Services.createFund(args.data);
@@ -22,7 +23,9 @@ export const fundsResolvers = {
     getFundById,
     getFunds,
   },
-
+  Funds: {
+    id: idResolver,
+  },
   Mutation: {
     createFund,
     updateFund,

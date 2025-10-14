@@ -17,6 +17,8 @@ export const holdingsTypeDefs = `#graphql
         createdAt: DateTime
         updatedAt: DateTime
 
+        # fund relation
+        funds: Funds
     }
 
     type HoldingsConnection {

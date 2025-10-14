@@ -92,12 +92,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
   "repository": "https://github.com/ACAZUMAH/POC-Backend.git",
   "author": "ACAZUMAH <calebazumah9@gmail.com>"
 }

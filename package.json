@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "start": "node dist/main.js",
+    "start": "node dist/src/main.js",
     "build": "tsc && tsc-alias",
     "format:fix": "prettier . --write",
     "format:check": "prettier . --check",

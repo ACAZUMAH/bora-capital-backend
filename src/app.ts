@@ -4,7 +4,7 @@ import logger from './loggers/logger';
 import connectDB from './common/db';
 import createError from 'http-errors';
 import { Response, Request, NextFunction } from 'express';
-import { applyRoutes } from './routes';
+//import { applyRoutes } from './routes';
 import { applyMiddlewares } from './middlewares';
 import { createGraphqlServer } from './servers/createGraphqlServer';
 import { schema } from './graphql';

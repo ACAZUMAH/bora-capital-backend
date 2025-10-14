@@ -1,88 +1,107 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  AccountNumber: { input: any; output: any; }
-  BigInt: { input: any; output: any; }
-  Byte: { input: any; output: any; }
-  CountryCode: { input: any; output: any; }
-  CountryName: { input: any; output: any; }
-  Cuid: { input: any; output: any; }
-  Currency: { input: any; output: any; }
-  DID: { input: any; output: any; }
-  Date: { input: any; output: any; }
-  DateTime: { input: any; output: any; }
-  DateTimeISO: { input: any; output: any; }
-  DeweyDecimal: { input: any; output: any; }
-  Duration: { input: any; output: any; }
-  EmailAddress: { input: any; output: any; }
-  GUID: { input: any; output: any; }
-  GeoJSON: { input: any; output: any; }
-  HSL: { input: any; output: any; }
-  HSLA: { input: any; output: any; }
-  HexColorCode: { input: any; output: any; }
-  Hexadecimal: { input: any; output: any; }
-  IBAN: { input: any; output: any; }
-  IP: { input: any; output: any; }
-  IPCPatent: { input: any; output: any; }
-  IPv4: { input: any; output: any; }
-  IPv6: { input: any; output: any; }
-  ISBN: { input: any; output: any; }
-  ISO8601Duration: { input: any; output: any; }
-  JSON: { input: any; output: any; }
-  JSONObject: { input: any; output: any; }
-  JWT: { input: any; output: any; }
-  LCCSubclass: { input: any; output: any; }
-  Latitude: { input: any; output: any; }
-  LocalDate: { input: any; output: any; }
-  LocalDateTime: { input: any; output: any; }
-  LocalEndTime: { input: any; output: any; }
-  LocalTime: { input: any; output: any; }
-  Locale: { input: any; output: any; }
-  Long: { input: any; output: any; }
-  Longitude: { input: any; output: any; }
-  MAC: { input: any; output: any; }
-  NegativeFloat: { input: any; output: any; }
-  NegativeInt: { input: any; output: any; }
-  NonEmptyString: { input: any; output: any; }
-  NonNegativeFloat: { input: any; output: any; }
-  NonNegativeInt: { input: any; output: any; }
-  NonPositiveFloat: { input: any; output: any; }
-  NonPositiveInt: { input: any; output: any; }
-  ObjectID: { input: any; output: any; }
-  PhoneNumber: { input: any; output: any; }
-  Port: { input: any; output: any; }
-  PositiveFloat: { input: any; output: any; }
-  PositiveInt: { input: any; output: any; }
-  PostalCode: { input: any; output: any; }
-  RGB: { input: any; output: any; }
-  RGBA: { input: any; output: any; }
-  RoutingNumber: { input: any; output: any; }
-  SESSN: { input: any; output: any; }
-  SafeInt: { input: any; output: any; }
-  SemVer: { input: any; output: any; }
-  Time: { input: any; output: any; }
-  TimeZone: { input: any; output: any; }
-  Timestamp: { input: any; output: any; }
-  URL: { input: any; output: any; }
-  USCurrency: { input: any; output: any; }
-  UUID: { input: any; output: any; }
-  UnsignedFloat: { input: any; output: any; }
-  UnsignedInt: { input: any; output: any; }
-  UtcOffset: { input: any; output: any; }
-  Void: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  AccountNumber: { input: any; output: any };
+  BigInt: { input: any; output: any };
+  Byte: { input: any; output: any };
+  CountryCode: { input: any; output: any };
+  CountryName: { input: any; output: any };
+  Cuid: { input: any; output: any };
+  Currency: { input: any; output: any };
+  DID: { input: any; output: any };
+  Date: { input: any; output: any };
+  DateTime: { input: any; output: any };
+  DateTimeISO: { input: any; output: any };
+  DeweyDecimal: { input: any; output: any };
+  Duration: { input: any; output: any };
+  EmailAddress: { input: any; output: any };
+  GUID: { input: any; output: any };
+  GeoJSON: { input: any; output: any };
+  HSL: { input: any; output: any };
+  HSLA: { input: any; output: any };
+  HexColorCode: { input: any; output: any };
+  Hexadecimal: { input: any; output: any };
+  IBAN: { input: any; output: any };
+  IP: { input: any; output: any };
+  IPCPatent: { input: any; output: any };
+  IPv4: { input: any; output: any };
+  IPv6: { input: any; output: any };
+  ISBN: { input: any; output: any };
+  ISO8601Duration: { input: any; output: any };
+  JSON: { input: any; output: any };
+  JSONObject: { input: any; output: any };
+  JWT: { input: any; output: any };
+  LCCSubclass: { input: any; output: any };
+  Latitude: { input: any; output: any };
+  LocalDate: { input: any; output: any };
+  LocalDateTime: { input: any; output: any };
+  LocalEndTime: { input: any; output: any };
+  LocalTime: { input: any; output: any };
+  Locale: { input: any; output: any };
+  Long: { input: any; output: any };
+  Longitude: { input: any; output: any };
+  MAC: { input: any; output: any };
+  NegativeFloat: { input: any; output: any };
+  NegativeInt: { input: any; output: any };
+  NonEmptyString: { input: any; output: any };
+  NonNegativeFloat: { input: any; output: any };
+  NonNegativeInt: { input: any; output: any };
+  NonPositiveFloat: { input: any; output: any };
+  NonPositiveInt: { input: any; output: any };
+  ObjectID: { input: any; output: any };
+  PhoneNumber: { input: any; output: any };
+  Port: { input: any; output: any };
+  PositiveFloat: { input: any; output: any };
+  PositiveInt: { input: any; output: any };
+  PostalCode: { input: any; output: any };
+  RGB: { input: any; output: any };
+  RGBA: { input: any; output: any };
+  RoutingNumber: { input: any; output: any };
+  SESSN: { input: any; output: any };
+  SafeInt: { input: any; output: any };
+  SemVer: { input: any; output: any };
+  Time: { input: any; output: any };
+  TimeZone: { input: any; output: any };
+  Timestamp: { input: any; output: any };
+  URL: { input: any; output: any };
+  USCurrency: { input: any; output: any };
+  UUID: { input: any; output: any };
+  UnsignedFloat: { input: any; output: any };
+  UnsignedInt: { input: any; output: any };
+  UtcOffset: { input: any; output: any };
+  Void: { input: any; output: any };
 };
 
 export type Allocation = {
@@ -102,6 +121,16 @@ export type Biometrics = {
   deviceId?: Maybe<Scalars['String']['output']>;
   enabled?: Maybe<Scalars['Boolean']['output']>;
   expiresAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type CreateFundInput = {
+  assetClass: Scalars['String']['input'];
+  baseCurrency: Scalars['String']['input'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  inceptionDate?: InputMaybe<Scalars['DateTime']['input']>;
+  name: Scalars['String']['input'];
+  objective: Scalars['String']['input'];
+  symbol: Scalars['String']['input'];
 };
 
 export type CreateTransactionInput = {
@@ -132,6 +161,26 @@ export type Devices = {
   deviceId?: Maybe<Scalars['String']['output']>;
   lastUsed?: Maybe<Scalars['DateTime']['output']>;
   refreshToken?: Maybe<Scalars['String']['output']>;
+};
+
+export type Funds = {
+  __typename?: 'Funds';
+  assetClass: Scalars['String']['output'];
+  baseCurrency: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  inceptionDate?: Maybe<Scalars['DateTime']['output']>;
+  name: Scalars['String']['output'];
+  objective?: Maybe<Scalars['String']['output']>;
+  symbol: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+export type GetFundsFilters = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Holdings = {
@@ -170,51 +219,58 @@ export type HoldingsFilters = {
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
+  createFund: Funds;
   createTransaction: Transaction;
   forgetPassword: AuthResponse;
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
   signup: AuthResponse;
+  updateFund: Funds;
   updateTransaction: Transaction;
+  updateTransactionStatus: Transaction;
   updateUser: User;
   verifyOtpAndCompleteAuth: Authenticated;
 };
 
+export type MutationCreateFundArgs = {
+  data: CreateFundInput;
+};
 
 export type MutationCreateTransactionArgs = {
   data: CreateTransactionInput;
 };
 
-
 export type MutationForgetPasswordArgs = {
   email: Scalars['String']['input'];
 };
-
 
 export type MutationResetUserPasswordArgs = {
   newPassword: Scalars['String']['input'];
 };
 
-
 export type MutationSigninArgs = {
   data: SigninInput;
 };
-
 
 export type MutationSignupArgs = {
   data: SignupInput;
 };
 
+export type MutationUpdateFundArgs = {
+  data: UpdateFundInput;
+};
 
 export type MutationUpdateTransactionArgs = {
   data: UpdateTransactionInput;
 };
 
+export type MutationUpdateTransactionStatusArgs = {
+  data: UpdateTransactionStatusInput;
+};
 
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
 };
-
 
 export type MutationVerifyOtpAndCompleteAuthArgs = {
   otp: Scalars['String']['input'];
@@ -232,7 +288,7 @@ export enum PaymentMethod {
   BANK_TRANSFER = 'BANK_TRANSFER',
   CARD = 'CARD',
   CASH = 'CASH',
-  MOBILE_MONEY = 'MOBILE_MONEY'
+  MOBILE_MONEY = 'MOBILE_MONEY',
 }
 
 export type Portfolio = {
@@ -268,47 +324,55 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
   getAssetAllocations: Array<Allocation>;
+  getFundById: Funds;
+  getFunds: Array<Funds>;
   getHoldings: HoldingsConnection;
   getHoldingsById: Holdings;
   getPortfolioById: Portfolio;
   getPortfoliosByUserId: Array<Portfolio>;
   getTransactionById: Transaction;
+  getTransactions: TransactionConnection;
   getUserById: User;
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
   me: User;
 };
 
-
 export type QueryGetAssetAllocationsArgs = {
   portfolioId: Scalars['ID']['input'];
 };
 
+export type QueryGetFundByIdArgs = {
+  fundId: Scalars['ID']['input'];
+};
+
+export type QueryGetFundsArgs = {
+  filters: GetFundsFilters;
+};
 
 export type QueryGetHoldingsArgs = {
   filters: HoldingsFilters;
 };
 
-
 export type QueryGetHoldingsByIdArgs = {
   holdingsId: Scalars['ID']['input'];
 };
-
 
 export type QueryGetPortfolioByIdArgs = {
   portfolioId: Scalars['ID']['input'];
 };
 
-
 export type QueryGetPortfoliosByUserIdArgs = {
   userId: Scalars['ID']['input'];
 };
-
 
 export type QueryGetTransactionByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
+export type QueryGetTransactionsArgs = {
+  filters: TransactionFilters;
+};
 
 export type QueryGetUserByIdArgs = {
   userId: Scalars['ID']['input'];
@@ -317,7 +381,7 @@ export type QueryGetUserByIdArgs = {
 export enum Role {
   ADMIN = 'ADMIN',
   ADVISORS = 'Advisors',
-  CLIENT = 'CLIENT'
+  CLIENT = 'CLIENT',
 }
 
 export type Subscription = {
@@ -327,7 +391,7 @@ export type Subscription = {
 
 export enum Theme {
   DARK = 'DARK',
-  LIGHT = 'LIGHT'
+  LIGHT = 'LIGHT',
 }
 
 export type Transaction = {
@@ -350,21 +414,48 @@ export type Transaction = {
   userId: Scalars['ID']['output'];
 };
 
+export type TransactionConnection = {
+  __typename?: 'TransactionConnection';
+  edges: Array<Transaction>;
+  pageInfo: PageInfo;
+};
+
+export type TransactionFilters = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  fundId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  portfolioId?: InputMaybe<Scalars['ID']['input']>;
+  providerId?: InputMaybe<Scalars['String']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+  status?: InputMaybe<TransactionStatus>;
+  type?: InputMaybe<TransactionType>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export enum TransactionStatus {
   CANCELLED = 'CANCELLED',
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
-  PENDING = 'PENDING'
+  PENDING = 'PENDING',
 }
 
 export enum TransactionType {
   BUY = 'BUY',
   DEPOSIT = 'DEPOSIT',
-  FEE = 'FEE',
   SELL = 'SELL',
   TRANSFER = 'TRANSFER',
-  WITHDRAWAL = 'WITHDRAWAL'
+  WITHDRAWAL = 'WITHDRAWAL',
 }
+
+export type UpdateFundInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  fundId: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  objective?: InputMaybe<Scalars['String']['input']>;
+  symbol?: InputMaybe<Scalars['String']['input']>;
+};
 
 export type UpdateTransactionInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
@@ -427,15 +518,24 @@ export type SignupInput = {
   phoneNumber: Scalars['String']['input'];
 };
 
-
+export type UpdateTransactionStatusInput = {
+  id: Scalars['ID']['input'];
+  status: TransactionStatus;
+};
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
-
 
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+export type Resolver<
+  TResult,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
+> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -458,9 +558,25 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> {
+  subscribe: SubscriptionSubscribeFn<
+    { [key in TKey]: TResult },
+    TParent,
+    TContext,
+    TArgs
+  >;
+  resolve?: SubscriptionResolveFn<
+    TResult,
+    { [key in TKey]: TResult },
+    TContext,
+    TArgs
+  >;
 }
 
 export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
@@ -468,35 +584,61 @@ export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
   resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
 }
 
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+export type SubscriptionObject<
+  TResult,
+  TKey extends string,
+  TParent,
+  TContext,
+  TArgs,
+> =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
 
-export type SubscriptionResolver<TResult, TKey extends string, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+export type SubscriptionResolver<
+  TResult,
+  TKey extends string,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
+> =
+  | ((
+      ...args: any[]
+    ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
-export type TypeResolveFn<TTypes, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (
+export type TypeResolveFn<
+  TTypes,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+export type IsTypeOfResolverFn<
+  T = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
-export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = Record<PropertyKey, never>, TContext = Record<PropertyKey, never>, TArgs = Record<PropertyKey, never>> = (
+export type DirectiveResolverFn<
+  TResult = Record<PropertyKey, never>,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
+> = (
   next: NextResolverFn<TResult>,
   parent: TParent,
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
-
-
-
-
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
@@ -509,6 +651,7 @@ export type ResolversTypes = {
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
+  CreateFundInput: CreateFundInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']['output']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>;
@@ -522,8 +665,10 @@ export type ResolversTypes = {
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  Funds: ResolverTypeWrapper<Funds>;
   GUID: ResolverTypeWrapper<Scalars['GUID']['output']>;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
+  GetFundsFilters: GetFundsFilters;
   HSL: ResolverTypeWrapper<Scalars['HSL']['output']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']['output']>;
   HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']['output']>;
@@ -587,6 +732,8 @@ export type ResolversTypes = {
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']['output']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   Transaction: ResolverTypeWrapper<Transaction>;
+  TransactionConnection: ResolverTypeWrapper<TransactionConnection>;
+  TransactionFilters: TransactionFilters;
   TransactionStatus: TransactionStatus;
   TransactionType: TransactionType;
   URL: ResolverTypeWrapper<Scalars['URL']['output']>;
@@ -594,6 +741,7 @@ export type ResolversTypes = {
   UUID: ResolverTypeWrapper<Scalars['UUID']['output']>;
   UnsignedFloat: ResolverTypeWrapper<Scalars['UnsignedFloat']['output']>;
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']['output']>;
+  UpdateFundInput: UpdateFundInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
@@ -603,6 +751,7 @@ export type ResolversTypes = {
   authenticated: ResolverTypeWrapper<Authenticated>;
   signinInput: SigninInput;
   signupInput: SignupInput;
+  updateTransactionStatusInput: UpdateTransactionStatusInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -616,6 +765,7 @@ export type ResolversParentTypes = {
   Byte: Scalars['Byte']['output'];
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
+  CreateFundInput: CreateFundInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: Scalars['Cuid']['output'];
   Currency: Scalars['Currency']['output'];
@@ -629,8 +779,10 @@ export type ResolversParentTypes = {
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
   Float: Scalars['Float']['output'];
+  Funds: Funds;
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
+  GetFundsFilters: GetFundsFilters;
   HSL: Scalars['HSL']['output'];
   HSLA: Scalars['HSLA']['output'];
   HexColorCode: Scalars['HexColorCode']['output'];
@@ -691,11 +843,14 @@ export type ResolversParentTypes = {
   TimeZone: Scalars['TimeZone']['output'];
   Timestamp: Scalars['Timestamp']['output'];
   Transaction: Transaction;
+  TransactionConnection: TransactionConnection;
+  TransactionFilters: TransactionFilters;
   URL: Scalars['URL']['output'];
   USCurrency: Scalars['USCurrency']['output'];
   UUID: Scalars['UUID']['output'];
   UnsignedFloat: Scalars['UnsignedFloat']['output'];
   UnsignedInt: Scalars['UnsignedInt']['output'];
+  UpdateFundInput: UpdateFundInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   User: User;
@@ -705,114 +860,208 @@ export type ResolversParentTypes = {
   authenticated: Authenticated;
   signinInput: SigninInput;
   signupInput: SignupInput;
+  updateTransactionStatusInput: UpdateTransactionStatusInput;
 };
 
-export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
+export interface AccountNumberScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
   name: 'AccountNumber';
 }
 
-export type AllocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Allocation'] = ResolversParentTypes['Allocation']> = {
+export type AllocationResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Allocation'] = ResolversParentTypes['Allocation'],
+> = {
   assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   percentage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   totalValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
-export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
+export interface BigIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
 
-export type BiometricsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Biometrics'] = ResolversParentTypes['Biometrics']> = {
+export type BiometricsResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Biometrics'] = ResolversParentTypes['Biometrics'],
+> = {
   deviceId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   enabled?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  expiresAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  expiresAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
 };
 
-export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
+export interface ByteScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
 }
 
-export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
+export interface CountryCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
   name: 'CountryCode';
 }
 
-export interface CountryNameScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryName'], any> {
+export interface CountryNameScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['CountryName'], any> {
   name: 'CountryName';
 }
 
-export interface CuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Cuid'], any> {
+export interface CuidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Cuid'], any> {
   name: 'Cuid';
 }
 
-export interface CurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Currency'], any> {
+export interface CurrencyScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Currency'], any> {
   name: 'Currency';
 }
 
-export interface DidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DID'], any> {
+export interface DidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DID'], any> {
   name: 'DID';
 }
 
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+export interface DateScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
 
-export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+export interface DateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
   name: 'DateTime';
 }
 
-export interface DateTimeIsoScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTimeISO'], any> {
+export interface DateTimeIsoScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DateTimeISO'], any> {
   name: 'DateTimeISO';
 }
 
-export type DevicesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Devices'] = ResolversParentTypes['Devices']> = {
+export type DevicesResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Devices'] = ResolversParentTypes['Devices'],
+> = {
   deviceId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastUsed?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  lastUsed?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  refreshToken?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
 };
 
-export interface DeweyDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DeweyDecimal'], any> {
+export interface DeweyDecimalScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['DeweyDecimal'], any> {
   name: 'DeweyDecimal';
 }
 
-export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
+export interface DurationScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
   name: 'Duration';
 }
 
-export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
+export interface EmailAddressScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
 
-export interface GuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['GUID'], any> {
+export type FundsResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Funds'] = ResolversParentTypes['Funds'],
+> = {
+  assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  baseCurrency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  inceptionDate?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  objective?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+};
+
+export interface GuidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['GUID'], any> {
   name: 'GUID';
 }
 
-export interface GeoJsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['GeoJSON'], any> {
+export interface GeoJsonScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['GeoJSON'], any> {
   name: 'GeoJSON';
 }
 
-export interface HslScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSL'], any> {
+export interface HslScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['HSL'], any> {
   name: 'HSL';
 }
 
-export interface HslaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSLA'], any> {
+export interface HslaScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['HSLA'], any> {
   name: 'HSLA';
 }
 
-export interface HexColorCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HexColorCode'], any> {
+export interface HexColorCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['HexColorCode'], any> {
   name: 'HexColorCode';
 }
 
-export interface HexadecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
+export interface HexadecimalScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
   name: 'Hexadecimal';
 }
 
-export type HoldingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Holdings'] = ResolversParentTypes['Holdings']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+export type HoldingsResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Holdings'] = ResolversParentTypes['Holdings'],
+> = {
+  createdAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   currentPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   currentValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastPricedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  lastPricedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   purchasePrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -820,303 +1069,593 @@ export type HoldingsResolvers<ContextType = any, ParentType extends ResolversPar
   realizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   unrealizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
 };
 
-export type HoldingsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['HoldingsConnection'] = ResolversParentTypes['HoldingsConnection']> = {
+export type HoldingsConnectionResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['HoldingsConnection'] = ResolversParentTypes['HoldingsConnection'],
+> = {
   edges?: Resolver<Array<ResolversTypes['Holdings']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
-export interface IbanScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IBAN'], any> {
+export interface IbanScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['IBAN'], any> {
   name: 'IBAN';
 }
 
-export interface IpScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IP'], any> {
+export interface IpScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['IP'], any> {
   name: 'IP';
 }
 
-export interface IpcPatentScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IPCPatent'], any> {
+export interface IpcPatentScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['IPCPatent'], any> {
   name: 'IPCPatent';
 }
 
-export interface IPv4ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IPv4'], any> {
+export interface IPv4ScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['IPv4'], any> {
   name: 'IPv4';
 }
 
-export interface IPv6ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IPv6'], any> {
+export interface IPv6ScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['IPv6'], any> {
   name: 'IPv6';
 }
 
-export interface IsbnScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ISBN'], any> {
+export interface IsbnScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['ISBN'], any> {
   name: 'ISBN';
 }
 
-export interface Iso8601DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ISO8601Duration'], any> {
+export interface Iso8601DurationScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['ISO8601Duration'], any> {
   name: 'ISO8601Duration';
 }
 
-export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
+export interface JsonScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
 
-export interface JsonObjectScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSONObject'], any> {
+export interface JsonObjectScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JSONObject'], any> {
   name: 'JSONObject';
 }
 
-export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
+export interface JwtScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['JWT'], any> {
   name: 'JWT';
 }
 
-export interface LccSubclassScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LCCSubclass'], any> {
+export interface LccSubclassScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LCCSubclass'], any> {
   name: 'LCCSubclass';
 }
 
-export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
+export interface LatitudeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
   name: 'Latitude';
 }
 
-export interface LocalDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDate'], any> {
+export interface LocalDateScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LocalDate'], any> {
   name: 'LocalDate';
 }
 
-export interface LocalDateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDateTime'], any> {
+export interface LocalDateTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LocalDateTime'], any> {
   name: 'LocalDateTime';
 }
 
-export interface LocalEndTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalEndTime'], any> {
+export interface LocalEndTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LocalEndTime'], any> {
   name: 'LocalEndTime';
 }
 
-export interface LocalTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalTime'], any> {
+export interface LocalTimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['LocalTime'], any> {
   name: 'LocalTime';
 }
 
-export interface LocaleScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Locale'], any> {
+export interface LocaleScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Locale'], any> {
   name: 'Locale';
 }
 
-export interface LongScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
+export interface LongScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Long'], any> {
   name: 'Long';
 }
 
-export interface LongitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Longitude'], any> {
+export interface LongitudeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Longitude'], any> {
   name: 'Longitude';
 }
 
-export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['MAC'], any> {
+export interface MacScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['MAC'], any> {
   name: 'MAC';
 }
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type MutationResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
+> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
-  forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
-  resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
-  signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
-  signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
-  updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
-  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
-  verifyOtpAndCompleteAuth?: Resolver<ResolversTypes['authenticated'], ParentType, ContextType, RequireFields<MutationVerifyOtpAndCompleteAuthArgs, 'otp'>>;
+  createFund?: Resolver<
+    ResolversTypes['Funds'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateFundArgs, 'data'>
+  >;
+  createTransaction?: Resolver<
+    ResolversTypes['Transaction'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateTransactionArgs, 'data'>
+  >;
+  forgetPassword?: Resolver<
+    ResolversTypes['authResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationForgetPasswordArgs, 'email'>
+  >;
+  resetUserPassword?: Resolver<
+    ResolversTypes['authResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationResetUserPasswordArgs, 'newPassword'>
+  >;
+  signin?: Resolver<
+    ResolversTypes['authResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSigninArgs, 'data'>
+  >;
+  signup?: Resolver<
+    ResolversTypes['authResponse'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSignupArgs, 'data'>
+  >;
+  updateFund?: Resolver<
+    ResolversTypes['Funds'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateFundArgs, 'data'>
+  >;
+  updateTransaction?: Resolver<
+    ResolversTypes['Transaction'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateTransactionArgs, 'data'>
+  >;
+  updateTransactionStatus?: Resolver<
+    ResolversTypes['Transaction'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateTransactionStatusArgs, 'data'>
+  >;
+  updateUser?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateUserArgs, 'data'>
+  >;
+  verifyOtpAndCompleteAuth?: Resolver<
+    ResolversTypes['authenticated'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationVerifyOtpAndCompleteAuthArgs, 'otp'>
+  >;
 };
 
-export interface NegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
+export interface NegativeFloatScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NegativeFloat'], any> {
   name: 'NegativeFloat';
 }
 
-export interface NegativeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NegativeInt'], any> {
+export interface NegativeIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NegativeInt'], any> {
   name: 'NegativeInt';
 }
 
-export interface NonEmptyStringScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NonEmptyString'], any> {
+export interface NonEmptyStringScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NonEmptyString'], any> {
   name: 'NonEmptyString';
 }
 
-export interface NonNegativeFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NonNegativeFloat'], any> {
+export interface NonNegativeFloatScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NonNegativeFloat'], any> {
   name: 'NonNegativeFloat';
 }
 
-export interface NonNegativeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NonNegativeInt'], any> {
+export interface NonNegativeIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NonNegativeInt'], any> {
   name: 'NonNegativeInt';
 }
 
-export interface NonPositiveFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NonPositiveFloat'], any> {
+export interface NonPositiveFloatScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NonPositiveFloat'], any> {
   name: 'NonPositiveFloat';
 }
 
-export interface NonPositiveIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['NonPositiveInt'], any> {
+export interface NonPositiveIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['NonPositiveInt'], any> {
   name: 'NonPositiveInt';
 }
 
-export interface ObjectIdScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['ObjectID'], any> {
+export interface ObjectIdScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['ObjectID'], any> {
   name: 'ObjectID';
 }
 
-export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+export type PageInfoResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo'],
+> = {
   hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   limit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   page?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   total?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
-export interface PhoneNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
+export interface PhoneNumberScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber';
 }
 
-export interface PortScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Port'], any> {
+export interface PortScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Port'], any> {
   name: 'Port';
 }
 
-export type PortfolioResolvers<ContextType = any, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
+export type PortfolioResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio'],
+> = {
   asOf?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  createdAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   valuation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
-export interface PositiveFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PositiveFloat'], any> {
+export interface PositiveFloatScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['PositiveFloat'], any> {
   name: 'PositiveFloat';
 }
 
-export interface PositiveIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PositiveInt'], any> {
+export interface PositiveIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['PositiveInt'], any> {
   name: 'PositiveInt';
 }
 
-export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
+export interface PostalCodeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
   name: 'PostalCode';
 }
 
-export type PreferencesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Preferences'] = ResolversParentTypes['Preferences']> = {
+export type PreferencesResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Preferences'] = ResolversParentTypes['Preferences'],
+> = {
   currency?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   language?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  notificationsEnabled?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  notificationsEnabled?: Resolver<
+    Maybe<ResolversTypes['Boolean']>,
+    ParentType,
+    ContextType
+  >;
   theme?: Resolver<Maybe<ResolversTypes['Theme']>, ParentType, ContextType>;
   timezone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type QueryResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
+> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
-  getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
-  getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
-  getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
-  getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
-  getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
-  getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
+  getAssetAllocations?: Resolver<
+    Array<ResolversTypes['Allocation']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>
+  >;
+  getFundById?: Resolver<
+    ResolversTypes['Funds'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetFundByIdArgs, 'fundId'>
+  >;
+  getFunds?: Resolver<
+    Array<ResolversTypes['Funds']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetFundsArgs, 'filters'>
+  >;
+  getHoldings?: Resolver<
+    ResolversTypes['HoldingsConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetHoldingsArgs, 'filters'>
+  >;
+  getHoldingsById?: Resolver<
+    ResolversTypes['Holdings'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>
+  >;
+  getPortfolioById?: Resolver<
+    ResolversTypes['Portfolio'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>
+  >;
+  getPortfoliosByUserId?: Resolver<
+    Array<ResolversTypes['Portfolio']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>
+  >;
+  getTransactionById?: Resolver<
+    ResolversTypes['Transaction'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetTransactionByIdArgs, 'id'>
+  >;
+  getTransactions?: Resolver<
+    ResolversTypes['TransactionConnection'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetTransactionsArgs, 'filters'>
+  >;
+  getUserById?: Resolver<
+    ResolversTypes['User'],
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetUserByIdArgs, 'userId'>
+  >;
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 };
 
-export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
+export interface RgbScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
   name: 'RGB';
 }
 
-export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGBA'], any> {
+export interface RgbaScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['RGBA'], any> {
   name: 'RGBA';
 }
 
-export interface RoutingNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RoutingNumber'], any> {
+export interface RoutingNumberScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['RoutingNumber'], any> {
   name: 'RoutingNumber';
 }
 
-export interface SessnScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SESSN'], any> {
+export interface SessnScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['SESSN'], any> {
   name: 'SESSN';
 }
 
-export interface SafeIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SafeInt'], any> {
+export interface SafeIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['SafeInt'], any> {
   name: 'SafeInt';
 }
 
-export interface SemVerScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['SemVer'], any> {
+export interface SemVerScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['SemVer'], any> {
   name: 'SemVer';
 }
 
-export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = {
-  _empty?: SubscriptionResolver<Maybe<ResolversTypes['String']>, "_empty", ParentType, ContextType>;
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
+> = {
+  _empty?: SubscriptionResolver<
+    Maybe<ResolversTypes['String']>,
+    '_empty',
+    ParentType,
+    ContextType
+  >;
 };
 
-export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Time'], any> {
+export interface TimeScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Time'], any> {
   name: 'Time';
 }
 
-export interface TimeZoneScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['TimeZone'], any> {
+export interface TimeZoneScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['TimeZone'], any> {
   name: 'TimeZone';
 }
 
-export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
+export interface TimestampScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
   name: 'Timestamp';
 }
 
-export type TransactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = {
+export type TransactionResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction'],
+> = {
   amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  bankAccountId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  bankAccountId?: Resolver<
+    Maybe<ResolversTypes['ID']>,
+    ParentType,
+    ContextType
+  >;
+  createdAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  providerId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  providerId?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
   quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   reference?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['TransactionStatus'], ParentType, ContextType>;
-  transactionDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  status?: Resolver<
+    ResolversTypes['TransactionStatus'],
+    ParentType,
+    ContextType
+  >;
+  transactionDate?: Resolver<
+    ResolversTypes['DateTime'],
+    ParentType,
+    ContextType
+  >;
   type?: Resolver<ResolversTypes['TransactionType'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
-export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
+export type TransactionConnectionResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['TransactionConnection'] = ResolversParentTypes['TransactionConnection'],
+> = {
+  edges?: Resolver<
+    Array<ResolversTypes['Transaction']>,
+    ParentType,
+    ContextType
+  >;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+};
+
+export interface UrlScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
   name: 'URL';
 }
 
-export interface UsCurrencyScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['USCurrency'], any> {
+export interface UsCurrencyScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['USCurrency'], any> {
   name: 'USCurrency';
 }
 
-export interface UuidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
+export interface UuidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['UUID'], any> {
   name: 'UUID';
 }
 
-export interface UnsignedFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedFloat'], any> {
+export interface UnsignedFloatScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedFloat'], any> {
   name: 'UnsignedFloat';
 }
 
-export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedInt'], any> {
+export interface UnsignedIntScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['UnsignedInt'], any> {
   name: 'UnsignedInt';
 }
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  biometric?: Resolver<Maybe<ResolversTypes['Biometrics']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  devices?: Resolver<Maybe<Array<Maybe<ResolversTypes['Devices']>>>, ParentType, ContextType>;
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['User'] = ResolversParentTypes['User'],
+> = {
+  biometric?: Resolver<
+    Maybe<ResolversTypes['Biometrics']>,
+    ParentType,
+    ContextType
+  >;
+  createdAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
+  devices?: Resolver<
+    Maybe<Array<Maybe<ResolversTypes['Devices']>>>,
+    ParentType,
+    ContextType
+  >;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   fullName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferences?: Resolver<Maybe<ResolversTypes['Preferences']>, ParentType, ContextType>;
+  phoneNumber?: Resolver<
+    Maybe<ResolversTypes['String']>,
+    ParentType,
+    ContextType
+  >;
+  preferences?: Resolver<
+    Maybe<ResolversTypes['Preferences']>,
+    ParentType,
+    ContextType
+  >;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  updatedAt?: Resolver<
+    Maybe<ResolversTypes['DateTime']>,
+    ParentType,
+    ContextType
+  >;
 };
 
-export interface UtcOffsetScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UtcOffset'], any> {
+export interface UtcOffsetScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['UtcOffset'], any> {
   name: 'UtcOffset';
 }
 
-export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Void'], any> {
+export interface VoidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Void'], any> {
   name: 'Void';
 }
 
-export type AuthResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['authResponse'] = ResolversParentTypes['authResponse']> = {
+export type AuthResponseResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['authResponse'] = ResolversParentTypes['authResponse'],
+> = {
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
-export type AuthenticatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['authenticated'] = ResolversParentTypes['authenticated']> = {
+export type AuthenticatedResolvers<
+  ContextType = any,
+  ParentType extends
+    ResolversParentTypes['authenticated'] = ResolversParentTypes['authenticated'],
+> = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
@@ -1139,6 +1678,7 @@ export type Resolvers<ContextType = any> = {
   DeweyDecimal?: GraphQLScalarType;
   Duration?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
+  Funds?: FundsResolvers<ContextType>;
   GUID?: GraphQLScalarType;
   GeoJSON?: GraphQLScalarType;
   HSL?: GraphQLScalarType;
@@ -1196,6 +1736,7 @@ export type Resolvers<ContextType = any> = {
   TimeZone?: GraphQLScalarType;
   Timestamp?: GraphQLScalarType;
   Transaction?: TransactionResolvers<ContextType>;
+  TransactionConnection?: TransactionConnectionResolvers<ContextType>;
   URL?: GraphQLScalarType;
   USCurrency?: GraphQLScalarType;
   UUID?: GraphQLScalarType;
@@ -1207,4 +1748,3 @@ export type Resolvers<ContextType = any> = {
   authResponse?: AuthResponseResolvers<ContextType>;
   authenticated?: AuthenticatedResolvers<ContextType>;
 };
-

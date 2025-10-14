@@ -1,14 +1,14 @@
-import { createExpressApp } from "./servers/createExpressApp";
-import http from "http";
-import logger from "./loggers/logger";
-import connectDB from "./common/db";
-import createError from "http-errors";
-import { Response, Request, NextFunction } from "express";
-import { applyRoutes } from "./routes";
-import { applyMiddlewares } from "./middlewares";
-import { createGraphqlServer } from "./servers/createGraphqlServer";
-import { schema } from "./graphql";
-import { errorHandler } from "./middlewares/errorHandler";
+import { createExpressApp } from './servers/createExpressApp';
+import http from 'http';
+import logger from './loggers/logger';
+import connectDB from './common/db';
+import createError from 'http-errors';
+import { Response, Request, NextFunction } from 'express';
+import { applyRoutes } from './routes';
+import { applyMiddlewares } from './middlewares';
+import { createGraphqlServer } from './servers/createGraphqlServer';
+import { schema } from './graphql';
+import { errorHandler } from './middlewares/errorHandler';
 const PORT = process.env.PORT || 8080;
 
 export const StartServer = async () => {
@@ -24,11 +24,14 @@ export const StartServer = async () => {
 
   expressApp.use(errorHandler);
 
-  expressApp.all("/*splat", (_req: Request, _res: Response, next: NextFunction) => {
-    next(createError(404, "Unable to find the requested resource"));
-  });
+  expressApp.all(
+    '/*splat',
+    (_req: Request, _res: Response, next: NextFunction) => {
+      next(createError(404, 'Unable to find the requested resource'));
+    }
+  );
 
-  await new Promise<void>((resolve) =>
+  await new Promise<void>(resolve =>
     httpServer.listen({ port: PORT }, resolve)
   );
 

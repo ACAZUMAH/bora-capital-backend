@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 // import { resetUserPassword } from "src/controllers";
 
 const router = Router();

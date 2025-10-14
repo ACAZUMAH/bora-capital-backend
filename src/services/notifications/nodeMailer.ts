@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from 'nodemailer';
 
 interface emailParams {
   from: string;
@@ -14,7 +14,7 @@ export const sendVerificationEmail = async (data: emailParams) => {
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "api",
+      user: 'api',
       pass: `${process.env.MAIL_TRAP_AUTH_TOKEN}`,
     },
   });
@@ -26,10 +26,10 @@ export const sendVerificationEmail = async (data: emailParams) => {
       subject: data.subject,
       html: data.htmlContent,
     });
-    console.log("Message sent:", info);
+    console.log('Message sent:', info);
     return true;
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error('Error sending email:', error);
     return false;
   }
 };

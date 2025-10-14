@@ -1,13 +1,12 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export interface HoldingsDocument {
   _id: string | Types.ObjectId;
   fundId: string | Types.ObjectId;
   portfolioId: string | Types.ObjectId;
   symbol: string;
-  name: string;
   quantity: number;
-  purchasePrice: number;
+  avgPurchasePrice: number;
   currentPrice: number;
   currentValue: number;
   unrealizedPL: number;
@@ -22,9 +21,8 @@ export interface CreateHoldingsInput {
   fundId: string | Types.ObjectId;
   portfolioId: string | Types.ObjectId;
   symbol: string;
-  name: string;
   quantity: number;
-  purchasePrice: number;
+  avgPurchasePrice: number;
   currentPrice: number;
   currentValue: number;
   currency?: string;
@@ -33,10 +31,9 @@ export interface CreateHoldingsInput {
 
 export interface UpdateHoldingsInput {
   id: string | Types.ObjectId;
-  name?: string;
   symbol?: string;
   quantity?: number;
-  purchasePrice?: number;
+  avgPurchasePrice?: number;
   currentPrice?: number;
   currentValue?: number;
   currency?: string;

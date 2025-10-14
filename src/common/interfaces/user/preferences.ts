@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import { Theme } from "src/common/enums";
+import { Types } from 'mongoose';
+import { Theme } from 'src/common/enums';
 
 export interface PreferencesDocument {
   _id: Types.ObjectId | string;

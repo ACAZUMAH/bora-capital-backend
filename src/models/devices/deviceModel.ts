@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
-import { DeviceDocument } from "src/common/interfaces";
+import { Schema } from 'mongoose';
+import { DeviceDocument } from 'src/common/interfaces';
 
 export const deviceSchema = new Schema<DeviceDocument>(
   {

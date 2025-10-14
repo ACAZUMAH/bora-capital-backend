@@ -1,5 +1,9 @@
-import { Types } from "mongoose";
-import { PaymentMethod, TransactionStatus, TransactionType } from "src/common/enums";
+import { Types } from 'mongoose';
+import {
+  PaymentMethod,
+  TransactionStatus,
+  TransactionType,
+} from 'src/common/enums';
 
 export interface TransactionsDocument {
   _id: string | Types.ObjectId;

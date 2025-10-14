@@ -1,7 +1,7 @@
 export const generalResolvers = {
   Query: {
-    hello: () => "hello world",
-    healthCheck: () => "OK",
+    hello: () => 'hello world',
+    healthCheck: () => 'OK',
   },
 
   Mutation: {},

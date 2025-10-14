@@ -25,20 +25,19 @@ jobs:
 
       - name: Cache node_modules
         uses: actions/cache@v4
-        with: 
-            path: |
-              node_modules
-              .yarn/cache
-            key: ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-${{ hashFiles('**/yarn.lock') }}
-            restore-keys: |
-                ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-
+        with:
+          path: |
+            node_modules
+            .yarn/cache
+          key: ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node${{env.NODE_VERSION}}-yarn-
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build 
+      - name: Build
         run: CI=false yarn build
 
       - name: Test
         run: yarn test
-

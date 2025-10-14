@@ -1,9 +1,9 @@
-import { Schema, model } from "mongoose";
-import { UserDocument } from "../../common/interfaces/user";
-import { Collections, role } from "src/common/enums";
-import { biometricSchema } from "../biometric/biometricModel";
-import { deviceSchema } from "../devices/deviceModel";
-import { preferencesSchema } from "../preferences/preferencesModel";
+import { Schema, model } from 'mongoose';
+import { UserDocument } from '../../common/interfaces/user';
+import { Collections, role } from 'src/common/enums';
+import { biometricSchema } from '../biometric/biometricModel';
+import { deviceSchema } from '../devices/deviceModel';
+import { preferencesSchema } from '../preferences/preferencesModel';
 //import { kycRecordsSchema } from "../kyc-records/kycRecords";
 
 const userSchema = new Schema<UserDocument>(

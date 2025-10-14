@@ -3,17 +3,17 @@ import {
   HoldingsDocument,
   HoldingsFilters,
   UpdateHoldingsInput,
-} from "src/common/interfaces";
-import { validateHoldingsData } from "./validate";
-import { holdingsModel } from "src/models";
-import { FilterQuery, isValidObjectId, PipelineStage, Types } from "mongoose";
-import createError from "http-errors";
+} from 'src/common/interfaces';
+import { validateHoldingsData } from './validate';
+import { holdingsModel } from 'src/models';
+import { FilterQuery, isValidObjectId, PipelineStage, Types } from 'mongoose';
+import createError from 'http-errors';
 import {
   getPageConnection,
   getSanitizeLimit,
   getSanitizeOffset,
   getSanitizePage,
-} from "src/common/helpers";
+} from 'src/common/helpers';
 
 /**
  * @description Create new holdings
@@ -43,11 +43,45 @@ export const createHoldings = async (data: CreateHoldingsInput) => {
  * @returns holdings object
  */
 export const getHoldingsById = async (id: string | Types.ObjectId) => {
-  if (!isValidObjectId(id)) throw createError.BadRequest("Invalid holdings ID");
+  if (!isValidObjectId(id)) throw createError.BadRequest('Invalid holdings ID');
 
   const holdings = await holdingsModel.findById(id);
 
-  if (!holdings) throw createError.NotFound("Holdings not found");
+  if (!holdings) throw createError.NotFound('Holdings not found');
+
+  return holdings;
+};
+
+/**
+ * @description Get holdings by fund ID
+ * @param fundId - fund id
+ * @returns holdings object
+ */
+export const getHoldingsByFundId = async (fundId: string | Types.ObjectId) => {
+  if (!isValidObjectId(fundId)) throw createError.BadRequest('Invalid fund ID');
+
+  const holdings = await holdingsModel.find({ fundId });
+
+  return holdings;
+};
+
+/**
+ * @description Get holdings by fund ID and portfolio ID
+ * @param fundId - ID of the fund
+ * @param portfolioId - ID of the portfolio
+ * @returns holdings object
+ */
+export const getHoldingsByFundAndPortfolioIds = async (
+  fundId: string | Types.ObjectId,
+  portfolioId: string | Types.ObjectId
+) => {
+  if (!isValidObjectId(fundId)) throw createError.BadRequest('Invalid fund ID');
+  if (!isValidObjectId(portfolioId))
+    throw createError.BadRequest('Invalid portfolio ID');
+
+  const holdings = await holdingsModel.findOne({ fundId, portfolioId });
+
+  if (!holdings) throw createError.NotFound('Holdings not found');
 
   return holdings;
 };
@@ -71,10 +105,9 @@ export const updateHoldings = async (data: UpdateHoldingsInput) => {
   const holdings = await getHoldingsById(data.id);
 
   const updatePayload: Record<string, any> = {
-    ...(data.name && { name: data.name }),
     ...(data.symbol && { symbol: data.symbol }),
     ...(data.quantity && { quantity: data.quantity }),
-    ...(data.purchasePrice && { purchasePrice: data.purchasePrice }),
+    ...(data.avgPurchasePrice && { purchasePrice: data.avgPurchasePrice }),
     ...(data.currentPrice && { currentPrice: data.currentPrice }),
     ...(data.currentValue && { currentValue: data.currentValue }),
     ...(data.currency && { currency: data.currency }),
@@ -90,7 +123,7 @@ export const updateHoldings = async (data: UpdateHoldingsInput) => {
   );
 
   if (!update)
-    throw createError.InternalServerError("Failed to update holdings");
+    throw createError.InternalServerError('Failed to update holdings');
 
   return update;
 };
@@ -112,7 +145,7 @@ export const getHoldings = async (filters: HoldingsFilters) => {
   const query: FilterQuery<HoldingsDocument> = {
     ...(filters.portfolioId && { portfolioId: filters.portfolioId }),
     ...(filters.fundId && { fundId: filters.fundId }),
-    ...(filters.search && { name: { $regex: filters.search, $options: "i" } }),
+    ...(filters.search && { name: { $regex: filters.search, $options: 'i' } }),
   };
 
   // const pipeline: PipelineStage[] = [
@@ -140,9 +173,9 @@ export const getHoldingsByPortfolioId = async (
   portfolioId: string | Types.ObjectId
 ) => {
   if (!isValidObjectId(portfolioId))
-    throw createError.BadRequest("Invalid portfolio ID");
+    throw createError.BadRequest('Invalid portfolio ID');
 
-  const holdings = await holdingsModel.find({ portfolioId }).populate("fundId");
+  const holdings = await holdingsModel.find({ portfolioId }).populate('fundId');
 
   return holdings;
 };

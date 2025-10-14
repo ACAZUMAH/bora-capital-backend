@@ -1,5 +1,7 @@
-import * as GraphqlTypes from "src/common/interfaces/graphql";
-import * as services from "src/services/transactions";
+import * as GraphqlTypes from 'src/common/interfaces/graphql';
+import * as services from 'src/services/transactions';
+
+const getTransactions = () => {};
 
 const createTransaction = (
   _: any,
@@ -22,12 +24,16 @@ const updateTransaction = (
   return services.updateTransaction({ ...args.data });
 };
 
+const updateTransactionStatus = () => {};
+
 export const transactionsResolvers = {
   Query: {
+    getTransactions,
     getTransactionById,
   },
   Mutation: {
     createTransaction,
     updateTransaction,
+    updateTransactionStatus,
   },
 };

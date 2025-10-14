@@ -1,7 +1,7 @@
-import { MutationUpdateUserArgs } from "src/common/interfaces/graphql";
-import { isAuthenticated } from "./general";
-import { GraphqlContext } from "src/common/interfaces";
-import { and, rule } from "graphql-shield";
+import { MutationUpdateUserArgs } from 'src/common/interfaces/graphql';
+import { isAuthenticated } from './general';
+import { GraphqlContext } from 'src/common/interfaces';
+import { and, rule } from 'graphql-shield';
 
 const canUpdateUser = rule()((
   _,

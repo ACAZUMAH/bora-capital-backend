@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import { DocumentsType } from "src/common/enums";
+import { Types } from 'mongoose';
+import { DocumentsType } from 'src/common/enums';
 
 export interface DocumentsDocument {
   _id: string | Types.ObjectId;

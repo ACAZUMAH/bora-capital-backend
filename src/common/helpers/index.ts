@@ -1,12 +1,12 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import createError from "http-errors";
-import { ClientApp } from "../interfaces";
-import { apps, customerMobileApp } from "../constants";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import createError from 'http-errors';
+import { ClientApp } from '../interfaces';
+import { apps, customerMobileApp } from '../constants';
 
 export const getApp = (key?: string) => {
-  return apps.find((app) => app.key === key)
-}
+  return apps.find(app => app.key === key);
+};
 
 /**
  * @description Signs a JSON object into a JWT token.
@@ -14,7 +14,7 @@ export const getApp = (key?: string) => {
  * @returns A signed JWT token as a string.
  */
 export const jwtSign = (obj: object) => {
-  return jwt.sign(obj, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "50d" });
+  return jwt.sign(obj, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '50d' });
 };
 
 /**
@@ -38,7 +38,7 @@ export const hashPassword = async (password: string) => {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
   } catch (error) {
-    throw new Error("Unable to hash password");
+    throw new Error('Unable to hash password');
   }
 };
 
@@ -53,7 +53,7 @@ export const comparePassword = async (password: string, hash: string) => {
   try {
     return await bcrypt.compare(password, hash);
   } catch (error) {
-    throw new Error("Unable to compare password");
+    throw new Error('Unable to compare password');
   }
 };
 
@@ -155,9 +155,9 @@ export const constructHTTPResponse = (
  * @returns A string representing the generated OTP.
  */
 export const generateOtp = (len: number) => {
-  const chars = "0123456789";
+  const chars = '0123456789';
   const charLength = chars.length;
-  let otp = "";
+  let otp = '';
   for (let i = 0; i < len; i++) {
     otp += chars.charAt(Math.floor(Math.random() * charLength));
   }

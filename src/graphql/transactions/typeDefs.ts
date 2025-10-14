@@ -5,7 +5,6 @@ export const transactionsTypeDefs = `#graphql
         TRANSFER
         BUY
         SELL
-        FEE
     }
 
     enum TransactionStatus {
@@ -41,9 +40,28 @@ export const transactionsTypeDefs = `#graphql
         createdAt: DateTime
         updatedAt: DateTime
     }
+    type TransactionConnection {
+        edges: [Transaction!]!
+        pageInfo: PageInfo!
+    }
+
+    input TransactionFilters {
+        limit: Int
+        page: Int
+        userId: ID
+        fundId: ID
+        portfolioId: ID
+        providerId: String
+        type: TransactionType
+        status: TransactionStatus
+        search: String
+        startDate: DateTime
+        endDate: DateTime
+    }
 
     extend type Query {
         getTransactionById(id: ID!): Transaction!
+        getTransactions(filters: TransactionFilters!): TransactionConnection!
     }
 
     input CreateTransactionInput {
@@ -78,8 +96,14 @@ export const transactionsTypeDefs = `#graphql
         transactionDate: DateTime
     }
 
+    input updateTransactionStatusInput {
+        id: ID!
+        status: TransactionStatus!
+    }
+
     extend type Mutation {
         createTransaction(data: CreateTransactionInput!): Transaction!
         updateTransaction(data: UpdateTransactionInput!): Transaction!
+        updateTransactionStatus(data: updateTransactionStatusInput!): Transaction!
     }
 `;

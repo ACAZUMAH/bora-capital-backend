@@ -1,6 +1,6 @@
-import { ClientApp, UserDocument } from "src/common/interfaces";
-import createError from "http-errors";
-import { isCustomerApp } from "src/common/helpers";
+import { ClientApp, UserDocument } from 'src/common/interfaces';
+import createError from 'http-errors';
+import { isCustomerApp } from 'src/common/helpers';
 
 /**
  * @description Validates if the user has access based on the client app type.
@@ -12,7 +12,7 @@ export const validateSigninAccess = (
   app?: ClientApp,
   user?: UserDocument | null
 ) => {
-  if (!app) throw createError.Unauthorized("Unknown client app");
+  if (!app) throw createError.Unauthorized('Unknown client app');
 
   if (isCustomerApp(app)) {
     if (user) {

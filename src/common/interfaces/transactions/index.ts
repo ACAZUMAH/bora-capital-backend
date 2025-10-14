@@ -43,16 +43,16 @@ export interface CreateTransactionInput {
 export interface UpdateTransactionInput {}
 
 export interface TransactionsFilters {
-  limit?: number;
-  page?: number;
-  userId?: string;
-  fundId?: string;
-  portfolioId?: string;
-  providerId?: string;
-  bankAccountId?: string;
-  type?: TransactionType;
-  status?: TransactionStatus;
-  search?: string;
-  startDate?: Date;
-  endDate?: Date;
+  limit?: number | null;
+  page?: number | null;
+  userId?: string | null;
+  fundId?: string | null;
+  portfolioId?: string | null;
+  providerId?: string | null;
+  bankAccountId?: string | null;
+  type?: TransactionType | null;
+  status?: TransactionStatus | null;
+  search?: string | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }

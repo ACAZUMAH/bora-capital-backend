@@ -39,7 +39,14 @@ export const transactionsTypeDefs = `#graphql
 
         createdAt: DateTime
         updatedAt: DateTime
+
+        # funds relation
+        fund: Funds
+
+        # portfolio relation
+        portfolio: Portfolio
     }
+
     type TransactionConnection {
         edges: [Transaction!]!
         pageInfo: PageInfo!

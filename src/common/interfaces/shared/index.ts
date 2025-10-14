@@ -3,6 +3,7 @@ import { Server } from 'http';
 import { GraphQLSchema } from 'graphql';
 import { BaseContext } from '@apollo/server';
 import { UserDocument } from '../user';
+import { createDataLoaders } from 'src/dataLoaders';
 declare global {
   namespace Express {
     interface Request {
@@ -19,7 +20,8 @@ export interface GraphqlServer {
   schema: GraphQLSchema;
 }
 
-export interface GraphqlContext extends BaseContext {
+export type DataLoaderMap = ReturnType<typeof createDataLoaders>
+export interface GraphqlContext extends BaseContext, DataLoaderMap {
   ip: string;
   user?: UserDocument;
   token?: string;

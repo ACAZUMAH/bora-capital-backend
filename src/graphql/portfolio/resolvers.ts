@@ -4,6 +4,7 @@ import {
   QueryGetPortfolioByIdArgs,
 } from 'src/common/interfaces/graphql';
 import * as services from 'src/services/portfolio';
+import { idResolver } from '../general';
 
 const getPortfolioById = (_: any, args: QueryGetPortfolioByIdArgs) => {
   return services.getPortfolioById(args.portfolioId);
@@ -20,10 +21,22 @@ export const getAssetAllocations = async (
   return services.calculateAssetAllocations(args.portfolioId);
 };
 
+export const user = (
+  parent: { userId: string },
+  _: any,
+  { userLoader }: GraphqlContext
+) => {
+  return parent.userId ? userLoader.load(parent.userId) : null;
+};
+
 export const portfolioResolvers = {
   Query: {
     getPortfolioById,
     getPortfoliosByUserId,
     getAssetAllocations,
+  },
+  Portfolio: {
+    id: idResolver,
+    user,
   },
 };

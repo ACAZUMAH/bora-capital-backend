@@ -1,11 +1,34 @@
-import { google } from 'googleapis';
+import nodemailer from 'nodemailer';
 
-const scopes = ['https://www.googleapis.com/auth/gmail.send'];
+interface emailParams {
+  from: string;
+  to: string;
+  htmlContent: string;
+  subject: string;
+  //params?: object
+}
 
-export const sendEmailViaGmailApi = async () => {
-  const auth = new google.auth.JWT({
-    email: process.env.GOOGLE_SERVICE_CLIENT_EMAIL,
-    key: String(process.env.GOOGLE_PRIVATE_KEY).replace(/\\n/g, '\n').trim(),
-    subject: process.env.GOOGLE_IMPERSONATE,
+export const sendEmailViaGmailApi = async (data: emailParams) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'calebazumah9@gmail.com',
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
   });
+
+  try {
+    const info = await transporter.sendMail({
+      from: '"Bora Capital Investors" <calebazumah9@gmail.com>',
+      to: data.to,
+      subject: data.subject,
+      html: data.htmlContent,
+    });
+
+    console.log('Message sent:', info);
+    return true;
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return false;
+  }
 };

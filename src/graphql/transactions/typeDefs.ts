@@ -41,7 +41,7 @@ export const transactionsTypeDefs = `#graphql
         updatedAt: DateTime
 
         # funds relation
-        fund: Funds
+        funds: Funds
 
         # portfolio relation
         portfolio: Portfolio

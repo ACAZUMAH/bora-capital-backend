@@ -2,7 +2,7 @@ import { ClientApp, CreateUserInput, SigninInput } from 'src/common/interfaces';
 import { checkUserExist, createUser, getUserByEmail } from '../users';
 import { comparePassword, hashPassword } from 'src/common/helpers';
 import { createAuth } from './auth';
-import { sendEmail } from '../notifications';
+import { sendEmail, sendEmailViaGmail } from '../notifications';
 import { getSendOtpEmailTemplate } from '../notifications/template';
 import createError from 'http-errors';
 import { OtpPurpose } from 'src/common/enums';
@@ -78,7 +78,7 @@ export const signin = async (data: SigninInput, app: ClientApp) => {
   });
 
   if (user.email) {
-    await sendEmail({
+    await sendEmailViaGmail({
       from: 'calebazumah9@gmail.com',
       to: user.email,
       subject: 'Your Bora Capitals Advisors otp code',
@@ -112,7 +112,7 @@ export const sendForgetPasswordOtp = async (email: string) => {
   });
 
   if (user.email) {
-    await sendEmail({
+    await sendEmailViaGmail({
       from: 'calebazumah9@gmail.com',
       to: user.email,
       subject: 'Bora Capitals Advisors otp code',

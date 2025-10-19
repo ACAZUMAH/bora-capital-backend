@@ -12,14 +12,14 @@ export const sendEmailViaGmailApi = async (data: emailParams) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'calebazumah9@gmail.com',
+      user: 'acazumah9@gmail.com',
       pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
 
   try {
     const info = await transporter.sendMail({
-      from: '"Bora Capital Investors" <calebazumah9@gmail.com>',
+      from: '"Bora Capital Investors" <acazumah9@gmail.com>',
       to: data.to,
       subject: data.subject,
       html: data.htmlContent,

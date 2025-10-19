@@ -1,3 +1,4 @@
+import { sendEmailViaGmailApi } from './gmail';
 import { sendVerificationEmail } from './nodeMailer';
 
 interface emailContent {
@@ -10,3 +11,7 @@ interface emailContent {
 export const sendEmail = async (content: emailContent) => {
   return await sendVerificationEmail({ ...content });
 };
+
+export const sendEmailViaGmail = async (content: emailContent) => {
+  return await sendEmailViaGmailApi({ ...content });
+}

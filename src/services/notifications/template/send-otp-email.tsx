@@ -51,7 +51,7 @@ export const EmailTemplate = async ({ otp, name }: veryEmailProps) => {
         <Section style={style.footer} bgcolor="#031129">
           <Container>
             <Text style={style.footerText}>
-              © 2024 Bora Capital Advisors. All rights reserved.
+              © {new Date().getFullYear()} Bora Capital Advisors. All rights reserved.
             </Text>
           </Container>
         </Section>

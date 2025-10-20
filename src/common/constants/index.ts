@@ -13,8 +13,7 @@ export const customerMobileApp: ClientApp = {
 export const apps = [customerMobileApp];
 
 export const productionWhitelist = [
-  'https://poc-backend-dqrx.onrender.com',
-  'https://studio.apollographql.com/sandbox/explorer',
+  ''
 ];
 
 export const stagingWhitelist = [

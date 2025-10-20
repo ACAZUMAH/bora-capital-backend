@@ -6,9 +6,9 @@ import createError from 'http-errors';
 import { Response, Request, NextFunction } from 'express';
 //import { applyRoutes } from './routes';
 import { applyMiddlewares } from './middlewares';
-import { createGraphqlServer } from './servers/createGraphqlServer';
 import { schema } from './graphql';
 import { errorHandler } from './middlewares/errorHandler';
+import { createGraphqlServer } from './servers';
 const PORT = process.env.PORT || 8080;
 
 export const StartServer = async () => {
@@ -18,7 +18,6 @@ export const StartServer = async () => {
 
   await connectDB();
   applyMiddlewares(expressApp);
-  //applyRoutes(expressApp);
 
   await createGraphqlServer({ app: expressApp, httpServer, schema });
 

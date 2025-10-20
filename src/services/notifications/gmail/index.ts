@@ -13,9 +13,11 @@ export const sendEmailViaGmailApi = async (data: emailParams) => {
     service: 'gmail',
     auth: {
       user: 'acazumah9@gmail.com',
-      pass: process.env.GMAIL_APP_PASSWORD,
+      pass: `${process.env.GMAIL_APP_PASSWORD}`,
     },
   });
+
+  console.log('GMAIL APP PASSWORD:', process.env.GMAIL_APP_PASSWORD);
 
   try {
     const info = await transporter.sendMail({

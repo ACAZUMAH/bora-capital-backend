@@ -30,7 +30,7 @@ export const register = async (data: CreateUserInput) => {
   });
 
   if (user.email) {
-    await sendEmail({
+    await sendEmailViaGmail({
       from: 'calebazumah9@gmail.com',
       to: user.email,
       subject: 'Your Bora Capitals Advisors otp code',

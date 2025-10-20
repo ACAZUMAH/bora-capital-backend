@@ -12,6 +12,6 @@ export const customerMobileApp: ClientApp = {
 
 export const apps = [customerMobileApp];
 
-export const productionWhitelist = ['exp://*'];
+export const productionWhitelist = [''];
 
 export const stagingWhitelist = [''];

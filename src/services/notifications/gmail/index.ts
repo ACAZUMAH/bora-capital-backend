@@ -18,6 +18,14 @@ export const sendEmailViaGmailApi = async (data: emailParams) => {
   });
 
   try {
+    await transporter.verify();
+    console.log('SMTP connection verified');
+  } catch (error) {
+    console.error('SMTP verification failed:', error);
+    return false;
+  }
+
+  try {
     const info = await transporter.sendMail({
       from: '"Bora Capital Investors" <acazumah9@gmail.com>',
       to: data.to,

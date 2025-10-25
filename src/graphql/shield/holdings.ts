@@ -1,6 +1,6 @@
 import { isAuthenticated } from './general';
 
-export const fundsShield = {
+export const holdingsShield = {
   Query: {
     getHoldingsById: isAuthenticated,
     getHoldings: isAuthenticated,

@@ -1,0 +1,25 @@
+name: deploy to staging
+
+on:
+  push:
+    branches: [staging]
+
+jobs:
+  ci:
+    uses: ./.github/workflows/reusable.yml
+
+  deploy-staging:
+    needs: ci
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DEGITALOCEAN_ACCCESS_TOKEN }}
+
+      - name: Deploy to digitalocean staging
+        run: doctl apps create-deployment ${{ secrets.DEGITALOCEAN_STAGGING_ID }}

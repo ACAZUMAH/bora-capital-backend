@@ -1,4 +1,8 @@
+import { fundsPerformanceTypeDefs } from "./performance/typeDefs";
+
 export const fundsTypeDefs = `#graphql
+    ${fundsPerformanceTypeDefs}
+    
     type Funds {
         id: ID!
         name: String!

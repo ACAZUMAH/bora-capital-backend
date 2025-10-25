@@ -15,6 +15,14 @@ import {
   getSanitizePage,
 } from 'src/common/helpers';
 
+/**
+ * @description Validate fund performance data
+ * @param performance.fundId - ID of the fund
+ * @param performance.date - Date of the performance entry
+ * @param performance.nav - Net Asset Value
+ * @param performance.returnPeriod - Return percentage for the period
+ * @throws BadRequest error if validation fails 
+ */
 const validatePerformance = (performance: CreateFundsPerformanceInput) => {
   if (!isValidObjectId(performance.fundId))
     throw new createError.BadRequest('Invalid fund ID');
@@ -34,7 +42,7 @@ const validatePerformance = (performance: CreateFundsPerformanceInput) => {
  * @param data.returnPeriod - Return percentage for the period
  * @returns created fund performance document
  */
-export const CreateFundsPerformance = async (
+export const createFundsPerformance = async (
   data: CreateFundsPerformanceInput
 ) => {
   validatePerformance(data);
@@ -49,7 +57,7 @@ export const CreateFundsPerformance = async (
  * @param id - ID of the fund performance entry
  * @returns fund performance document
  */
-export const getFundPerformanceById = async (id: string | Types.ObjectId) => {
+export const getFundPerformancesById = async (id: string | Types.ObjectId) => {
   if (!isValidObjectId(id))
     throw new createError.BadRequest('Invalid fund performance ID');
 
@@ -71,7 +79,7 @@ export const getFundPerformanceById = async (id: string | Types.ObjectId) => {
 export const updateFundPerformance = async (
   data: UpdateFundsPerformanceInput
 ) => {
-  const performance = await getFundPerformanceById(data.performanceId);
+  const performance = await getFundPerformancesById(data.performanceId);
 
   const record: Record<string, any> = {
     ...(data.date && { date: data.date }),

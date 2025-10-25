@@ -49,5 +49,6 @@ export const fundsTypeDefs = `#graphql
     extend type Mutation {
         createFund(data: CreateFundInput!): Funds!
         updateFund(data: UpdateFundInput!): Funds!
+        deleteFund(fundId: ID!): Boolean!
     }
 `;

@@ -19,18 +19,21 @@ const getFunds = (_: any, args: GraphqlTypes.QueryGetFundsArgs) => {
   return Services.getFunds(args.filters);
 };
 
+const deleteFund = () => {};
+
 export const fundsResolvers = {
   Query: {
+    ...fundsPerformanceResolvers.Query,
     getFundById,
     getFunds,
-    ...fundsPerformanceResolvers.Query,
   },
   Funds: {
     id: idResolver,
   },
   Mutation: {
+    ...fundsPerformanceResolvers.Mutation,
     createFund,
     updateFund,
-    ...fundsPerformanceResolvers.Mutation,
+    deleteFund,
   },
 };

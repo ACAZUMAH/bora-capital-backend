@@ -22,4 +22,4 @@ jobs:
           token: ${{ secrets.DEGITALOCEAN_ACCCESS_TOKEN }}
 
       - name: Deploy to digitalocean staging
-        run: doctl apps create-deployment ${{ secrets.DEGITALOCEAN_STAGGING_ID }}
+        run: doctl apps create-deployment ${{ secrets.DEGITALOCEAN_STAGGING_BACKEND_ID }}

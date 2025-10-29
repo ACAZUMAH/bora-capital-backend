@@ -13,8 +13,14 @@ export const getApp = (key?: string) => {
  * @param obj - The object to be signed into a JWT.
  * @returns A signed JWT token as a string.
  */
-export const jwtSign = (obj: object) => {
-  return jwt.sign(obj, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '50d' });
+export const jwtSign = (obj: object, env: string) => {
+  return jwt.sign(
+    obj,
+    env === 'access'
+      ? `${process.env.JWT_ACCESS_TOKEN_KEY}`
+      : `${process.env.JWT_REFRESH_TOKEN_KEY}`,
+    { expiresIn: env === 'access' ? '15m' : '7d' }
+  );
 };
 
 /**
@@ -23,8 +29,13 @@ export const jwtSign = (obj: object) => {
  * @returns The decoded payload of the token if valid.
  * @throws Will throw an error if the token is invalid or expired.
  */
-export const jwtVerify = (token: string) => {
-  return jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
+export const jwtVerify = (token: string, env: string) => {
+  return jwt.verify(
+    token,
+    env === 'access'
+      ? `${process.env.JWT_ACCESS_TOKEN_KEY}`
+      : `${process.env.JWT_REFRESH_TOKEN_KEY}`
+  );
 };
 
 /**

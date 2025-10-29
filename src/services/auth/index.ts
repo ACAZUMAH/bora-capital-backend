@@ -8,6 +8,8 @@ import createError from 'http-errors';
 import { OtpPurpose } from 'src/common/enums';
 import { validateSigninAccess } from './validateAuthAccess';
 import { rollbar } from 'src/loggers/rollbar';
+import { userModel } from 'src/models';
+import { Types } from 'mongoose';
 
 /**
  * @description Signup a new user by creating their account.
@@ -127,5 +129,13 @@ export const sendForgetPasswordOtp = async (email: string) => {
 
   return {
     message: 'Please check your phone for the OTP to change your password.',
+  };
+};
+
+export const logout = async (userId: string | Types.ObjectId) => {
+  // Invalidate the refresh token by removing it from the user's record
+  await userModel.findByIdAndUpdate(userId, { refreshToken: null });
+  return {
+    message: 'User logged out successfully.',
   };
 };

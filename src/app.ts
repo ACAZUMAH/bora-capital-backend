@@ -4,7 +4,7 @@ import logger from './loggers/logger';
 import connectDB from './common/db';
 import createError from 'http-errors';
 import { Response, Request, NextFunction } from 'express';
-//import { applyRoutes } from './routes';
+import { applyRoutes } from './routes';
 import { applyMiddlewares } from './middlewares';
 import { schema } from './graphql';
 import { errorHandler } from './middlewares/errorHandler';
@@ -18,6 +18,7 @@ export const StartServer = async () => {
 
   await connectDB();
   applyMiddlewares(expressApp);
+  applyRoutes(expressApp);
 
   await createGraphqlServer({ app: expressApp, httpServer, schema });
 

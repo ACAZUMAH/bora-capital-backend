@@ -49,7 +49,7 @@ export const uploadStreamToStorage = async (
       params: uploadParams,
     });
 
-    return upload.done();
+    return await upload.done();
   } catch (error) {
     logger.error('Error uploading file to storage', { error, data });
     throw createError.BadGateway('Error uploading file to storage');

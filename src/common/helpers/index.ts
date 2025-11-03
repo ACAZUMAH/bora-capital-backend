@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import createError from 'http-errors';
 import { ClientApp } from '../interfaces';
 import { apps, customerMobileApp } from '../constants';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getApp = (key?: string) => {
   return apps.find(app => app.key === key);
@@ -182,4 +183,65 @@ export const generateOtp = (len: number) => {
  */
 export const isCustomerApp = (clientApp: ClientApp) => {
   return clientApp.key === customerMobileApp.key;
+};
+
+/**
+ * @description Get file extension from mime type
+ * @param mimeType MIME type of the file
+ * @returns file extension
+ * @example getFileExtensionMimeType("application/pdf") // returns "pdf"
+ */
+export const getFileExtensionMimeType = (mimeType: string) => {
+  const mimeTypes: { [key: string]: string } = {
+    'application/pdf': 'pdf',
+    'image/gif': 'gif',
+    'image/png': 'png',
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpeg',
+    'image/webp': 'webp',
+    'image/svg+xml': 'svg',
+    'image/tiff': 'tiff',
+    'image/bmp': 'bmp',
+    'image/x-icon': 'ico',
+  };
+
+  return mimeTypes[mimeType];
+};
+
+/**
+ * @description Generate a random file name
+ * @param name original file name
+ * @returns random file name with extension
+ * @example generateRandomFileName("document.pdf") // returns "a1b2c3d4e5f6g7h8i9j0.pdf"
+ */
+export const generateRandomFileName = (name: string) => {
+  const extension = name.split('.').pop();
+  return `${uuidv4().replace(/-/g, '')}.${extension}`;
+};
+
+export const getMimeTypeFromBase64 = (based64: string) => {
+  const signatures: { [key: string]: string } = {
+    '/9j/': 'image/jpeg',
+    iVBORw0KGgo: 'image/png',
+    R0lGODdh: 'image/gif',
+    UklGR: 'image/webp',
+    JVBERi0: 'application/pdf',
+    RO1GOD1h: 'image/tiff',
+    'data:image/jpeg;base64,': 'image/jpeg',
+    'data:image/png;base64,': 'image/png',
+    'data:image/gif;base64,': 'image/gif',
+    'data:image/webp;base64,': 'image/webp',
+    'data:image/svg+xml;base64,': 'image/svg+xml',
+    'data:image/tiff;base64,': 'image/tiff',
+    'data:image/bmp;base64,': 'image/bmp',
+    'data:image/x-icon;base64,': 'image/x-icon',
+  };
+
+  for (const signature of Object.keys(signatures)) {
+    if (based64.indexOf(signature) === 0) {
+      return signatures[signature];
+    }
+  }
+
+  throw createError.BadRequest('Invalid base64 string');
 };

@@ -151,6 +151,15 @@ export type Devices = {
   refreshToken?: Maybe<Scalars['String']['output']>;
 };
 
+export type Document = {
+  __typename?: 'Document';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  upload: Upload;
+  user: User;
+};
+
 export type Funds = {
   __typename?: 'Funds';
   assetClass: Scalars['String']['output'];
@@ -236,7 +245,9 @@ export type Mutation = {
   createFund: Funds;
   createFundPerformances: FundsPerformance;
   createTransaction: Transaction;
+  deleteFund: Scalars['Boolean']['output'];
   forgetPassword: AuthResponse;
+  logout: AuthResponse;
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
   signup: AuthResponse;
@@ -261,6 +272,11 @@ export type MutationCreateFundPerformancesArgs = {
 
 export type MutationCreateTransactionArgs = {
   data: CreateTransactionInput;
+};
+
+
+export type MutationDeleteFundArgs = {
+  fundId: Scalars['ID']['input'];
 };
 
 
@@ -362,6 +378,7 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
   getAssetAllocations: Array<Allocation>;
+  getDocumentById?: Maybe<Document>;
   getFundById: Funds;
   getFundPerformanceById: FundsPerformance;
   getFundPerformances: FundsPerformanceConnection;
@@ -373,6 +390,7 @@ export type Query = {
   getTransactionById: Transaction;
   getTransactions: TransactionConnection;
   getUserById: User;
+  getUserDocuments: Array<Maybe<Document>>;
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
   me: User;
@@ -381,6 +399,11 @@ export type Query = {
 
 export type QueryGetAssetAllocationsArgs = {
   portfolioId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetDocumentByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -435,6 +458,11 @@ export type QueryGetTransactionsArgs = {
 
 
 export type QueryGetUserByIdArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetUserDocumentsArgs = {
   userId: Scalars['ID']['input'];
 };
 
@@ -550,6 +578,19 @@ export type UpdateUserInput = {
   preferences?: InputMaybe<PreferencesInput>;
 };
 
+export type Upload = {
+  __typename?: 'Upload';
+  createdAt: Scalars['DateTime']['output'];
+  directory?: Maybe<Scalars['String']['output']>;
+  documentType: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  mimeType: Scalars['String']['output'];
+  size: Scalars['Int']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  url?: Maybe<Scalars['String']['output']>;
+};
+
 export type User = {
   __typename?: 'User';
   biometric?: Maybe<Biometrics>;
@@ -571,7 +612,8 @@ export type AuthResponse = {
 
 export type Authenticated = {
   __typename?: 'authenticated';
-  token: Scalars['String']['output'];
+  accessToken: Scalars['String']['output'];
+  refreshToken: Scalars['String']['output'];
   user?: Maybe<User>;
 };
 
@@ -686,6 +728,7 @@ export type ResolversTypes = {
   DeviceInput: DeviceInput;
   Devices: ResolverTypeWrapper<Devices>;
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
+  Document: ResolverTypeWrapper<Document>;
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -772,6 +815,7 @@ export type ResolversTypes = {
   UpdateFundsPerformanceInput: UpdateFundsPerformanceInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
+  Upload: ResolverTypeWrapper<Upload>;
   User: ResolverTypeWrapper<User>;
   UtcOffset: ResolverTypeWrapper<Scalars['UtcOffset']['output']>;
   Void: ResolverTypeWrapper<Scalars['Void']['output']>;
@@ -805,6 +849,7 @@ export type ResolversParentTypes = {
   DeviceInput: DeviceInput;
   Devices: Devices;
   DeweyDecimal: Scalars['DeweyDecimal']['output'];
+  Document: Document;
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
   Float: Scalars['Float']['output'];
@@ -886,6 +931,7 @@ export type ResolversParentTypes = {
   UpdateFundsPerformanceInput: UpdateFundsPerformanceInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
+  Upload: Upload;
   User: User;
   UtcOffset: Scalars['UtcOffset']['output'];
   Void: Scalars['Void']['output'];
@@ -961,6 +1007,14 @@ export type DevicesResolvers<ContextType = any, ParentType extends ResolversPare
 export interface DeweyDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DeweyDecimal'], any> {
   name: 'DeweyDecimal';
 }
+
+export type DocumentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Document'] = ResolversParentTypes['Document']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  upload?: Resolver<ResolversTypes['Upload'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+};
 
 export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Duration'], any> {
   name: 'Duration';
@@ -1131,7 +1185,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createFund?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
+  deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
+  logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
@@ -1225,6 +1281,7 @@ export type PreferencesResolvers<ContextType = any, ParentType extends Resolvers
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
+  getDocumentById?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<QueryGetDocumentByIdArgs, 'id'>>;
   getFundById?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
   getFundPerformanceById?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
   getFundPerformances?: Resolver<ResolversTypes['FundsPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
@@ -1236,6 +1293,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
   getTransactions?: Resolver<ResolversTypes['TransactionConnection'], ParentType, ContextType, RequireFields<QueryGetTransactionsArgs, 'filters'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
+  getUserDocuments?: Resolver<Array<Maybe<ResolversTypes['Document']>>, ParentType, ContextType, RequireFields<QueryGetUserDocumentsArgs, 'userId'>>;
   healthCheck?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
@@ -1327,6 +1385,18 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
   name: 'UnsignedInt';
 }
 
+export type UploadResolvers<ContextType = any, ParentType extends ResolversParentTypes['Upload'] = ResolversParentTypes['Upload']> = {
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  directory?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  documentType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fileName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  mimeType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  size?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   biometric?: Resolver<Maybe<ResolversTypes['Biometrics']>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -1353,7 +1423,8 @@ export type AuthResponseResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type AuthenticatedResolvers<ContextType = any, ParentType extends ResolversParentTypes['authenticated'] = ResolversParentTypes['authenticated']> = {
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
@@ -1373,6 +1444,7 @@ export type Resolvers<ContextType = any> = {
   DateTimeISO?: GraphQLScalarType;
   Devices?: DevicesResolvers<ContextType>;
   DeweyDecimal?: GraphQLScalarType;
+  Document?: DocumentResolvers<ContextType>;
   Duration?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
   Funds?: FundsResolvers<ContextType>;
@@ -1441,6 +1513,7 @@ export type Resolvers<ContextType = any> = {
   UUID?: GraphQLScalarType;
   UnsignedFloat?: GraphQLScalarType;
   UnsignedInt?: GraphQLScalarType;
+  Upload?: UploadResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UtcOffset?: GraphQLScalarType;
   Void?: GraphQLScalarType;

@@ -13,7 +13,9 @@ import { holdingsTypeDefs } from './holdings/typeDefs';
 import { holdingsResolvers } from './holdings/resolvers';
 import { transactionsResolvers, transactionsTypeDefs } from './transactions';
 import { fundsResolvers, fundsTypeDefs } from './funds';
-//import { printSchema } from "graphql";
+import { uploadResolvers, uploadTypedefs } from './upload';
+import { documentsTypedefs } from './documents/typeDefs';
+import { documentsResolvers } from './documents/resolvers';
 
 const typeDefs = [
   generalTypeDefs,
@@ -24,6 +26,8 @@ const typeDefs = [
   holdingsTypeDefs,
   transactionsTypeDefs,
   fundsTypeDefs,
+  uploadTypedefs,
+  documentsTypedefs,
 ];
 
 const resolvers = [
@@ -35,6 +39,8 @@ const resolvers = [
   holdingsResolvers,
   transactionsResolvers,
   fundsResolvers,
+  uploadResolvers,
+  documentsResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

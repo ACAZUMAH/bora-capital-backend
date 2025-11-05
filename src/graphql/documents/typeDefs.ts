@@ -1,4 +1,21 @@
 export const documentsTypedefs = `#graphql
+  enum DocumentsType {
+    PASSPORT
+    ID_CARD
+    DRIVER_LICENSE
+    TAX_FORM
+    AGREEMENT
+    PROOF_OF_ADDRESS
+    ID_DOCUMENT
+    STATEMENT
+    OTHER
+  }
+
+  enum fileType {
+    DOCUMENT
+    IMAGE
+  }
+
   type Document {
     id: ID!
     upload: Upload!
@@ -12,4 +29,19 @@ export const documentsTypedefs = `#graphql
     getDocumentById(id: ID!): Document
   }
 
+  input CreateDocumentInput {
+    userId: ID!
+    fileName: String!
+    file: String!
+    documentType: DocumentsType!
+    size: Int!
+    mimeType: String!
+    directory: String
+    fileType: fileType!
+  }
+  
+  extend type Mutation {
+    createDocument(data: CreateDocumentInput!): Document!
+    deleteDocument(id: ID!): Boolean!
+  }
 `;

@@ -104,6 +104,17 @@ export type Biometrics = {
   expiresAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type CreateDocumentInput = {
+  directory?: InputMaybe<Scalars['String']['input']>;
+  documentType: DocumentsType;
+  file: Scalars['String']['input'];
+  fileName: Scalars['String']['input'];
+  fileType: FileType;
+  mimeType: Scalars['String']['input'];
+  size: Scalars['Int']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type CreateFundInput = {
   assetClass: Scalars['String']['input'];
   baseCurrency: Scalars['String']['input'];
@@ -159,6 +170,18 @@ export type Document = {
   upload: Upload;
   user: User;
 };
+
+export enum DocumentsType {
+  AGREEMENT = 'AGREEMENT',
+  DRIVER_LICENSE = 'DRIVER_LICENSE',
+  ID_CARD = 'ID_CARD',
+  ID_DOCUMENT = 'ID_DOCUMENT',
+  OTHER = 'OTHER',
+  PASSPORT = 'PASSPORT',
+  PROOF_OF_ADDRESS = 'PROOF_OF_ADDRESS',
+  STATEMENT = 'STATEMENT',
+  TAX_FORM = 'TAX_FORM'
+}
 
 export type Funds = {
   __typename?: 'Funds';
@@ -242,6 +265,7 @@ export type HoldingsFilters = {
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
+  createDocument: Document;
   createFund: Funds;
   createFundPerformances: FundsPerformance;
   createTransaction: Transaction;
@@ -257,6 +281,11 @@ export type Mutation = {
   updateTransactionStatus: Transaction;
   updateUser: User;
   verifyOtpAndCompleteAuth: Authenticated;
+};
+
+
+export type MutationCreateDocumentArgs = {
+  data: CreateDocumentInput;
 };
 
 
@@ -617,6 +646,11 @@ export type Authenticated = {
   user?: Maybe<User>;
 };
 
+export enum FileType {
+  DOCUMENT = 'DOCUMENT',
+  IMAGE = 'IMAGE'
+}
+
 export type SigninInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -716,6 +750,7 @@ export type ResolversTypes = {
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
+  CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
   CreateFundsPerformanceInput: CreateFundsPerformanceInput;
   CreateTransactionInput: CreateTransactionInput;
@@ -729,6 +764,7 @@ export type ResolversTypes = {
   Devices: ResolverTypeWrapper<Devices>;
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
   Document: ResolverTypeWrapper<Document>;
+  DocumentsType: DocumentsType;
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
@@ -821,6 +857,7 @@ export type ResolversTypes = {
   Void: ResolverTypeWrapper<Scalars['Void']['output']>;
   authResponse: ResolverTypeWrapper<AuthResponse>;
   authenticated: ResolverTypeWrapper<Authenticated>;
+  fileType: FileType;
   signinInput: SigninInput;
   signupInput: SignupInput;
   updateTransactionStatusInput: UpdateTransactionStatusInput;
@@ -837,6 +874,7 @@ export type ResolversParentTypes = {
   Byte: Scalars['Byte']['output'];
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
+  CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
   CreateFundsPerformanceInput: CreateFundsPerformanceInput;
   CreateTransactionInput: CreateTransactionInput;
@@ -1182,6 +1220,7 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationCreateDocumentArgs, 'data'>>;
   createFund?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;

@@ -115,7 +115,7 @@ export const uploadPhoto = async (data: uploadDocumentInput) => {
 
   const buffer = Buffer.from(cleanBase64, 'base64');
 
-  const upload = await uploadStreamToStorage({
+  await uploadStreamToStorage({
     filename,
     mimeType,
     stream: buffer,
@@ -152,7 +152,7 @@ export const uploadFile = async (data: uploadDocumentInput) => {
 
   const buffer = Buffer.from(cleanBase64, 'base64');
 
-  const upload = await uploadStreamToStorage({
+  await uploadStreamToStorage({
     filename,
     mimeType,
     stream: buffer,

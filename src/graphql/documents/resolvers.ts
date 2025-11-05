@@ -2,10 +2,12 @@ import { DocumentsDocument, GraphqlContext } from 'src/common/interfaces';
 import {
   FileType,
   MutationCreateDocumentArgs,
+  MutationDeleteDocumentArgs,
   QueryGetDocumentByIdArgs,
   QueryGetUserDocumentsArgs,
 } from 'src/common/interfaces/graphql';
 import {
+    deleteUploadById,
   getUploadById,
   getUploadByUserId,
   uploadFile,
@@ -39,7 +41,9 @@ const createDocument = (_: any, args: MutationCreateDocumentArgs) => {
     : uploadFile({ ...args.data, directory: 'Files' });
 };
 
-const deleteDocument = () => {};
+const deleteDocument = (_: any, args: MutationDeleteDocumentArgs) => {
+    return deleteUploadById(args.id)
+};
 
 export const documentsResolvers = {
   Query: {

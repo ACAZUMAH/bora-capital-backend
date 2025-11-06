@@ -14,8 +14,7 @@ import { holdingsResolvers } from './holdings/resolvers';
 import { transactionsResolvers, transactionsTypeDefs } from './transactions';
 import { fundsResolvers, fundsTypeDefs } from './funds';
 import { uploadResolvers, uploadTypedefs } from './upload';
-import { documentsTypedefs } from './documents/typeDefs';
-import { documentsResolvers } from './documents/resolvers';
+import { documentsResolvers, documentsTypedefs } from './documents';
 
 const typeDefs = [
   generalTypeDefs,

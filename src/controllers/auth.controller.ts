@@ -1,46 +1,55 @@
-// import { Request, Response } from "express";
-// import { constructHTTPResponse } from "src/common/helpers";
-// import { forgetPasswordOtp, loginUser, register } from "src/services/auth";
-// import { verifyOtpAndSignJwt } from "src/services/auth/auth";
-// import { resetPassword } from "src/services/users";
+import { NextFunction, Request, Response } from 'express';
+import { constructHTTPResponse, jwtSign, jwtVerify } from 'src/common/helpers';
+import createError from 'http-errors';
+import { userModel } from 'src/models';
 
-// export const signUpUser = async (req: Request, res: Response) => {
-//   const { fullName, email, phoneNumber, password } = req.body;
+export const verifyAccessToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const authHeader = req.headers['refreshToken'];
 
-//   const response = await register({ fullName, email, phoneNumber, password });
+    if (!authHeader)
+      return res
+        .status(401)
+        .json(constructHTTPResponse(null, createError(401, 'Unauthorized')));
 
-//   return res.status(201).json(constructHTTPResponse(response));
-// };
+    const headerValue = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+    const bearer = headerValue?.split(' ');
+    const bearerToken = bearer && bearer.length > 1 ? bearer[1] : bearer?.[0];
 
-// export const signInUser = async (req: Request, res: Response) => {
-//   const { email, password } = req.body;
+    if (!bearerToken)
+      return res
+        .status(401)
+        .json(constructHTTPResponse(null, createError(401, 'Unauthorized')));
 
-//   const response = await loginUser({ email, password });
+    const user = userModel.findOne({ refreshToken: bearerToken });
 
-//   return res.status(200).json(constructHTTPResponse(response));
-// };
+    if (!user)
+      return res
+        .status(403)
+        .json(constructHTTPResponse(null, createError(403, 'Forbidden')));
 
-// export const forgetPassword = async (req: Request, res: Response) => {
-//   const { email } = req.body;
+    const data: any = jwtVerify(bearerToken, 'refresh');
 
-//   const response = await forgetPasswordOtp(email);
+    if (!data?.id)
+      return res
+        .status(401)
+        .json(constructHTTPResponse(null, createError(401, 'Unauthorized')));
 
-//   return res.status(200).json(constructHTTPResponse(response));
-// };
+    const accessToken = jwtSign({ id: data.id }, 'access');
 
-// export const resetUserPassword = async (req: Request, res: Response) => {
-//   const response = await resetPassword({
-//     userId: req?.user?._id!,
-//     newPassword: req.body.newPassword,
-//   });
-
-//   return res.status(200).json(constructHTTPResponse(response));
-// };
-
-// export const verifyEmail = async (req: Request, res: Response) => {
-//   const { otp } = req.body;
-
-//   const response = await verifyOtpAndSignJwt(otp);
-
-//   return res.status(200).json(constructHTTPResponse(response));
-// };
+    return res.status(200).json(constructHTTPResponse({ accessToken }, null));
+  } catch (error: any) {
+    return res
+      .status(401)
+      .json(
+        constructHTTPResponse(
+          null,
+          createError(401, error.message || 'Refresh token expired')
+        )
+      );
+  }
+};

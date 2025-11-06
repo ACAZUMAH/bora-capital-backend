@@ -4,7 +4,7 @@ import createError from 'http-errors';
 import { UserDocument } from 'src/common/interfaces';
 import { getUserById } from 'src/services/users';
 
-export const verifyToken = async (
+export const verifyAccessToken = async (
   req: Request,
   _res: Response,
   next: NextFunction
@@ -19,7 +19,7 @@ export const verifyToken = async (
 
     if (!bearerToken) return next();
 
-    const data: any = jwtVerify(bearerToken);
+    const data: any = jwtVerify(bearerToken, 'access');
 
     if (!data?.id) return next();
 
@@ -29,6 +29,6 @@ export const verifyToken = async (
 
     return next();
   } catch (error: any) {
-    throw createError.Unauthorized('Invalid token');
+    throw createError.Unauthorized(error.message || 'Invalid token');
   }
 };

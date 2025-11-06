@@ -15,6 +15,7 @@ export interface UserDocument {
   devices?: Array<DeviceDocument>;
   preferences?: PreferencesDocument;
   //kycRecords?: Array<KycRecordsDocument>
+  refreshToken?: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;

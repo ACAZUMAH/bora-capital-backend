@@ -15,9 +15,9 @@ const documentsSchema = new Schema<DocumentsDocument>(
       enum: Object.values(DocumentsType),
       required: true,
     },
-    fileUrl: { type: String },
     size: { type: Number, required: true },
     mimeType: { type: String, required: true },
+    directory: { type: String },
   },
   { timestamps: true }
 );

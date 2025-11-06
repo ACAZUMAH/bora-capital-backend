@@ -16,6 +16,10 @@ const signin = (
   return services.signin({ ...args.data }, clientApp!);
 };
 
+const logout = (_: any, __: any, { user }: GraphqlContext) => {
+  return services.logout(user!._id!);
+}
+
 const forgetPassword = (
   _: any,
   args: GraphqlTypes.MutationForgetPasswordArgs

@@ -1,3 +1,4 @@
+import { createFundPerformanceLoader } from './fundPerformanceLoader';
 import { createFundLoader } from './fundsLoader';
 import { createHoldingsLoader } from './holdingsLoader';
 import { CreatePortfolioLoader } from './portfolioLoader';
@@ -10,4 +11,5 @@ export const createDataLoaders = () => ({
   holdingsLoader: createHoldingsLoader(),
   transactionsLoader: createTransactionLoader(),
   portfolioLoader: CreatePortfolioLoader(),
+  fundsPerformanceLoader: createFundPerformanceLoader(),
 });

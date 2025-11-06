@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { generateOtp, jwtSign } from 'src/common/helpers';
-import { authModel } from 'src/models';
+import { authModel, userModel } from 'src/models';
 import createError from 'http-errors';
 import { getUserById } from '../users';
 import { AuthInput } from 'src/common/interfaces';
@@ -43,7 +43,10 @@ export const verifyOtpAndSignJwt = async (otp: string) => {
 
   const user = await getUserById(auth.userId);
 
-  const token = jwtSign({ id: user._id });
+  const accessToken = jwtSign({ id: user._id }, 'access');
+  const refreshToken = jwtSign({ id: user._id }, 'refresh');
 
-  return { user, token };
+  await userModel.findByIdAndUpdate(user._id, { refreshToken });
+
+  return { user, accessToken, refreshToken };
 };

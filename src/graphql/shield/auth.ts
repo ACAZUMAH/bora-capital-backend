@@ -23,5 +23,6 @@ export const authShield = {
       message: 'Too many OTP verification attempts, please try again later.',
     }),
     resetUserPassword: isAuthenticated,
+    logout: isAuthenticated,
   },
 };

@@ -1,7 +1,8 @@
 export const authTypeDefs = `#graphql
     type authenticated {
        user: User,
-       token: String!
+       accessToken: String!
+       refreshToken: String!
     }
 
     type authResponse {
@@ -23,6 +24,7 @@ export const authTypeDefs = `#graphql
     extend type Mutation {
         signup(data: signupInput!): authResponse!
         signin(data: signinInput!): authResponse!
+        logout: authResponse!
         forgetPassword(email: String!): authResponse!
         resetUserPassword(newPassword: String!): authResponse!
         verifyOtpAndCompleteAuth(otp: String!): authenticated!

@@ -4,7 +4,6 @@ import { Collections, role } from 'src/common/enums';
 import { biometricSchema } from '../biometric/biometricModel';
 import { deviceSchema } from '../devices/deviceModel';
 import { preferencesSchema } from '../preferences/preferencesModel';
-//import { kycRecordsSchema } from "../kyc-records/kycRecords";
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -17,7 +16,9 @@ const userSchema = new Schema<UserDocument>(
     preferences: preferencesSchema,
     password: { type: String, required: true },
 
-    // kycRecords: [kycRecordsSchema],
+    advisors: [{ type: Schema.Types.ObjectId, ref: Collections.Users }],
+
+    clients: [{ type: Schema.Types.ObjectId, ref: Collections.Users }],
   },
   { timestamps: true }
 );

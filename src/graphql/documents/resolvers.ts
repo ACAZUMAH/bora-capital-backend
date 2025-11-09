@@ -10,13 +10,18 @@ import {
     deleteUploadById,
   getUploadById,
   getUploadByUserId,
+  getUploadByUserIds,
   uploadFile,
   uploadPhoto,
 } from 'src/services/uploads';
 import { idResolver } from '../general';
 
-const getUserDocuments = (_: any, args: QueryGetUserDocumentsArgs) => {
-  return getUploadByUserId(args.userId);
+const getUserDocuments = (_: any, args: QueryGetUserDocumentsArgs, { user }: GraphqlContext) => {
+  return getUploadByUserId(args.userId || user?._id!);
+};
+
+const getClientsDocuments = (_: any, __: any, { user }: GraphqlContext) => {
+  return getUploadByUserIds(user?.clients || []);
 };
 
 const getDocumentById = (_: any, args: QueryGetDocumentByIdArgs) => {
@@ -42,12 +47,13 @@ const createDocument = (_: any, args: MutationCreateDocumentArgs) => {
 };
 
 const deleteDocument = (_: any, args: MutationDeleteDocumentArgs) => {
-    return deleteUploadById(args.id)
+    //return deleteUploadById(args.id)
 };
 
 export const documentsResolvers = {
   Query: {
     getUserDocuments,
+    getClientsDocuments,
     getDocumentById,
   },
   Document: {

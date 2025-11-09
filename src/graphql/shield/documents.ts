@@ -3,10 +3,6 @@ import { GraphqlContext } from "src/common/interfaces";
 import { isAdvisor, isAuthenticated } from "./general";
 import { MutationDeleteDocumentArgs } from "src/common/interfaces/graphql";
 
-const canView = rule()((_, ctx: GraphqlContext) => {
-    return Boolean()
-});
-
 const canDeleteDocument = rule()((_, args: MutationDeleteDocumentArgs, ctx: GraphqlContext) => {
     return Boolean(ctx.user && ctx.user._id === args?.data?.userId);
 });

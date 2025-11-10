@@ -149,6 +149,11 @@ export type CreateTransactionInput = {
   userId: Scalars['ID']['input'];
 };
 
+export type DeleteDocumentInput = {
+  id: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+};
+
 export type DeviceInput = {
   deviceId: Scalars['String']['input'];
   lastUsed?: InputMaybe<Scalars['DateTime']['input']>;
@@ -306,7 +311,7 @@ export type MutationCreateTransactionArgs = {
 
 
 export type MutationDeleteDocumentArgs = {
-  id: Scalars['ID']['input'];
+  data?: InputMaybe<DeleteDocumentInput>;
 };
 
 
@@ -413,6 +418,7 @@ export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
   getAssetAllocations: Array<Allocation>;
+  getClientsDocuments: Array<Maybe<Document>>;
   getDocumentById?: Maybe<Document>;
   getFundById: Funds;
   getFundPerformanceById: FundsPerformance;
@@ -766,6 +772,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   DateTimeISO: ResolverTypeWrapper<Scalars['DateTimeISO']['output']>;
+  DeleteDocumentInput: DeleteDocumentInput;
   DeviceInput: DeviceInput;
   Devices: ResolverTypeWrapper<Devices>;
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
@@ -890,6 +897,7 @@ export type ResolversParentTypes = {
   Date: Scalars['Date']['output'];
   DateTime: Scalars['DateTime']['output'];
   DateTimeISO: Scalars['DateTimeISO']['output'];
+  DeleteDocumentInput: DeleteDocumentInput;
   DeviceInput: DeviceInput;
   Devices: Devices;
   DeweyDecimal: Scalars['DeweyDecimal']['output'];
@@ -1230,7 +1238,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createFund?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
-  deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteDocumentArgs, 'id'>>;
+  deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteDocumentArgs>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
   logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;
@@ -1327,6 +1335,7 @@ export type PreferencesResolvers<ContextType = any, ParentType extends Resolvers
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
+  getClientsDocuments?: Resolver<Array<Maybe<ResolversTypes['Document']>>, ParentType, ContextType>;
   getDocumentById?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<QueryGetDocumentByIdArgs, 'id'>>;
   getFundById?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
   getFundPerformanceById?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;

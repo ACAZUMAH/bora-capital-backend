@@ -59,6 +59,19 @@ export const getUploadByUserId = async (userId: Types.ObjectId | string) => {
   return documents;
 };
 
+export const getUploadByUserIds = async (
+  ids: Array<Types.ObjectId | string>
+) => {
+  if (!ids.length) return [];
+
+  if (!ids.every(isValidObjectId))
+    throw new createError.BadRequest('Invalid user ids');
+
+  return await documentsModel.find({ userId: { $in: ids } }, null, {
+    lean: true,
+  });
+};
+
 /**
  * @description Retrieve documents by their IDs
  * @param ids Array of document IDs to retrieve
@@ -95,7 +108,7 @@ export const deleteUploadById = async (id: Types.ObjectId | string) => {
  * @param data.userId ID of the user uploading the document
  * @param data.file Base64 encoded string of the image file
  * @param data.directory Directory in storage where the file will be uploaded
- * @param data.documentType Type of the document (e.g., profile picture, cover photo) 
+ * @param data.documentType Type of the document (e.g., profile picture, cover photo)
  * @returns The created document record
  */
 export const uploadPhoto = async (data: uploadDocumentInput) => {

@@ -3,7 +3,6 @@ import { role } from 'src/common/enums';
 import { BiometricDocument } from './biometric';
 import { DeviceDocument, DeviceInput } from './devices';
 import { PreferencesDocument, PreferencesInput } from './preferences';
-//import { KycRecordsDocument } from "../kycRecords";
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
@@ -14,11 +13,13 @@ export interface UserDocument {
   biometric?: BiometricDocument;
   devices?: Array<DeviceDocument>;
   preferences?: PreferencesDocument;
-  //kycRecords?: Array<KycRecordsDocument>
   refreshToken?: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
+
+  advisors?: Array<string | Types.ObjectId>;
+  clients?: Array<string | Types.ObjectId>;
 }
 
 export interface CreateUserInput {

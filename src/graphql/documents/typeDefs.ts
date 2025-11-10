@@ -26,6 +26,7 @@ export const documentsTypedefs = `#graphql
 
   extend type Query {
     getUserDocuments(userId: ID!): [Document]!
+    getClientsDocuments: [Document]!
     getDocumentById(id: ID!): Document
   }
 
@@ -39,9 +40,14 @@ export const documentsTypedefs = `#graphql
     directory: String
     fileType: fileType!
   }
+
+  input DeleteDocumentInput {
+    id: ID!
+    userId: ID!
+  }
   
   extend type Mutation {
     createDocument(data: CreateDocumentInput!): Document!
-    deleteDocument(id: ID!): Boolean!
+    deleteDocument(data: DeleteDocumentInput): Boolean!
   }
 `;

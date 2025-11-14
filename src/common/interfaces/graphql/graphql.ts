@@ -125,7 +125,7 @@ export type CreateFundInput = {
   symbol: Scalars['String']['input'];
 };
 
-export type CreateFundsPerformanceInput = {
+export type CreateFundPerformancesInput = {
   date: Scalars['DateTime']['input'];
   fundId: Scalars['ID']['input'];
   nav: Scalars['Float']['input'];
@@ -188,8 +188,8 @@ export enum DocumentsType {
   TAX_FORM = 'TAX_FORM'
 }
 
-export type Funds = {
-  __typename?: 'Funds';
+export type Fund = {
+  __typename?: 'Fund';
   assetClass: Scalars['String']['output'];
   baseCurrency: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
@@ -202,16 +202,8 @@ export type Funds = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
-export type FundsFilters = {
-  endDate?: InputMaybe<Scalars['DateTime']['input']>;
-  fundId?: InputMaybe<Scalars['ID']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-  startDate?: InputMaybe<Scalars['DateTime']['input']>;
-};
-
-export type FundsPerformance = {
-  __typename?: 'FundsPerformance';
+export type FundPerformance = {
+  __typename?: 'FundPerformance';
   createdAt: Scalars['DateTime']['output'];
   date: Scalars['String']['output'];
   fundId: Scalars['ID']['output'];
@@ -221,9 +213,15 @@ export type FundsPerformance = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type FundsPerformanceConnection = {
-  __typename?: 'FundsPerformanceConnection';
-  edges: Array<FundsPerformance>;
+export type FundPerformanceConnection = {
+  __typename?: 'FundPerformanceConnection';
+  edges: Array<FundPerformance>;
+  pageInfo: PageInfo;
+};
+
+export type FundsConnection = {
+  __typename?: 'FundsConnection';
+  edges: Array<Fund>;
   pageInfo: PageInfo;
 };
 
@@ -240,7 +238,7 @@ export type Holdings = {
   currentPrice: Scalars['Float']['output'];
   currentValue: Scalars['Float']['output'];
   fundId: Scalars['ID']['output'];
-  funds?: Maybe<Funds>;
+  funds?: Maybe<Fund>;
   id: Scalars['ID']['output'];
   lastPricedAt?: Maybe<Scalars['DateTime']['output']>;
   name: Scalars['String']['output'];
@@ -299,8 +297,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
   createDocument: Document;
-  createFund: Funds;
-  createFundPerformances: FundsPerformance;
+  createFund: Fund;
+  createFundPerformances: FundPerformance;
   createTransaction: Transaction;
   deleteDocument: Scalars['Boolean']['output'];
   deleteFund: Scalars['Boolean']['output'];
@@ -309,8 +307,8 @@ export type Mutation = {
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
   signup: AuthResponse;
-  updateFund: Funds;
-  updateFundPerformances: FundsPerformance;
+  updateFund: Fund;
+  updateFundPerformances: FundPerformance;
   updateTransaction: Transaction;
   updateTransactionStatus: Transaction;
   updateUser: User;
@@ -329,7 +327,7 @@ export type MutationCreateFundArgs = {
 
 
 export type MutationCreateFundPerformancesArgs = {
-  data: CreateFundsPerformanceInput;
+  data: CreateFundPerformancesInput;
 };
 
 
@@ -374,7 +372,7 @@ export type MutationUpdateFundArgs = {
 
 
 export type MutationUpdateFundPerformancesArgs = {
-  data: UpdateFundsPerformanceInput;
+  data: UpdateFundPerformancesInput;
 };
 
 
@@ -412,6 +410,14 @@ export enum PaymentMethod {
   MOBILE_MONEY = 'MOBILE_MONEY'
 }
 
+export type PerformanceFilters = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  fundId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 export type Portfolio = {
   __typename?: 'Portfolio';
   asOf?: Maybe<Scalars['DateTime']['output']>;
@@ -448,10 +454,10 @@ export type Query = {
   getAssetAllocations: Array<Allocation>;
   getClientsDocuments: Array<Maybe<Document>>;
   getDocumentById?: Maybe<Document>;
-  getFundById: Funds;
-  getFundPerformanceById: FundsPerformance;
-  getFundPerformances: FundsPerformanceConnection;
-  getFunds: Array<Funds>;
+  getFundById: Fund;
+  getFundPerformanceById: FundPerformance;
+  getFundPerformances: FundPerformanceConnection;
+  getFunds: FundsConnection;
   getHoldings: HoldingsConnection;
   getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
@@ -489,7 +495,7 @@ export type QueryGetFundPerformanceByIdArgs = {
 
 
 export type QueryGetFundPerformancesArgs = {
-  filters?: InputMaybe<FundsFilters>;
+  filters?: InputMaybe<PerformanceFilters>;
 };
 
 
@@ -571,7 +577,7 @@ export type Transaction = {
   currency: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
   fundId: Scalars['ID']['output'];
-  funds?: Maybe<Funds>;
+  funds?: Maybe<Fund>;
   id: Scalars['ID']['output'];
   portfolio?: Maybe<Portfolio>;
   portfolioId: Scalars['ID']['output'];
@@ -628,7 +634,7 @@ export type UpdateFundInput = {
   symbol?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type UpdateFundsPerformanceInput = {
+export type UpdateFundPerformancesInput = {
   date?: InputMaybe<Scalars['DateTime']['input']>;
   nav?: InputMaybe<Scalars['Float']['input']>;
   performanceId: Scalars['ID']['input'];
@@ -804,7 +810,7 @@ export type ResolversTypes = {
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
   CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
-  CreateFundsPerformanceInput: CreateFundsPerformanceInput;
+  CreateFundPerformancesInput: CreateFundPerformancesInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']['output']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>;
@@ -821,10 +827,10 @@ export type ResolversTypes = {
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  Funds: ResolverTypeWrapper<Funds>;
-  FundsFilters: FundsFilters;
-  FundsPerformance: ResolverTypeWrapper<FundsPerformance>;
-  FundsPerformanceConnection: ResolverTypeWrapper<FundsPerformanceConnection>;
+  Fund: ResolverTypeWrapper<Fund>;
+  FundPerformance: ResolverTypeWrapper<FundPerformance>;
+  FundPerformanceConnection: ResolverTypeWrapper<FundPerformanceConnection>;
+  FundsConnection: ResolverTypeWrapper<FundsConnection>;
   GUID: ResolverTypeWrapper<Scalars['GUID']['output']>;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   GetFundsFilters: GetFundsFilters;
@@ -871,6 +877,7 @@ export type ResolversTypes = {
   ObjectID: ResolverTypeWrapper<Scalars['ObjectID']['output']>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   PaymentMethod: PaymentMethod;
+  PerformanceFilters: PerformanceFilters;
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']['output']>;
   Port: ResolverTypeWrapper<Scalars['Port']['output']>;
   Portfolio: ResolverTypeWrapper<Portfolio>;
@@ -904,7 +911,7 @@ export type ResolversTypes = {
   UnsignedFloat: ResolverTypeWrapper<Scalars['UnsignedFloat']['output']>;
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']['output']>;
   UpdateFundInput: UpdateFundInput;
-  UpdateFundsPerformanceInput: UpdateFundsPerformanceInput;
+  UpdateFundPerformancesInput: UpdateFundPerformancesInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: ResolverTypeWrapper<Upload>;
@@ -932,7 +939,7 @@ export type ResolversParentTypes = {
   CountryName: Scalars['CountryName']['output'];
   CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
-  CreateFundsPerformanceInput: CreateFundsPerformanceInput;
+  CreateFundPerformancesInput: CreateFundPerformancesInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: Scalars['Cuid']['output'];
   Currency: Scalars['Currency']['output'];
@@ -948,10 +955,10 @@ export type ResolversParentTypes = {
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
   Float: Scalars['Float']['output'];
-  Funds: Funds;
-  FundsFilters: FundsFilters;
-  FundsPerformance: FundsPerformance;
-  FundsPerformanceConnection: FundsPerformanceConnection;
+  Fund: Fund;
+  FundPerformance: FundPerformance;
+  FundPerformanceConnection: FundPerformanceConnection;
+  FundsConnection: FundsConnection;
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
   GetFundsFilters: GetFundsFilters;
@@ -997,6 +1004,7 @@ export type ResolversParentTypes = {
   NonPositiveInt: Scalars['NonPositiveInt']['output'];
   ObjectID: Scalars['ObjectID']['output'];
   PageInfo: PageInfo;
+  PerformanceFilters: PerformanceFilters;
   PhoneNumber: Scalars['PhoneNumber']['output'];
   Port: Scalars['Port']['output'];
   Portfolio: Portfolio;
@@ -1026,7 +1034,7 @@ export type ResolversParentTypes = {
   UnsignedFloat: Scalars['UnsignedFloat']['output'];
   UnsignedInt: Scalars['UnsignedInt']['output'];
   UpdateFundInput: UpdateFundInput;
-  UpdateFundsPerformanceInput: UpdateFundsPerformanceInput;
+  UpdateFundPerformancesInput: UpdateFundPerformancesInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: Upload;
@@ -1122,7 +1130,7 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
   name: 'EmailAddress';
 }
 
-export type FundsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Funds'] = ResolversParentTypes['Funds']> = {
+export type FundResolvers<ContextType = any, ParentType extends ResolversParentTypes['Fund'] = ResolversParentTypes['Fund']> = {
   assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   baseCurrency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -1135,7 +1143,7 @@ export type FundsResolvers<ContextType = any, ParentType extends ResolversParent
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
 };
 
-export type FundsPerformanceResolvers<ContextType = any, ParentType extends ResolversParentTypes['FundsPerformance'] = ResolversParentTypes['FundsPerformance']> = {
+export type FundPerformanceResolvers<ContextType = any, ParentType extends ResolversParentTypes['FundPerformance'] = ResolversParentTypes['FundPerformance']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   date?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1145,8 +1153,13 @@ export type FundsPerformanceResolvers<ContextType = any, ParentType extends Reso
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
-export type FundsPerformanceConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['FundsPerformanceConnection'] = ResolversParentTypes['FundsPerformanceConnection']> = {
-  edges?: Resolver<Array<ResolversTypes['FundsPerformance']>, ParentType, ContextType>;
+export type FundPerformanceConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['FundPerformanceConnection'] = ResolversParentTypes['FundPerformanceConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['FundPerformance']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+};
+
+export type FundsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['FundsConnection'] = ResolversParentTypes['FundsConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['Fund']>, ParentType, ContextType>;
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
 };
 
@@ -1180,7 +1193,7 @@ export type HoldingsResolvers<ContextType = any, ParentType extends ResolversPar
   currentPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   currentValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  funds?: Resolver<Maybe<ResolversTypes['Funds']>, ParentType, ContextType>;
+  funds?: Resolver<Maybe<ResolversTypes['Fund']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastPricedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1300,8 +1313,8 @@ export type MarketNewsConnectionResolvers<ContextType = any, ParentType extends 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationCreateDocumentArgs, 'data'>>;
-  createFund?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
-  createFundPerformances?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
+  createFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
+  createFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
   deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteDocumentArgs>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
@@ -1310,8 +1323,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
-  updateFund?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<MutationUpdateFundArgs, 'data'>>;
-  updateFundPerformances?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<MutationUpdateFundPerformancesArgs, 'data'>>;
+  updateFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationUpdateFundArgs, 'data'>>;
+  updateFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationUpdateFundPerformancesArgs, 'data'>>;
   updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
   updateTransactionStatus?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionStatusArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
@@ -1402,10 +1415,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
   getClientsDocuments?: Resolver<Array<Maybe<ResolversTypes['Document']>>, ParentType, ContextType>;
   getDocumentById?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<QueryGetDocumentByIdArgs, 'id'>>;
-  getFundById?: Resolver<ResolversTypes['Funds'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
-  getFundPerformanceById?: Resolver<ResolversTypes['FundsPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
-  getFundPerformances?: Resolver<ResolversTypes['FundsPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
-  getFunds?: Resolver<Array<ResolversTypes['Funds']>, ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
+  getFundById?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
+  getFundPerformanceById?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
+  getFundPerformances?: Resolver<ResolversTypes['FundPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
+  getFunds?: Resolver<ResolversTypes['FundsConnection'], ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
   getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
@@ -1468,7 +1481,7 @@ export type TransactionResolvers<ContextType = any, ParentType extends Resolvers
   currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  funds?: Resolver<Maybe<ResolversTypes['Funds']>, ParentType, ContextType>;
+  funds?: Resolver<Maybe<ResolversTypes['Fund']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   portfolio?: Resolver<Maybe<ResolversTypes['Portfolio']>, ParentType, ContextType>;
   portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1569,9 +1582,10 @@ export type Resolvers<ContextType = any> = {
   Document?: DocumentResolvers<ContextType>;
   Duration?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
-  Funds?: FundsResolvers<ContextType>;
-  FundsPerformance?: FundsPerformanceResolvers<ContextType>;
-  FundsPerformanceConnection?: FundsPerformanceConnectionResolvers<ContextType>;
+  Fund?: FundResolvers<ContextType>;
+  FundPerformance?: FundPerformanceResolvers<ContextType>;
+  FundPerformanceConnection?: FundPerformanceConnectionResolvers<ContextType>;
+  FundsConnection?: FundsConnectionResolvers<ContextType>;
   GUID?: GraphQLScalarType;
   GeoJSON?: GraphQLScalarType;
   HSL?: GraphQLScalarType;

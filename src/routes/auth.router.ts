@@ -3,6 +3,6 @@ import { verifyAccessToken } from "src/controllers";
 
 const router = Router();
 
-router.post("/refresh", verifyAccessToken);
+router.get("/refresh", verifyAccessToken);
 
 export const authRouter = router;

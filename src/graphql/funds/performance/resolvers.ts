@@ -43,7 +43,7 @@ export const fundsPerformanceResolvers = {
     getFundPerformances,
   },
 
-  FundsPerformance: {
+  FundPerformance: {
     id: idResolver,
   },
 

@@ -4,8 +4,8 @@ export const marketNewsTypeDefs = `#graphql
         title: String!
         source: String!
         url: String!
-        summary: String!
-        content: String!
+        summary: String
+        content: String
         author: String!
         publishedAt: String!
         tag: [String!]!

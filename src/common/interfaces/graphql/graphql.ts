@@ -118,8 +118,8 @@ export type CreateDocumentInput = {
 export type CreateFundInput = {
   assetClass: Scalars['String']['input'];
   baseCurrency: Scalars['String']['input'];
-  description?: InputMaybe<Scalars['String']['input']>;
-  inceptionDate?: InputMaybe<Scalars['DateTime']['input']>;
+  description: Scalars['String']['input'];
+  inceptionDate: Scalars['DateTime']['input'];
   name: Scalars['String']['input'];
   objective: Scalars['String']['input'];
   symbol: Scalars['String']['input'];
@@ -270,12 +270,12 @@ export type HoldingsFilters = {
 export type MarketNews = {
   __typename?: 'MarketNews';
   author: Scalars['String']['output'];
-  content: Scalars['String']['output'];
+  content?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   publishedAt: Scalars['String']['output'];
   source: Scalars['String']['output'];
-  summary: Scalars['String']['output'];
+  summary?: Maybe<Scalars['String']['output']>;
   tag: Array<Scalars['String']['output']>;
   title: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
@@ -455,6 +455,7 @@ export type Query = {
   getHoldings: HoldingsConnection;
   getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
+  getMarketNewsById?: Maybe<MarketNews>;
   getPortfolioById: Portfolio;
   getPortfoliosByUserId: Array<Portfolio>;
   getTransactionById: Transaction;
@@ -508,7 +509,12 @@ export type QueryGetHoldingsByIdArgs = {
 
 
 export type QueryGetMarketNewsArgs = {
-  filters?: InputMaybe<MarketNewsFilters>;
+  filters: MarketNewsFilters;
+};
+
+
+export type QueryGetMarketNewsByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1274,12 +1280,12 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 
 export type MarketNewsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MarketNews'] = ResolversParentTypes['MarketNews']> = {
   author?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   publishedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   source?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  summary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   tag?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1402,7 +1408,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFunds?: Resolver<Array<ResolversTypes['Funds']>, ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
   getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
-  getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, Partial<QueryGetMarketNewsArgs>>;
+  getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
+  getMarketNewsById?: Resolver<Maybe<ResolversTypes['MarketNews']>, ParentType, ContextType, RequireFields<QueryGetMarketNewsByIdArgs, 'id'>>;
   getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
   getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
   getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;

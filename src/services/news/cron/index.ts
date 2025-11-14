@@ -1,6 +1,7 @@
 import logger from 'src/loggers/logger';
 import axios from 'axios';
 import { MarketNewsModel } from 'src/models/news';
+import { looker } from 'googleapis/build/src/apis/looker';
 
 export const fetchAndStoreMarketNews = async () => {
   try {
@@ -8,7 +9,7 @@ export const fetchAndStoreMarketNews = async () => {
       params: {
         apiKey: process.env.MARKET_NEWS_API_KEY,
         category: 'business',
-        country: 'gh',
+        // country: 'gh',
         language: 'en',
       },
     });
@@ -16,6 +17,7 @@ export const fetchAndStoreMarketNews = async () => {
     for (const article of data.articles) {
       const existingNews = await MarketNewsModel.findOne({ url: article.url });
       if (!existingNews) {
+        logger.info(`Storing news article: ${article.title}`);
         await MarketNewsModel.create({
           title: article.title,
           source: article.source.name,
@@ -26,8 +28,10 @@ export const fetchAndStoreMarketNews = async () => {
           publishedAt: article.publishedAt,
           tag: ['business', 'market'],
         });
+        logger.info(`Stored news article: ${article.title}`);
       }
     }
+    logger.info('Market news fetching and storing completed.');
   } catch (error) {
     logger.error('Error fetching or storing market news:', error);
   }

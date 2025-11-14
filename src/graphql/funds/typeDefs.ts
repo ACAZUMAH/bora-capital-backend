@@ -31,11 +31,11 @@ export const fundsTypeDefs = `#graphql
     input CreateFundInput {
         name: String!
         symbol: String!
-        description: String
+        description: String!
         assetClass: String!
         objective: String!
         baseCurrency: String!
-        inceptionDate: DateTime
+        inceptionDate: DateTime!
     }
 
     input UpdateFundInput {

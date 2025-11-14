@@ -5,7 +5,7 @@ import { FundsDocument } from 'src/common/interfaces';
 const fundsSchema = new Schema<FundsDocument>(
   {
     name: { type: String, required: true },
-    description: { type: String },
+    description: { type: String, required: true },
     assetClass: { type: String, required: true },
     symbol: { type: String, required: true, unique: true },
     objective: { type: String },

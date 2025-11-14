@@ -7,7 +7,7 @@ import {
   QueryGetUserDocumentsArgs,
 } from 'src/common/interfaces/graphql';
 import {
-    deleteUploadById,
+  deleteUploadById,
   getUploadById,
   getUploadByUserId,
   getUploadByUserIds,
@@ -16,7 +16,11 @@ import {
 } from 'src/services/uploads';
 import { idResolver } from '../general';
 
-const getUserDocuments = (_: any, args: QueryGetUserDocumentsArgs, { user }: GraphqlContext) => {
+const getUserDocuments = (
+  _: any,
+  args: QueryGetUserDocumentsArgs,
+  { user }: GraphqlContext
+) => {
   return getUploadByUserId(args.userId || user?._id!);
 };
 
@@ -47,7 +51,7 @@ const createDocument = (_: any, args: MutationCreateDocumentArgs) => {
 };
 
 const deleteDocument = (_: any, args: MutationDeleteDocumentArgs) => {
-    //return deleteUploadById(args.id)
+  return deleteUploadById(args.data.id);
 };
 
 export const documentsResolvers = {

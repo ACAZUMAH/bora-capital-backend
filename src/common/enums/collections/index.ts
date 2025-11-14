@@ -13,5 +13,5 @@ export enum Collections {
   Funds = 'funds',
   FundsPerformance = 'fundsPerformance',
   Notifications = 'notifications',
-  AuditLogs = 'auditLogs',
+  MarketNews = 'MarketNews',
 }

@@ -9,6 +9,7 @@ import { applyMiddlewares } from './middlewares';
 import { schema } from './graphql';
 import { errorHandler } from './middlewares/errorHandler';
 import { createGraphqlServer } from './servers';
+import { applyCrons } from './crons';
 const PORT = process.env.PORT || 8080;
 
 export const StartServer = async () => {
@@ -37,4 +38,6 @@ export const StartServer = async () => {
 
   logger.info(`🚀 Server ready at http://localhost:${PORT}`);
   logger.info(`🚀 Graphql Server ready at http://localhost:${PORT}/graphql`);
+
+  applyCrons();
 };

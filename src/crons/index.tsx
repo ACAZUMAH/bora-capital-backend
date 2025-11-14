@@ -1,8 +1,17 @@
 import { CronJob } from 'cron';
 import { CronConfig } from 'src/common/interfaces';
 import logger from 'src/loggers/logger';
+import { fetchAndStoreMarketNews } from 'src/services/news/cron';
 
-const cronConfigs: CronConfig[] = [];
+const cronConfigs: CronConfig[] = [
+  {
+    name: 'Fetch Market News',
+    schedule: '0 */2 * * *', // Every 2 hours
+    Job: async () => {
+      fetchAndStoreMarketNews();
+    },
+  },
+];
 
 export const applyCrons = () => {
   cronConfigs.map(config => {

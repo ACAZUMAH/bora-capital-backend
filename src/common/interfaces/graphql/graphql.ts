@@ -267,6 +267,34 @@ export type HoldingsFilters = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type MarketNews = {
+  __typename?: 'MarketNews';
+  author: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  createdAt: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  publishedAt: Scalars['String']['output'];
+  source: Scalars['String']['output'];
+  summary: Scalars['String']['output'];
+  tag: Array<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
+export type MarketNewsConnection = {
+  __typename?: 'MarketNewsConnection';
+  edges: Array<MarketNews>;
+  pageInfo: PageInfo;
+};
+
+export type MarketNewsFilters = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  tag?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _empty?: Maybe<Scalars['String']['output']>;
@@ -426,6 +454,7 @@ export type Query = {
   getFunds: Array<Funds>;
   getHoldings: HoldingsConnection;
   getHoldingsById: Holdings;
+  getMarketNews: MarketNewsConnection;
   getPortfolioById: Portfolio;
   getPortfoliosByUserId: Array<Portfolio>;
   getTransactionById: Transaction;
@@ -475,6 +504,11 @@ export type QueryGetHoldingsArgs = {
 
 export type QueryGetHoldingsByIdArgs = {
   holdingsId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetMarketNewsArgs = {
+  filters?: InputMaybe<MarketNewsFilters>;
 };
 
 
@@ -817,6 +851,9 @@ export type ResolversTypes = {
   Long: ResolverTypeWrapper<Scalars['Long']['output']>;
   Longitude: ResolverTypeWrapper<Scalars['Longitude']['output']>;
   MAC: ResolverTypeWrapper<Scalars['MAC']['output']>;
+  MarketNews: ResolverTypeWrapper<MarketNews>;
+  MarketNewsConnection: ResolverTypeWrapper<MarketNewsConnection>;
+  MarketNewsFilters: MarketNewsFilters;
   Mutation: ResolverTypeWrapper<Record<PropertyKey, never>>;
   NegativeFloat: ResolverTypeWrapper<Scalars['NegativeFloat']['output']>;
   NegativeInt: ResolverTypeWrapper<Scalars['NegativeInt']['output']>;
@@ -941,6 +978,9 @@ export type ResolversParentTypes = {
   Long: Scalars['Long']['output'];
   Longitude: Scalars['Longitude']['output'];
   MAC: Scalars['MAC']['output'];
+  MarketNews: MarketNews;
+  MarketNewsConnection: MarketNewsConnection;
+  MarketNewsFilters: MarketNewsFilters;
   Mutation: Record<PropertyKey, never>;
   NegativeFloat: Scalars['NegativeFloat']['output'];
   NegativeInt: Scalars['NegativeInt']['output'];
@@ -1232,6 +1272,25 @@ export interface MacScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
   name: 'MAC';
 }
 
+export type MarketNewsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MarketNews'] = ResolversParentTypes['MarketNews']> = {
+  author?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  publishedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  source?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tag?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type MarketNewsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['MarketNewsConnection'] = ResolversParentTypes['MarketNewsConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['MarketNews']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   createDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationCreateDocumentArgs, 'data'>>;
@@ -1343,6 +1402,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFunds?: Resolver<Array<ResolversTypes['Funds']>, ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
   getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
+  getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, Partial<QueryGetMarketNewsArgs>>;
   getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
   getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
   getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
@@ -1533,6 +1593,8 @@ export type Resolvers<ContextType = any> = {
   Long?: GraphQLScalarType;
   Longitude?: GraphQLScalarType;
   MAC?: GraphQLScalarType;
+  MarketNews?: MarketNewsResolvers<ContextType>;
+  MarketNewsConnection?: MarketNewsConnectionResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   NegativeFloat?: GraphQLScalarType;
   NegativeInt?: GraphQLScalarType;

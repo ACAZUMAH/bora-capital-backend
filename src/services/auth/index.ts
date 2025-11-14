@@ -2,7 +2,7 @@ import { ClientApp, CreateUserInput, SigninInput } from 'src/common/interfaces';
 import { checkUserExist, createUser, getUserByEmail } from '../users';
 import { comparePassword, hashPassword } from 'src/common/helpers';
 import { createAuth } from './auth';
-import { sendEmail, sendEmailViaGmail } from '../notifications';
+import { sendEmailViaGmail } from '../notifications';
 import { getSendOtpEmailTemplate } from '../notifications/template';
 import createError from 'http-errors';
 import { OtpPurpose } from 'src/common/enums';

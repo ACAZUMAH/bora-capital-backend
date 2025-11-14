@@ -162,7 +162,7 @@ export const getTransactions = async (filters: TransactionsFilters) => {
 
   const transactions = await TransactionModel.find(query, null, {
     skip,
-    limit,
+    limit: limit + 1,
     sort: { createdAt: -1 },
     lean: true,
   });

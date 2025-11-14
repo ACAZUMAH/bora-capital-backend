@@ -1,5 +1,5 @@
 export const fundsPerformanceTypeDefs = `#graphql
-    type FundsPerformance {
+    type FundPerformance {
         id: ID!
         fundId: ID!
         date: String!
@@ -9,12 +9,12 @@ export const fundsPerformanceTypeDefs = `#graphql
         updatedAt: DateTime!
     }
 
-    type FundsPerformanceConnection {
-        edges: [FundsPerformance!]!
+    type FundPerformanceConnection {
+        edges: [FundPerformance!]!
         pageInfo: PageInfo!
     }
 
-    input FundsFilters {
+    input PerformanceFilters {
         fundId: ID
         startDate: DateTime
         endDate: DateTime
@@ -23,18 +23,18 @@ export const fundsPerformanceTypeDefs = `#graphql
     }
 
     extend type Query {
-        getFundPerformanceById(id: ID!): FundsPerformance!
-        getFundPerformances(filters: FundsFilters): FundsPerformanceConnection!
+        getFundPerformanceById(id: ID!): FundPerformance!
+        getFundPerformances(filters: PerformanceFilters): FundPerformanceConnection!
     }
 
-    input CreateFundsPerformanceInput {
+    input CreateFundPerformancesInput {
         fundId: ID!
         date: DateTime!
         nav: Float!
         returnPeriod: Float!
     } 
 
-    input UpdateFundsPerformanceInput {
+    input UpdateFundPerformancesInput {
         performanceId: ID!
         date: DateTime
         nav: Float
@@ -42,7 +42,7 @@ export const fundsPerformanceTypeDefs = `#graphql
     }
 
     extend type Mutation {
-        createFundPerformances(data: CreateFundsPerformanceInput!): FundsPerformance!
-        updateFundPerformances(data: UpdateFundsPerformanceInput!): FundsPerformance!
+        createFundPerformances(data: CreateFundPerformancesInput!): FundPerformance!
+        updateFundPerformances(data: UpdateFundPerformancesInput!): FundPerformance!
     } 
 `;

@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export interface FundsDocument {
-  _id: Types.ObjectId | string;
+  _id: Types.ObjectId;
   name: string;
   symbol: string;
   description: string;
@@ -17,11 +17,11 @@ export interface FundsDocument {
 export interface CreateFundInput {
   name: string;
   symbol: string;
-  description?: string | null;
+  description: string;
   assetClass: string;
   objective: string;
   baseCurrency: string;
-  inceptionDate?: Date;
+  inceptionDate: Date;
 }
 
 export interface UpdateFundInput {

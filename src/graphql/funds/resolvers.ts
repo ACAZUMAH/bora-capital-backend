@@ -27,7 +27,7 @@ export const fundsResolvers = {
     getFundById,
     getFunds,
   },
-  Funds: {
+  Fund: {
     id: idResolver,
   },
   Mutation: {
@@ -36,4 +36,7 @@ export const fundsResolvers = {
     updateFund,
     deleteFund,
   },
+  FundPerformance: {
+    ...fundsPerformanceResolvers.FundPerformance,
+  }
 };

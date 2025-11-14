@@ -9,7 +9,7 @@ export const verifyAccessToken = async (
   next: NextFunction
 ) => {
   try {
-    const authHeader = req.headers['refreshToken'];
+    const authHeader = req.headers['refreshtoken'];
 
     if (!authHeader)
       return res

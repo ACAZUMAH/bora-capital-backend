@@ -11,7 +11,7 @@ export interface FundsPerformanceDocument {
 }
 
 export interface CreateFundsPerformanceInput {
-  fundId: string | Types.ObjectId;
+  fundId: Types.ObjectId | string;
   date: Date;
   nav: number;
   returnPeriod: number;

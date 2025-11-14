@@ -3,7 +3,7 @@ import { fundsPerformanceTypeDefs } from "./performance/typeDefs";
 export const fundsTypeDefs = `#graphql
     ${fundsPerformanceTypeDefs}
     
-    type Funds {
+    type Fund {
         id: ID!
         name: String!
         description: String
@@ -17,6 +17,11 @@ export const fundsTypeDefs = `#graphql
         updatedAt: DateTime
     }
 
+    type FundsConnection {
+        edges: [Fund!]!
+        pageInfo: PageInfo!
+    }
+
     input GetFundsFilters {
         limit: Int
         page: Int
@@ -24,18 +29,18 @@ export const fundsTypeDefs = `#graphql
     }
 
     extend type Query {
-        getFundById(fundId: ID!): Funds!
-        getFunds(filters: GetFundsFilters!): [Funds!]!
+        getFundById(fundId: ID!): Fund!
+        getFunds(filters: GetFundsFilters!): FundsConnection!
     }
 
     input CreateFundInput {
         name: String!
         symbol: String!
-        description: String
+        description: String!
         assetClass: String!
         objective: String!
         baseCurrency: String!
-        inceptionDate: DateTime
+        inceptionDate: DateTime!
     }
 
     input UpdateFundInput {
@@ -47,8 +52,8 @@ export const fundsTypeDefs = `#graphql
     }
 
     extend type Mutation {
-        createFund(data: CreateFundInput!): Funds!
-        updateFund(data: UpdateFundInput!): Funds!
+        createFund(data: CreateFundInput!): Fund!
+        updateFund(data: UpdateFundInput!): Fund!
         deleteFund(fundId: ID!): Boolean!
     }
 `;

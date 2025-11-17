@@ -9,6 +9,7 @@ const userSchema = new Schema<UserDocument>(
   {
     fullName: { type: String },
     email: { type: String, required: true, unique: true },
+    profile_url: {},
     phoneNumber: { type: String, unique: true },
     role: { type: String, enum: Object.values(role), default: role.CLIENT },
     biometric: biometricSchema,

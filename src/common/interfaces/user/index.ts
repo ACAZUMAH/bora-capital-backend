@@ -9,6 +9,7 @@ export interface UserDocument {
   fullName: string;
   email: string;
   phoneNumber?: string;
+  profile_url?: string;
   role: role;
   biometric?: BiometricDocument;
   devices?: Array<DeviceDocument>;
@@ -41,4 +42,5 @@ export interface UpdateUserInput {
   devices?: Array<DeviceInput> | null;
   preferences?: PreferencesInput | null;
   biometric?: BiometricDocument | null;
+  profilePic?: string | null
 }

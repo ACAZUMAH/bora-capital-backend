@@ -132,10 +132,47 @@ export const sendForgetPasswordOtp = async (email: string) => {
   };
 };
 
+/**
+ * @description Logout user by invalidating their refresh token.
+ * @param userId - ID of the user to logout
+ * @returns A message indicating successful logout.
+ */
 export const logout = async (userId: string | Types.ObjectId) => {
   // Invalidate the refresh token by removing it from the user's record
   await userModel.findByIdAndUpdate(userId, { refreshToken: null });
   return {
     message: 'User logged out successfully.',
+  };
+};
+
+/**
+ * @description Resend OTP to user's email for email verification.
+ * @param email - user's email
+ * @returns A message indicating that the OTP has been resent.
+ */
+export const resendOtp = async (email: string) => {
+  const user = await getUserByEmail(email);
+
+  const otp = await createAuth({
+    userId: user?._id!,
+    len: 5,
+    otpPurpose: OtpPurpose.RESEND_EMAIL_VERIFICATION,
+  });
+
+  if (user.email) {
+    await sendEmailViaGmail({
+      from: 'calebazumah9@gmail.com',
+      to: user.email,
+      subject: 'Your Bora Capitals Advisors otp code',
+      htmlContent: await getSendOtpEmailTemplate(otp, user.fullName),
+    }).catch(error => {
+      rollbar.error('Error resending otp email', { error, user });
+      throw createError.InternalServerError(
+        'Failed to resend OTP code at the moment, please try again later.'
+      );
+    });
+  }
+  return {
+    message: 'OTP resent successfully, please check your email.',
   };
 };

@@ -304,6 +304,7 @@ export type Mutation = {
   deleteFund: Scalars['Boolean']['output'];
   forgetPassword: AuthResponse;
   logout: AuthResponse;
+  resendOtp: AuthResponse;
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
   signup: AuthResponse;
@@ -347,6 +348,11 @@ export type MutationDeleteFundArgs = {
 
 
 export type MutationForgetPasswordArgs = {
+  email: Scalars['String']['input'];
+};
+
+
+export type MutationResendOtpArgs = {
   email: Scalars['String']['input'];
 };
 
@@ -1320,6 +1326,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
   logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;
+  resendOtp?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResendOtpArgs, 'email'>>;
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;

@@ -35,6 +35,13 @@ const resetUserPassword = (
   return resetPassword({ userId: user?._id!, newPassword: args.newPassword });
 };
 
+const resendOtp = (
+  _: any,
+  args: GraphqlTypes.MutationResendOtpArgs
+) => {
+  return services.resendOtp(args.email);
+};
+
 const verifyOtpAndCompleteAuth = (
   _: any,
   args: GraphqlTypes.MutationVerifyOtpAndCompleteAuthArgs
@@ -48,6 +55,7 @@ export const authResolvers = {
     signin,
     forgetPassword,
     resetUserPassword,
+    logout,
     verifyOtpAndCompleteAuth,
   },
 };

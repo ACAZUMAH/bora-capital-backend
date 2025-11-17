@@ -27,6 +27,7 @@ export const authTypeDefs = `#graphql
         logout: authResponse!
         forgetPassword(email: String!): authResponse!
         resetUserPassword(newPassword: String!): authResponse!
+        resendOtp(email: String!): authResponse!
         verifyOtpAndCompleteAuth(otp: String!): authenticated!
     }
 `;

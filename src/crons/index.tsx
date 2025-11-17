@@ -1,7 +1,7 @@
 import { CronJob } from 'cron';
 import { CronConfig } from 'src/common/interfaces';
 import logger from 'src/loggers/logger';
-import { fetchAndStoreMarketNews } from 'src/services/news/cron';
+import { clearMarketNews, fetchAndStoreMarketNews } from 'src/services/insights-news/cron';
 
 const cronConfigs: CronConfig[] = [
   {
@@ -12,6 +12,14 @@ const cronConfigs: CronConfig[] = [
       fetchAndStoreMarketNews();
     },
   },
+  {
+    name: 'Clear Market News',
+    schedule: "0 0 * * 0", // Every Sunday at midnight
+    runOnInit: false,
+    Job: async () => {
+      clearMarketNews();
+    },
+  }
 ];
 
 export const applyCrons = () => {

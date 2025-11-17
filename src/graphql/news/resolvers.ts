@@ -1,5 +1,5 @@
 import { QueryGetMarketNewsArgs } from 'src/common/interfaces/graphql';
-import * as services from 'src/services/news';
+import * as services from 'src/services/insights-news';
 import { idResolver } from '../general';
 
 const getMarketNews = (_: any, args: QueryGetMarketNewsArgs) => {

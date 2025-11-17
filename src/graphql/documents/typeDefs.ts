@@ -48,6 +48,6 @@ export const documentsTypedefs = `#graphql
   
   extend type Mutation {
     createDocument(data: CreateDocumentInput!): Document!
-    deleteDocument(data: DeleteDocumentInput): Boolean!
+    deleteDocument(data: DeleteDocumentInput!): Boolean!
   }
 `;

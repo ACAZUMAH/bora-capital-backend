@@ -9,6 +9,8 @@ import { Types } from 'mongoose';
 import createError from 'http-errors';
 import { hashPassword } from 'src/common/helpers';
 import { createPortfolio } from '../portfolio';
+import { uploadPhoto } from '../uploads';
+import { DocumentsType } from 'src/common/enums';
 
 /**
  * @description create new user
@@ -117,6 +119,17 @@ export const updateUser = async (data: UpdateUserInput) => {
   if (data.devices?.length) update.devices = data.devices;
   if (data.preferences) update.preferences = data.preferences;
   if (data.biometric) update.biometric = data.biometric;
+
+  if (data.profilePic) {
+    const upload = await uploadPhoto({
+      userId: user?._id,
+      file: data.profilePic,
+      documentType: DocumentsType.OTHER,
+      directory: 'Profiles',
+    });
+
+    update.profile_url = `${process.env.UPLOAD_BASE_URL}/${upload.directory}/${upload.fileName}`;
+  }
 
   const updated = await userModel.findByIdAndUpdate(
     user._id,

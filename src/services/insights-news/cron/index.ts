@@ -36,3 +36,15 @@ export const fetchAndStoreMarketNews = async () => {
     logger.error('Error fetching or storing market news:', error);
   }
 };
+
+export const clearMarketNews = async () => {
+  try {
+    logger.info('Begging to clear market news')
+    
+    await MarketNewsModel.deleteMany({});
+
+    logger.info('Cleared all market news')
+  } catch (error) {
+    logger.error('Error clearing market news:', error)
+  }
+}

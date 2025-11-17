@@ -337,7 +337,7 @@ export type MutationCreateTransactionArgs = {
 
 
 export type MutationDeleteDocumentArgs = {
-  data?: InputMaybe<DeleteDocumentInput>;
+  data: DeleteDocumentInput;
 };
 
 
@@ -1316,7 +1316,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
-  deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, Partial<MutationDeleteDocumentArgs>>;
+  deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteDocumentArgs, 'data'>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
   logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;

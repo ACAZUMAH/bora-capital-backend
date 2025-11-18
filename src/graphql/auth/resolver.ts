@@ -56,6 +56,7 @@ export const authResolvers = {
     forgetPassword,
     resetUserPassword,
     logout,
+    resendOtp,
     verifyOtpAndCompleteAuth,
   },
 };

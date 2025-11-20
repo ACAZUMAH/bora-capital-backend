@@ -13,3 +13,31 @@ export interface GoalsDocument {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface createGoalInput {
+  userId: string | Types.ObjectId;
+  name: string;
+  type: string;
+  targetAmount: number;
+  targetCurrency: string;
+  targetDate: Date;
+}
+
+export interface updateGoalInput {
+  id: string | Types.ObjectId;
+  name?: string;
+  type?: string;
+  targetAmount?: number;
+  targetCurrency?: string;
+  targetDate?: Date;
+}
+export interface getGoalsFilters {
+  userId?: string | Types.ObjectId;
+  search?: string | null;
+  targetAmount?: number | null;
+  targetCurrency?: string | null;
+  targetDate?: Date | null;
+  progress?: number | null;
+  page?: number;
+  limit?: number;
+}

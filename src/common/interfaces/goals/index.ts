@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export interface GoalsDocument {
-  _id: string | Types.ObjectId;
+  _id: Types.ObjectId;
   userId: string | Types.ObjectId;
   name: string;
   type: string;
@@ -25,19 +25,20 @@ export interface createGoalInput {
 
 export interface updateGoalInput {
   id: string | Types.ObjectId;
-  name?: string;
-  type?: string;
-  targetAmount?: number;
-  targetCurrency?: string;
-  targetDate?: Date;
+  name?: string | null;
+  type?: string | null;
+  targetAmount?: number | null;
+  targetCurrency?: string | null;
+  targetDate?: Date | null;
 }
+
 export interface getGoalsFilters {
-  userId?: string | Types.ObjectId;
+  userId?: string | Types.ObjectId | null;
   search?: string | null;
   targetAmount?: number | null;
   targetCurrency?: string | null;
   targetDate?: Date | null;
   progress?: number | null;
-  page?: number;
-  limit?: number;
+  page?: number | null;
+  limit?: number | null;
 }

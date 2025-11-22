@@ -22,6 +22,11 @@ export const authShield = {
       window: '1m',
       message: 'Too many OTP verification attempts, please try again later.',
     }),
+    resendOtp: rateLimitRule({
+      max: 3,
+      window: '1m',
+      message: 'Too many OTP resend attempts, please try again later.',
+    }),
     resetUserPassword: isAuthenticated,
     logout: isAuthenticated,
   },

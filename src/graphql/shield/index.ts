@@ -6,6 +6,7 @@ import { performanceShield } from './performance';
 import { fundsShield } from './funds';
 import { holdingsShield } from './holdings';
 import { transactionsShield } from './transactions';
+import { goalsShield } from './goals';
 
 export const permissions = shield(
   {
@@ -16,6 +17,7 @@ export const permissions = shield(
       ...fundsShield.Query,
       ...holdingsShield.Query,
       ...transactionsShield.Query,
+      ...goalsShield.Query,
     },
     Mutation: {
       ...authShield.Mutation,
@@ -23,6 +25,7 @@ export const permissions = shield(
       ...performanceShield.Mutation,
       ...fundsShield.Mutation,
       ...transactionsShield.Mutation,
+      ...goalsShield.Mutation,
     },
   },
   {

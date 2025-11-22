@@ -16,6 +16,8 @@ import { fundsResolvers, fundsTypeDefs } from './funds';
 import { uploadResolvers, uploadTypedefs } from './upload';
 import { documentsResolvers, documentsTypedefs } from './documents';
 import { marketNewsResolvers, marketNewsTypeDefs } from './news';
+import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
+import { goalsResolvers, goalsTypeDefs } from './goals';
 
 const typeDefs = [
   generalTypeDefs,
@@ -29,6 +31,8 @@ const typeDefs = [
   uploadTypedefs,
   documentsTypedefs,
   marketNewsTypeDefs,
+  calculatorsTypeDefs,
+  goalsTypeDefs,
 ];
 
 const resolvers = [
@@ -43,6 +47,8 @@ const resolvers = [
   uploadResolvers,
   documentsResolvers,
   marketNewsResolvers,
+  calculatorsResolvers,
+  goalsResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

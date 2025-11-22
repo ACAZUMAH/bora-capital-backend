@@ -15,3 +15,4 @@ export * from './resources';
 export * from './funds';
 export * from './crons';
 export * from './news';
+export * from './calculators';

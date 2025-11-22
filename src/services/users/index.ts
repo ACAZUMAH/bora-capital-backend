@@ -50,7 +50,7 @@ export const checkUserExist = async (email: string) => {
  * @param id - user id
  * @returns user object
  */
-export const getUserById = async (id: Types.ObjectId | string) => {
+export const getUserById = async (id: string | Types.ObjectId) => {
   if (!Types.ObjectId.isValid(id))
     throw createError.BadRequest('Invalid user ID');
 

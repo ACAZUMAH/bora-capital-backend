@@ -14,7 +14,6 @@ const holdingsSchema = new Schema<HoldingsDocument>(
       ref: Collections.Portfolios,
       required: true,
     },
-    // name: { type: String, required: true },
     symbol: { type: String, required: true },
     quantity: { type: Number, required: true },
     avgPurchasePrice: { type: Number, required: true },

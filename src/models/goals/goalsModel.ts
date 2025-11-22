@@ -2,9 +2,14 @@ import { model, Schema } from 'mongoose';
 import { Collections } from 'src/common/enums';
 import { GoalsDocument } from 'src/common/interfaces';
 
+//@ts-ignore
 const goalsSchema = new Schema<GoalsDocument>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: Collections.Users,
+      required: true,
+    },
     type: { type: String, required: true },
     name: { type: String, required: true },
     targetAmount: { type: Number, required: true },
@@ -16,4 +21,4 @@ const goalsSchema = new Schema<GoalsDocument>(
   { timestamps: true }
 );
 
-export const goalsModels = model<GoalsDocument>(Collections.Users, goalsSchema);
+export const goalsModels = model<GoalsDocument>(Collections.Goals, goalsSchema);

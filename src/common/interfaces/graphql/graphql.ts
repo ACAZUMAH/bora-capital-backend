@@ -92,6 +92,15 @@ export type Allocation = {
   totalValue: Scalars['Float']['output'];
 };
 
+export type AmortizationScheduleItem = {
+  __typename?: 'AmortizationScheduleItem';
+  balance: Scalars['Float']['output'];
+  interestPayment: Scalars['Float']['output'];
+  payment: Scalars['Float']['output'];
+  paymentNumber: Scalars['Int']['output'];
+  principalPayment: Scalars['Float']['output'];
+};
+
 export type BiometricInput = {
   deviceId?: InputMaybe<Scalars['String']['input']>;
   enabled?: InputMaybe<Scalars['Boolean']['input']>;
@@ -130,6 +139,15 @@ export type CreateFundPerformancesInput = {
   fundId: Scalars['ID']['input'];
   nav: Scalars['Float']['input'];
   returnPeriod: Scalars['Float']['input'];
+};
+
+export type CreateGoalInput = {
+  name: Scalars['String']['input'];
+  targetAmount: Scalars['Float']['input'];
+  targetCurrency: Scalars['String']['input'];
+  targetDate: Scalars['Date']['input'];
+  type: Scalars['String']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 export type CreateTransactionInput = {
@@ -231,6 +249,37 @@ export type GetFundsFilters = {
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Goal = {
+  __typename?: 'Goal';
+  createdAt: Scalars['Date']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  progress: Scalars['Float']['output'];
+  targetAmount: Scalars['Float']['output'];
+  targetCurrency: Scalars['String']['output'];
+  targetDate: Scalars['Date']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['Date']['output'];
+  user: User;
+};
+
+export type GoalsConnection = {
+  __typename?: 'GoalsConnection';
+  edges?: Maybe<Array<Goal>>;
+  pageInfo: PageInfo;
+};
+
+export type GoalsFilters = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+  progress?: InputMaybe<Scalars['Float']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  targetAmount?: InputMaybe<Scalars['Float']['input']>;
+  targetCurrency?: InputMaybe<Scalars['String']['input']>;
+  targetDate?: InputMaybe<Scalars['Date']['input']>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type Holdings = {
   __typename?: 'Holdings';
   createdAt?: Maybe<Scalars['DateTime']['output']>;
@@ -263,6 +312,45 @@ export type HoldingsFilters = {
   page?: InputMaybe<Scalars['Int']['input']>;
   portfolioId?: InputMaybe<Scalars['ID']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type InvestmentGrowthInput = {
+  compoundFrequency?: InputMaybe<Scalars['String']['input']>;
+  initialAmount: Scalars['Float']['input'];
+  monthlyContribution: Scalars['Float']['input'];
+  rate: Scalars['Float']['input'];
+  term: Scalars['Int']['input'];
+};
+
+export type InvestmentGrowthResult = {
+  __typename?: 'InvestmentGrowthResult';
+  futureValue: Scalars['Float']['output'];
+  schedule: Array<InvestmentGrowthScheduleItem>;
+  totalContributions: Scalars['Float']['output'];
+  totalInterest: Scalars['Float']['output'];
+};
+
+export type InvestmentGrowthScheduleItem = {
+  __typename?: 'InvestmentGrowthScheduleItem';
+  balance: Scalars['Float']['output'];
+  contribution: Scalars['Float']['output'];
+  interest: Scalars['Float']['output'];
+  year: Scalars['Int']['output'];
+};
+
+export type LoanAmortizationInput = {
+  principal: Scalars['Float']['input'];
+  rate: Scalars['Float']['input'];
+  term: Scalars['Int']['input'];
+  termType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LoanAmortizationResult = {
+  __typename?: 'LoanAmortizationResult';
+  monthlyPayment: Scalars['Float']['output'];
+  schedule: Array<AmortizationScheduleItem>;
+  totalInterest: Scalars['Float']['output'];
+  totalPayment: Scalars['Float']['output'];
 };
 
 export type MarketNews = {
@@ -299,6 +387,7 @@ export type Mutation = {
   createDocument: Document;
   createFund: Fund;
   createFundPerformances: FundPerformance;
+  createGoal: Goal;
   createTransaction: Transaction;
   deleteDocument: Scalars['Boolean']['output'];
   deleteFund: Scalars['Boolean']['output'];
@@ -310,6 +399,7 @@ export type Mutation = {
   signup: AuthResponse;
   updateFund: Fund;
   updateFundPerformances: FundPerformance;
+  updateGoal: Goal;
   updateTransaction: Transaction;
   updateTransactionStatus: Transaction;
   updateUser: User;
@@ -329,6 +419,11 @@ export type MutationCreateFundArgs = {
 
 export type MutationCreateFundPerformancesArgs = {
   data: CreateFundPerformancesInput;
+};
+
+
+export type MutationCreateGoalArgs = {
+  data: CreateGoalInput;
 };
 
 
@@ -379,6 +474,11 @@ export type MutationUpdateFundArgs = {
 
 export type MutationUpdateFundPerformancesArgs = {
   data: UpdateFundPerformancesInput;
+};
+
+
+export type MutationUpdateGoalArgs = {
+  data: UpdateGoalInput;
 };
 
 
@@ -457,6 +557,8 @@ export type PreferencesInput = {
 export type Query = {
   __typename?: 'Query';
   _empty?: Maybe<Scalars['String']['output']>;
+  calculateInvestmentGrowth: InvestmentGrowthResult;
+  calculateLoanAmortization: LoanAmortizationResult;
   getAssetAllocations: Array<Allocation>;
   getClientsDocuments: Array<Maybe<Document>>;
   getDocumentById?: Maybe<Document>;
@@ -464,6 +566,8 @@ export type Query = {
   getFundPerformanceById: FundPerformance;
   getFundPerformances: FundPerformanceConnection;
   getFunds: FundsConnection;
+  getGoalById: Goal;
+  getGoals: GoalsConnection;
   getHoldings: HoldingsConnection;
   getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
@@ -477,6 +581,16 @@ export type Query = {
   healthCheck: Scalars['String']['output'];
   hello: Scalars['String']['output'];
   me: User;
+};
+
+
+export type QueryCalculateInvestmentGrowthArgs = {
+  data: InvestmentGrowthInput;
+};
+
+
+export type QueryCalculateLoanAmortizationArgs = {
+  data: LoanAmortizationInput;
 };
 
 
@@ -507,6 +621,16 @@ export type QueryGetFundPerformancesArgs = {
 
 export type QueryGetFundsArgs = {
   filters: GetFundsFilters;
+};
+
+
+export type QueryGetGoalByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetGoalsArgs = {
+  filters?: InputMaybe<GoalsFilters>;
 };
 
 
@@ -645,6 +769,16 @@ export type UpdateFundPerformancesInput = {
   nav?: InputMaybe<Scalars['Float']['input']>;
   performanceId: Scalars['ID']['input'];
   returnPeriod?: InputMaybe<Scalars['Float']['input']>;
+};
+
+export type UpdateGoalInput = {
+  id: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  targetAmount?: InputMaybe<Scalars['Float']['input']>;
+  targetCurrency?: InputMaybe<Scalars['String']['input']>;
+  targetDate?: InputMaybe<Scalars['Date']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdateTransactionInput = {
@@ -807,6 +941,7 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']['output']>;
   Allocation: ResolverTypeWrapper<Allocation>;
+  AmortizationScheduleItem: ResolverTypeWrapper<AmortizationScheduleItem>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   BiometricInput: BiometricInput;
   Biometrics: ResolverTypeWrapper<Biometrics>;
@@ -817,6 +952,7 @@ export type ResolversTypes = {
   CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
   CreateFundPerformancesInput: CreateFundPerformancesInput;
+  CreateGoalInput: CreateGoalInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']['output']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>;
@@ -840,6 +976,9 @@ export type ResolversTypes = {
   GUID: ResolverTypeWrapper<Scalars['GUID']['output']>;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   GetFundsFilters: GetFundsFilters;
+  Goal: ResolverTypeWrapper<Goal>;
+  GoalsConnection: ResolverTypeWrapper<GoalsConnection>;
+  GoalsFilters: GoalsFilters;
   HSL: ResolverTypeWrapper<Scalars['HSL']['output']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']['output']>;
   HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']['output']>;
@@ -856,11 +995,16 @@ export type ResolversTypes = {
   ISBN: ResolverTypeWrapper<Scalars['ISBN']['output']>;
   ISO8601Duration: ResolverTypeWrapper<Scalars['ISO8601Duration']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  InvestmentGrowthInput: InvestmentGrowthInput;
+  InvestmentGrowthResult: ResolverTypeWrapper<InvestmentGrowthResult>;
+  InvestmentGrowthScheduleItem: ResolverTypeWrapper<InvestmentGrowthScheduleItem>;
   JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']['output']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']['output']>;
   LCCSubclass: ResolverTypeWrapper<Scalars['LCCSubclass']['output']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']['output']>;
+  LoanAmortizationInput: LoanAmortizationInput;
+  LoanAmortizationResult: ResolverTypeWrapper<LoanAmortizationResult>;
   LocalDate: ResolverTypeWrapper<Scalars['LocalDate']['output']>;
   LocalDateTime: ResolverTypeWrapper<Scalars['LocalDateTime']['output']>;
   LocalEndTime: ResolverTypeWrapper<Scalars['LocalEndTime']['output']>;
@@ -918,6 +1062,7 @@ export type ResolversTypes = {
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']['output']>;
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
+  UpdateGoalInput: UpdateGoalInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: ResolverTypeWrapper<Upload>;
@@ -936,6 +1081,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber']['output'];
   Allocation: Allocation;
+  AmortizationScheduleItem: AmortizationScheduleItem;
   BigInt: Scalars['BigInt']['output'];
   BiometricInput: BiometricInput;
   Biometrics: Biometrics;
@@ -946,6 +1092,7 @@ export type ResolversParentTypes = {
   CreateDocumentInput: CreateDocumentInput;
   CreateFundInput: CreateFundInput;
   CreateFundPerformancesInput: CreateFundPerformancesInput;
+  CreateGoalInput: CreateGoalInput;
   CreateTransactionInput: CreateTransactionInput;
   Cuid: Scalars['Cuid']['output'];
   Currency: Scalars['Currency']['output'];
@@ -968,6 +1115,9 @@ export type ResolversParentTypes = {
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
   GetFundsFilters: GetFundsFilters;
+  Goal: Goal;
+  GoalsConnection: GoalsConnection;
+  GoalsFilters: GoalsFilters;
   HSL: Scalars['HSL']['output'];
   HSLA: Scalars['HSLA']['output'];
   HexColorCode: Scalars['HexColorCode']['output'];
@@ -984,11 +1134,16 @@ export type ResolversParentTypes = {
   ISBN: Scalars['ISBN']['output'];
   ISO8601Duration: Scalars['ISO8601Duration']['output'];
   Int: Scalars['Int']['output'];
+  InvestmentGrowthInput: InvestmentGrowthInput;
+  InvestmentGrowthResult: InvestmentGrowthResult;
+  InvestmentGrowthScheduleItem: InvestmentGrowthScheduleItem;
   JSON: Scalars['JSON']['output'];
   JSONObject: Scalars['JSONObject']['output'];
   JWT: Scalars['JWT']['output'];
   LCCSubclass: Scalars['LCCSubclass']['output'];
   Latitude: Scalars['Latitude']['output'];
+  LoanAmortizationInput: LoanAmortizationInput;
+  LoanAmortizationResult: LoanAmortizationResult;
   LocalDate: Scalars['LocalDate']['output'];
   LocalDateTime: Scalars['LocalDateTime']['output'];
   LocalEndTime: Scalars['LocalEndTime']['output'];
@@ -1041,6 +1196,7 @@ export type ResolversParentTypes = {
   UnsignedInt: Scalars['UnsignedInt']['output'];
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
+  UpdateGoalInput: UpdateGoalInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: Upload;
@@ -1062,6 +1218,14 @@ export type AllocationResolvers<ContextType = any, ParentType extends ResolversP
   assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   percentage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   totalValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
+
+export type AmortizationScheduleItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['AmortizationScheduleItem'] = ResolversParentTypes['AmortizationScheduleItem']> = {
+  balance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  interestPayment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  payment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  paymentNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  principalPayment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
@@ -1177,6 +1341,24 @@ export interface GeoJsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
   name: 'GeoJSON';
 }
 
+export type GoalResolvers<ContextType = any, ParentType extends ResolversParentTypes['Goal'] = ResolversParentTypes['Goal']> = {
+  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  progress?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  targetAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  targetCurrency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  targetDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+};
+
+export type GoalsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['GoalsConnection'] = ResolversParentTypes['GoalsConnection']> = {
+  edges?: Resolver<Maybe<Array<ResolversTypes['Goal']>>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+};
+
 export interface HslScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSL'], any> {
   name: 'HSL';
 }
@@ -1245,6 +1427,20 @@ export interface Iso8601DurationScalarConfig extends GraphQLScalarTypeConfig<Res
   name: 'ISO8601Duration';
 }
 
+export type InvestmentGrowthResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['InvestmentGrowthResult'] = ResolversParentTypes['InvestmentGrowthResult']> = {
+  futureValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  schedule?: Resolver<Array<ResolversTypes['InvestmentGrowthScheduleItem']>, ParentType, ContextType>;
+  totalContributions?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalInterest?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
+
+export type InvestmentGrowthScheduleItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['InvestmentGrowthScheduleItem'] = ResolversParentTypes['InvestmentGrowthScheduleItem']> = {
+  balance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  contribution?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  interest?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  year?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
   name: 'JSON';
 }
@@ -1264,6 +1460,13 @@ export interface LccSubclassScalarConfig extends GraphQLScalarTypeConfig<Resolve
 export interface LatitudeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Latitude'], any> {
   name: 'Latitude';
 }
+
+export type LoanAmortizationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoanAmortizationResult'] = ResolversParentTypes['LoanAmortizationResult']> = {
+  monthlyPayment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  schedule?: Resolver<Array<ResolversTypes['AmortizationScheduleItem']>, ParentType, ContextType>;
+  totalInterest?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalPayment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+};
 
 export interface LocalDateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LocalDate'], any> {
   name: 'LocalDate';
@@ -1321,6 +1524,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createDocument?: Resolver<ResolversTypes['Document'], ParentType, ContextType, RequireFields<MutationCreateDocumentArgs, 'data'>>;
   createFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
+  createGoal?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'data'>>;
   createTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationCreateTransactionArgs, 'data'>>;
   deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteDocumentArgs, 'data'>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
@@ -1332,6 +1536,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
   updateFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationUpdateFundArgs, 'data'>>;
   updateFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationUpdateFundPerformancesArgs, 'data'>>;
+  updateGoal?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<MutationUpdateGoalArgs, 'data'>>;
   updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
   updateTransactionStatus?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionStatusArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
@@ -1419,6 +1624,8 @@ export type PreferencesResolvers<ContextType = any, ParentType extends Resolvers
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  calculateInvestmentGrowth?: Resolver<ResolversTypes['InvestmentGrowthResult'], ParentType, ContextType, RequireFields<QueryCalculateInvestmentGrowthArgs, 'data'>>;
+  calculateLoanAmortization?: Resolver<ResolversTypes['LoanAmortizationResult'], ParentType, ContextType, RequireFields<QueryCalculateLoanAmortizationArgs, 'data'>>;
   getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
   getClientsDocuments?: Resolver<Array<Maybe<ResolversTypes['Document']>>, ParentType, ContextType>;
   getDocumentById?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<QueryGetDocumentByIdArgs, 'id'>>;
@@ -1426,6 +1633,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFundPerformanceById?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
   getFundPerformances?: Resolver<ResolversTypes['FundPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
   getFunds?: Resolver<ResolversTypes['FundsConnection'], ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
+  getGoalById?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<QueryGetGoalByIdArgs, 'id'>>;
+  getGoals?: Resolver<ResolversTypes['GoalsConnection'], ParentType, ContextType, Partial<QueryGetGoalsArgs>>;
   getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
@@ -1573,6 +1782,7 @@ export type AuthenticatedResolvers<ContextType = any, ParentType extends Resolve
 export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
   Allocation?: AllocationResolvers<ContextType>;
+  AmortizationScheduleItem?: AmortizationScheduleItemResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Biometrics?: BiometricsResolvers<ContextType>;
   Byte?: GraphQLScalarType;
@@ -1595,6 +1805,8 @@ export type Resolvers<ContextType = any> = {
   FundsConnection?: FundsConnectionResolvers<ContextType>;
   GUID?: GraphQLScalarType;
   GeoJSON?: GraphQLScalarType;
+  Goal?: GoalResolvers<ContextType>;
+  GoalsConnection?: GoalsConnectionResolvers<ContextType>;
   HSL?: GraphQLScalarType;
   HSLA?: GraphQLScalarType;
   HexColorCode?: GraphQLScalarType;
@@ -1608,11 +1820,14 @@ export type Resolvers<ContextType = any> = {
   IPv6?: GraphQLScalarType;
   ISBN?: GraphQLScalarType;
   ISO8601Duration?: GraphQLScalarType;
+  InvestmentGrowthResult?: InvestmentGrowthResultResolvers<ContextType>;
+  InvestmentGrowthScheduleItem?: InvestmentGrowthScheduleItemResolvers<ContextType>;
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
   JWT?: GraphQLScalarType;
   LCCSubclass?: GraphQLScalarType;
   Latitude?: GraphQLScalarType;
+  LoanAmortizationResult?: LoanAmortizationResultResolvers<ContextType>;
   LocalDate?: GraphQLScalarType;
   LocalDateTime?: GraphQLScalarType;
   LocalEndTime?: GraphQLScalarType;

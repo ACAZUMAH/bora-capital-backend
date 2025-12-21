@@ -7,4 +7,7 @@ combined.log
 
 errors.log
 
+google.ts
+
 .vscode
+/generated/prisma

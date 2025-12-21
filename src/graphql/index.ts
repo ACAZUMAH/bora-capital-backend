@@ -18,6 +18,7 @@ import { documentsResolvers, documentsTypedefs } from './documents';
 import { marketNewsResolvers, marketNewsTypeDefs } from './news';
 import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
 import { goalsResolvers, goalsTypeDefs } from './goals';
+import { chatBotResolvers, chatBotTypeDefs } from './chatBot';
 
 const typeDefs = [
   generalTypeDefs,
@@ -33,6 +34,7 @@ const typeDefs = [
   marketNewsTypeDefs,
   calculatorsTypeDefs,
   goalsTypeDefs,
+  chatBotTypeDefs,
 ];
 
 const resolvers = [
@@ -49,6 +51,7 @@ const resolvers = [
   marketNewsResolvers,
   calculatorsResolvers,
   goalsResolvers,
+  chatBotResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

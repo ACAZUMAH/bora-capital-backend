@@ -113,6 +113,11 @@ export type Biometrics = {
   expiresAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
+export type ChatResponse = {
+  __typename?: 'ChatResponse';
+  response?: Maybe<Scalars['String']['output']>;
+};
+
 export type CreateDocumentInput = {
   directory?: InputMaybe<Scalars['String']['input']>;
   documentType: DocumentsType;
@@ -392,6 +397,7 @@ export type Mutation = {
   deleteDocument: Scalars['Boolean']['output'];
   deleteFund: Scalars['Boolean']['output'];
   forgetPassword: AuthResponse;
+  generateResponse?: Maybe<ChatResponse>;
   logout: AuthResponse;
   resendOtp: AuthResponse;
   resetUserPassword: AuthResponse;
@@ -444,6 +450,11 @@ export type MutationDeleteFundArgs = {
 
 export type MutationForgetPasswordArgs = {
   email: Scalars['String']['input'];
+};
+
+
+export type MutationGenerateResponseArgs = {
+  prompt: Scalars['String']['input'];
 };
 
 
@@ -947,6 +958,7 @@ export type ResolversTypes = {
   Biometrics: ResolverTypeWrapper<Biometrics>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
+  ChatResponse: ResolverTypeWrapper<ChatResponse>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
   CreateDocumentInput: CreateDocumentInput;
@@ -1087,6 +1099,7 @@ export type ResolversParentTypes = {
   Biometrics: Biometrics;
   Boolean: Scalars['Boolean']['output'];
   Byte: Scalars['Byte']['output'];
+  ChatResponse: ChatResponse;
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
   CreateDocumentInput: CreateDocumentInput;
@@ -1241,6 +1254,10 @@ export type BiometricsResolvers<ContextType = any, ParentType extends ResolversP
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
 }
+
+export type ChatResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChatResponse'] = ResolversParentTypes['ChatResponse']> = {
+  response?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+};
 
 export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
   name: 'CountryCode';
@@ -1529,6 +1546,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteDocument?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteDocumentArgs, 'data'>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
+  generateResponse?: Resolver<Maybe<ResolversTypes['ChatResponse']>, ParentType, ContextType, RequireFields<MutationGenerateResponseArgs, 'prompt'>>;
   logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;
   resendOtp?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResendOtpArgs, 'email'>>;
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
@@ -1786,6 +1804,7 @@ export type Resolvers<ContextType = any> = {
   BigInt?: GraphQLScalarType;
   Biometrics?: BiometricsResolvers<ContextType>;
   Byte?: GraphQLScalarType;
+  ChatResponse?: ChatResponseResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   CountryName?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;

@@ -8,7 +8,7 @@ const genAI = new GoogleGenAI({
 export const generateResponse = async (prompt: string) => {
   try {
     const res = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
       config: {
         systemInstruction: process.env.CHATBOT_SYSTEM_INSTRUCTION,

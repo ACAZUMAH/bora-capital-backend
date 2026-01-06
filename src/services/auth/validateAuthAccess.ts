@@ -2,6 +2,7 @@ import { ClientApp, UserDocument } from 'src/common/interfaces';
 import createError from 'http-errors';
 import { isCustomerApp } from 'src/common/helpers';
 import { role } from 'src/common/enums';
+import { isProduction } from 'src/common/constants';
 
 /**
  * @description Validates if the user has access based on the client app type.
@@ -13,15 +14,18 @@ export const validateSigninAccess = (
   app?: ClientApp,
   user?: UserDocument | null
 ) => {
-  if (!app) throw createError.Unauthorized('Unknown client app');
+  if (isProduction && !app)
+    throw createError.Unauthorized('Unknown client app');
 
-  if(user?.role === role.ADMIN) return true;
+  if (user?.role === role.ADMIN) return true;
 
-  if (isCustomerApp(app)) {
+  if (isProduction && isCustomerApp(app!)) {
     if (user) {
       return true;
     } else {
       return false;
     }
+  } else {
+    return true;
   }
 };

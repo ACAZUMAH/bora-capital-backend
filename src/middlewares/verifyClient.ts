@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getApp } from 'src/common/helpers';
 import createError from 'http-errors';
+import { isProduction } from 'src/common/constants';
 
 export const verifyClient = async (
   req: Request,
@@ -16,6 +17,5 @@ export const verifyClient = async (
   if (!app) throw createError(401, 'Unauthorized');
 
   req.clientApp = app;
-
   return next();
 };

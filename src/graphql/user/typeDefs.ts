@@ -5,6 +5,16 @@ export const userTypeDefs = `#graphql
         ADVISOR
     }
 
+    type Relation {
+        RelationshipID: ID!
+        Name: String!
+        Email: String!
+        PhoneNumber: String!
+        IDNumber: String!
+        DOB: String!
+        BeneficiaryPercentage: String!
+    }
+
     type User {
         id: ID!
         email: String!
@@ -16,27 +26,27 @@ export const userTypeDefs = `#graphql
         updatedAt: DateTime
 
         #kyc
-        firstName: String!
-        middleName: String
-        lastName: String!
-        title: String
-        gender: String
-        dateOfBirth: String!
-        residencyStatus: String!
-        passportNumber: String
-        idNumber: String!
-        maritalStatus: String
-        sourceOfFunds: String!
-        spouseName: String
-        occupation: String!
-        nextOfKin: String!
-        postalAddress: String!
-        nationaltyCountryCode: String!
-        residencyCountryCode: String!
-        currencyCode: String!
-        physicalAddress: String!
-        pinNumber: String
-        relations: [Relation]
+        FirstName: String!
+        MiddleName: String
+        LastName: String!
+        Title: String
+        Gender: String
+        DateOfBirth: String!
+        ResidencyStatus: String!
+        PassportNumber: String
+        IDNumber: String!
+        MaritalStatus: String
+        SourceOfFunds: String!
+        SpouseName: String
+        Occupation: String!
+        NextOfKin: String!
+        PostalAddress: String!
+        NationaltyCountryCode: String!
+        ResidencyCountryCode: String!
+        CurrencyCode: String!
+        PhysicalAddress: String!
+        PinNumber: String
+        Relations: [Relation]
     }
 
     extend type Query {

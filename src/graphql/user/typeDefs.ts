@@ -1,47 +1,42 @@
 export const userTypeDefs = `#graphql
-    enum Theme {
-        LIGHT
-        DARK
-    }
-
     enum Role {
         ADMIN
         CLIENT
-        Advisors
-    }
-
-    type Biometrics {
-        enabled: Boolean
-        deviceId: String
-        expiresAt: DateTime
-    }
-
-    type Devices {
-        deviceId: String
-        refreshToken: String
-        lastUsed: DateTime
-    }
-
-    type Preferences {
-        theme: Theme
-        currency: String
-        language: String
-        timezone: String
-        notificationsEnabled: Boolean
+        ADVISOR
     }
 
     type User {
         id: ID!
-        fullName: String
         email: String!
-        phoneNumber: String
+        phoneNumber: String!
         role: Role
-        biometric: Biometrics
-        preferences: Preferences
-        # kycRecords: [KycRecords]
-        devices: [Devices]
+        identityId: String
+        accountNumbers: [String]
         createdAt: DateTime
         updatedAt: DateTime
+
+        #kyc
+        firstName: String!
+        middleName: String
+        lastName: String!
+        title: String
+        gender: String
+        dateOfBirth: String!
+        residencyStatus: String!
+        passportNumber: String
+        idNumber: String!
+        maritalStatus: String
+        sourceOfFunds: String!
+        spouseName: String
+        occupation: String!
+        nextOfKin: String!
+        postalAddress: String!
+        nationaltyCountryCode: String!
+        residencyCountryCode: String!
+        currencyCode: String!
+        physicalAddress: String!
+        pinNumber: String
+        relations: [Relation]
     }
 
     extend type Query {
@@ -49,33 +44,9 @@ export const userTypeDefs = `#graphql
         getUserById(userId: ID!): User!
     }
 
-    input DeviceInput {
-        deviceId: String!
-        refreshToken: String!
-        lastUsed: DateTime
-    }
-
-    input BiometricInput {
-        enabled: Boolean
-        deviceId: String
-    }
-
-    input PreferencesInput {
-        theme: Theme
-        currency: String
-        language: String
-        timezone: String
-        notificationsEnabled: Boolean
-    }
-
     input UpdateUserInput {
         id: ID!
-        
-        fullName: String
         phoneNumber: String
-        devices: [DeviceInput]
-        biometric: BiometricInput
-        preferences: PreferencesInput
     }
 
     extend type Mutation {

@@ -30,7 +30,6 @@ const userValidationSchema = {
   type: 'object',
 
   properties: {
-    fullName: { type: 'string' },
     email: { type: 'string', format: 'email' },
     phoneNumber: { type: 'string', format: 'phone' },
     password: { type: 'string' },
@@ -42,8 +41,8 @@ const userValidationSchema = {
 
   errorMessage: {
     properties: {
-      fullName: 'First name must be a string',
-      email: 'Email must be a string',
+      email: 'Email must be a valid email address',
+      phoneNumber: 'Phone number must be a valid international format',
       password:
         'Password must be at least 8 characters long, include (A-Z), (a-z), (1-9), and a special character',
     },

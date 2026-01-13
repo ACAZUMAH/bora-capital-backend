@@ -1,33 +1,63 @@
 import { Types } from 'mongoose';
 import { role } from 'src/common/enums';
-import { BiometricDocument } from './biometric';
-import { DeviceDocument, DeviceInput } from './devices';
-import { PreferencesDocument, PreferencesInput } from './preferences';
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
-  fullName: string;
   email: string;
+  identityId?: string;
+  accountNumbers?: string[];
   phoneNumber?: string;
-  profile_url?: string;
   role: role;
-  biometric?: BiometricDocument;
-  devices?: Array<DeviceDocument>;
-  preferences?: PreferencesDocument;
   refreshToken?: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
-
-  advisors?: Array<string | Types.ObjectId>;
-  clients?: Array<string | Types.ObjectId>;
 }
 
+/**
+ * BCL Relation/Beneficiary for KYC
+ */
+export interface BclRelationInput {
+  relationshipId: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  idNumber: string;
+  dob: string;
+  beneficiaryPercentage: string;
+}
+
+/**
+ * Extended signup input with BCL KYC data
+ */
 export interface CreateUserInput {
-  fullName: string;
+  // Auth fields
   email: string;
   phoneNumber?: string;
   password: string;
+
+  // BCL KYC fields
+  firstName: string;
+  middleName?: string;
+  lastName: string;
+  gender: string;
+  title?: string;
+  dateOfBirth: string;
+  residencyStatus: string;
+  passportNumber?: string;
+  idNumber: string;
+  maritalStatus?: string;
+  sourceOfFunds: string;
+  spouseName?: string;
+  occupation: string;
+  nextOfKin: string;
+  postalAddress: string;
+  nationalityCountryCode: string;
+  residencyCountryCode: string;
+  currencyCode: string;
+  physicalAddress: string;
+  pinNumber?: string;
+  relations?: BclRelationInput[];
 }
 
 export interface ResetPasswordInput {
@@ -37,10 +67,5 @@ export interface ResetPasswordInput {
 
 export interface UpdateUserInput {
   userId: string | Types.ObjectId;
-  fullName?: string | null;
   phoneNumber?: string | null;
-  devices?: Array<DeviceInput> | null;
-  preferences?: PreferencesInput | null;
-  biometric?: BiometricDocument | null;
-  profilePic?: string | null
 }

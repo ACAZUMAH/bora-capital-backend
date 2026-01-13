@@ -1,9 +1,11 @@
 import { Types } from 'mongoose';
-import { generateOtp, jwtSign } from 'src/common/helpers';
+import { generateOtp, jwtSign, jwtVerify } from 'src/common/helpers';
 import { authModel, userModel } from 'src/models';
 import createError from 'http-errors';
 import { getUserById } from '../users';
 import { AuthInput } from 'src/common/interfaces';
+import { fetchIdentity } from '../bcl';
+
 /**
  * Creates or updates an authentication record for a user with a unique OTP.
  * @param userId - The ID of the user for whom the OTP is being generated.
@@ -43,10 +45,51 @@ export const verifyOtpAndSignJwt = async (otp: string) => {
 
   const user = await getUserById(auth.userId);
 
+  if (!user.identityId) throw createError.BadRequest('User identity not found');
+
+  const kycRecords = await fetchIdentity({
+    IdentityID: user.identityId,
+    PrimaryEmail: user.email,
+    MobileNumber: user.phoneNumber!,
+  });
+
   const accessToken = jwtSign({ id: user._id }, 'access');
   const refreshToken = jwtSign({ id: user._id }, 'refresh');
 
   await userModel.findByIdAndUpdate(user._id, { refreshToken });
 
-  return { user, accessToken, refreshToken };
+  return {
+    user: {
+      ...user,
+      ...kycRecords,
+    },
+    accessToken,
+    refreshToken,
+  };
+};
+
+/**
+ * Refresh access token using a valid refresh token.
+ * @param refreshToken - The refresh token to validate.
+ * @returns An object containing a new access token.
+ * @throws Will throw an error if the refresh token is invalid or revoked.
+ */
+export const refreshAccessToken = async (refreshToken: string) => {
+  try {
+    const data: any = jwtVerify(refreshToken, 'refresh');
+
+    if (!data?.id) throw createError.Unauthorized('Invalid refresh token');
+
+    const user = await getUserById(data.id);
+
+    if (user.refreshToken !== refreshToken) {
+      throw createError.Unauthorized('Refresh token has been revoked');
+    }
+
+    const newAccessToken = jwtSign({ id: user._id }, 'access');
+
+    return { accessToken: newAccessToken };
+  } catch (error: any) {
+    throw createError.Unauthorized(error.message || 'Invalid refresh token');
+  }
 };

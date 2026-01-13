@@ -26,7 +26,7 @@ Example Request
   "VendorID": "xx",
   "SecretKey": "xx"
 }
-````
+```
 
 Success Response
 

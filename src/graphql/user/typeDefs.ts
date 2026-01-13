@@ -1,52 +1,35 @@
+import { kycRecordsTypeDefs } from './kyc/kycRecordsTypeDefs';
+
 export const userTypeDefs = `#graphql
+    ${kycRecordsTypeDefs}
+    
     enum Role {
         ADMIN
         CLIENT
         ADVISOR
     }
 
-    type Relation {
-        RelationshipID: ID!
-        Name: String!
-        Email: String!
-        PhoneNumber: String!
-        IDNumber: String!
-        DOB: String!
-        BeneficiaryPercentage: String!
-    }
-
     type User {
         id: ID!
         email: String!
-        phoneNumber: String!
+        phoneNumber: String
         role: Role
+
+        firstName: String!
+        lastName: String!
+        dateOfBirth: String!
+        gender: String!
+        
+        # KYC status
+        kycStatus: KycStatus!
         identityId: String
         accountNumbers: [String]
+
+        # KYC records (fetched from BCL API)
+        kycRecords: KycRecords
+        
         createdAt: DateTime
         updatedAt: DateTime
-
-        #kyc
-        FirstName: String!
-        MiddleName: String
-        LastName: String!
-        Title: String
-        Gender: String
-        DateOfBirth: String!
-        ResidencyStatus: String!
-        PassportNumber: String
-        IDNumber: String!
-        MaritalStatus: String
-        SourceOfFunds: String!
-        SpouseName: String
-        Occupation: String!
-        NextOfKin: String!
-        PostalAddress: String!
-        NationaltyCountryCode: String!
-        ResidencyCountryCode: String!
-        CurrencyCode: String!
-        PhysicalAddress: String!
-        PinNumber: String
-        Relations: [Relation]
     }
 
     extend type Query {
@@ -55,8 +38,13 @@ export const userTypeDefs = `#graphql
     }
 
     input UpdateUserInput {
-        id: ID!
+        userId: ID!
         phoneNumber: String
+        firstName: String
+        lastName: String
+        dateOfBirth: String
+        gender: String
+        kycStatus: KycStatus
     }
 
     extend type Mutation {

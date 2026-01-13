@@ -96,9 +96,13 @@ export const resetPassword = async (data: ResetPasswordInput) => {
 export const updateUser = async (data: UpdateUserInput) => {
   const user = await getUserById(data.userId);
 
-  const update: Record<string, any> = {};
-
-  if (data.phoneNumber) update.phoneNumber = data.phoneNumber;
+  const update: Record<string, any> = {
+    ...(data.firstName && { firstName: data.firstName }),
+    ...(data.lastName && { lastName: data.lastName }),
+    ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
+    ...(data.gender && { gender: data.gender }),
+    ...(data.kycStatus && { kycStatus: data.kycStatus }),
+  };
 
   const updated = await userModel.findByIdAndUpdate(
     user._id,

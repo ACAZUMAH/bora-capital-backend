@@ -13,46 +13,14 @@ export const authTypeDefs = `#graphql
         accessToken: String!
     }
 
-    # BCL Beneficiary/Relation for KYC
-    input BclRelationInput {
-        relationshipId: String!
-        name: String!
-        email: String!
-        phoneNumber: String!
-        idNumber: String!
-        dob: String!
-        beneficiaryPercentage: String!
-    }
-
-    # Extended signup with KYC data for BCL
     input signupInput {
-        # Authentication fields
         email: String!
         phoneNumber: String!
         password: String!
-        
-        # BCL KYC fields
         firstName: String!
-        middleName: String
         lastName: String!
-        gender: String!
-        title: String
         dateOfBirth: String!
-        residencyStatus: String!
-        passportNumber: String
-        idNumber: String!
-        maritalStatus: String
-        sourceOfFunds: String!
-        spouseName: String
-        occupation: String!
-        nextOfKin: String!
-        postalAddress: String!
-        nationalityCountryCode: String!
-        residencyCountryCode: String!
-        currencyCode: String!
-        physicalAddress: String!
-        pinNumber: String
-        relations: [BclRelationInput]
+        gender: String!
     }
 
     input signinInput {

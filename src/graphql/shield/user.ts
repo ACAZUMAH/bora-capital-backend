@@ -8,7 +8,7 @@ const canUpdateUser = rule()((
   args: MutationUpdateUserArgs,
   ctx: GraphqlContext
 ) => {
-  return ctx.user?._id === args.data.id;
+  return ctx.user?._id === args.data.userId;
 });
 
 export const userShield = {

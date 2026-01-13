@@ -11,7 +11,6 @@ const mockGetUserById = jest.fn<any>();
 const mockJwtSign = jest.fn<any>();
 const mockJwtVerify = jest.fn<any>();
 const mockGenerateOtp = jest.fn<any>().mockReturnValue('12345');
-const mockFetchIdentity = jest.fn<any>();
 
 jest.mock('src/models', () => ({
   authModel: {
@@ -35,10 +34,6 @@ jest.mock('src/common/helpers', () => ({
   jwtVerify: mockJwtVerify,
 }));
 
-jest.mock('src/services/bcl', () => ({
-  fetchIdentity: mockFetchIdentity,
-}));
-
 import {
   verifyOtpAndSignJwt,
   refreshAccessToken,
@@ -50,14 +45,11 @@ describe('Auth Service', () => {
     _id: mockUserId,
     email: 'test@example.com',
     phoneNumber: '+233700000000',
-    identityId: '0000001099',
+    firstName: 'John',
+    lastName: 'Doe',
     refreshToken: 'valid-refresh-token',
     role: 'CLIENT',
-  };
-
-  const mockKycData = {
-    FirstName: 'John',
-    LastName: 'Doe',
+    kycStatus: 'PENDING',
   };
 
   beforeEach(() => {
@@ -65,7 +57,7 @@ describe('Auth Service', () => {
   });
 
   describe('verifyOtpAndSignJwt', () => {
-    test('should return user with KYC data and tokens for valid OTP', async () => {
+    test('should return user and tokens for valid OTP (no KYC required)', async () => {
       const mockAuth = {
         userId: mockUserId,
         otp: '12345',
@@ -74,7 +66,6 @@ describe('Auth Service', () => {
 
       mockFindOneAndDelete.mockResolvedValue(mockAuth);
       mockGetUserById.mockResolvedValue(mockUser);
-      mockFetchIdentity.mockResolvedValue(mockKycData);
       mockUserFindByIdAndUpdate.mockResolvedValue(mockUser);
       mockJwtSign
         .mockReturnValueOnce('access-token')
@@ -83,19 +74,11 @@ describe('Auth Service', () => {
       const result = await verifyOtpAndSignJwt('12345');
 
       expect(result).toEqual({
-        user: {
-          ...mockUser,
-          ...mockKycData,
-        },
+        user: mockUser,
         accessToken: 'access-token',
         refreshToken: 'refresh-token',
       });
       expect(mockFindOneAndDelete).toHaveBeenCalledWith({ otp: '12345' });
-      expect(mockFetchIdentity).toHaveBeenCalledWith({
-        IdentityID: mockUser.identityId,
-        PrimaryEmail: mockUser.email,
-        MobileNumber: mockUser.phoneNumber,
-      });
       expect(mockUserFindByIdAndUpdate).toHaveBeenCalledWith(mockUserId, {
         refreshToken: 'refresh-token',
       });
@@ -104,7 +87,7 @@ describe('Auth Service', () => {
     test('should throw error for invalid OTP', async () => {
       mockFindOneAndDelete.mockResolvedValue(null);
 
-      await expect(verifyOtpAndSignJwt('99999')).rejects.toThrow('Invalid otp');
+      await expect(verifyOtpAndSignJwt('99999')).rejects.toThrow('Invalid OTP');
     });
 
     test('should throw error for expired OTP', async () => {
@@ -116,25 +99,7 @@ describe('Auth Service', () => {
 
       mockFindOneAndDelete.mockResolvedValue(mockAuth);
 
-      await expect(verifyOtpAndSignJwt('12345')).rejects.toThrow('Otp expired');
-    });
-
-    test('should throw error if user has no identityId', async () => {
-      const mockAuth = {
-        userId: mockUserId,
-        otp: '12345',
-        expiresIn: new Date(Date.now() + 60 * 60 * 1000),
-      };
-
-      mockFindOneAndDelete.mockResolvedValue(mockAuth);
-      mockGetUserById.mockResolvedValue({
-        ...mockUser,
-        identityId: undefined,
-      });
-
-      await expect(verifyOtpAndSignJwt('12345')).rejects.toThrow(
-        'User identity not found'
-      );
+      await expect(verifyOtpAndSignJwt('12345')).rejects.toThrow('OTP expired');
     });
   });
 

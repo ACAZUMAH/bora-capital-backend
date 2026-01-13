@@ -13,17 +13,17 @@ export interface BclRelation {
 
 export interface AddIdentityInput {
   FirstName: string;
-  MiddleName?: string;
+  MiddleName?: string | null;
   LastName: string;
   Gender: string;
-  Title?: string;
+  Title?: string | null;
   DateOfBirth: string;
   ResidencyStatus: string;
-  PassPortNumber?: string;
+  PassPortNumber?: string | null;
   IDNumber: string;
-  MaritalStatus?: string;
+  MaritalStatus?: string | null;
   SourceOfFunds: string;
-  SpouseName?: string;
+  SpouseName?: string | null;
   Occupation: string;
   NextOfKin: string;
   PostalAddress: string;
@@ -33,8 +33,8 @@ export interface AddIdentityInput {
   PhysicalAddress: string;
   MobileNumber: string;
   PrimaryEmail: string;
-  PinNumber?: string;
-  Relations?: BclRelation[];
+  PinNumber?: string | null;
+  Relations?: BclRelation[] | null;
 }
 
 export interface AddIdentityResponse {

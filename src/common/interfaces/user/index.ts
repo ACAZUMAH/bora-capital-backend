@@ -1,54 +1,45 @@
 import { Types } from 'mongoose';
-import { role } from 'src/common/enums';
+import { KycStatus, role } from 'src/common/enums';
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
+  // Auth
   email: string;
-  identityId?: string;
-  accountNumbers?: string[];
   phoneNumber?: string;
+  password: string;
   role: role;
   refreshToken?: string;
-  password: string;
+
+  // Basic profile (from signup)
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+
+  // BCL linking (set after KYC)
+  kycStatus: KycStatus;
+  identityId?: string;
+  accountNumbers?: string[];
+
   createdAt: Date;
   updatedAt: Date;
 }
 
-/**
- * BCL Relation/Beneficiary for KYC
- */
-export interface BclRelationInput {
-  relationshipId: string;
-  name: string;
-  email: string;
-  phoneNumber: string;
-  idNumber: string;
-  dob: string;
-  beneficiaryPercentage: string;
-}
-
-/**
- * Extended signup input with BCL KYC data
- */
 export interface CreateUserInput {
-  // Auth fields
   email: string;
   phoneNumber?: string;
   password: string;
-
-  // BCL KYC fields
   firstName: string;
-  middleName?: string;
   lastName: string;
-  gender: string;
-  title?: string;
   dateOfBirth: string;
+  gender: string;
+}
+
+export interface KycRecordsInput {
+  userId: string | Types.ObjectId;
   residencyStatus: string;
-  passportNumber?: string;
   idNumber: string;
-  maritalStatus?: string;
   sourceOfFunds: string;
-  spouseName?: string;
   occupation: string;
   nextOfKin: string;
   postalAddress: string;
@@ -56,8 +47,13 @@ export interface CreateUserInput {
   residencyCountryCode: string;
   currencyCode: string;
   physicalAddress: string;
-  pinNumber?: string;
-  relations?: BclRelationInput[];
+  // Optional
+  middleName?: string | null;
+  title?: string | null;
+  passportNumber?: string | null;
+  maritalStatus?: string | null;
+  spouseName?: string | null;
+  pinNumber?: string | null;
 }
 
 export interface ResetPasswordInput {
@@ -68,4 +64,9 @@ export interface ResetPasswordInput {
 export interface UpdateUserInput {
   userId: string | Types.ObjectId;
   phoneNumber?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  dateOfBirth?: string | null;
+  gender?: string | null;
+  kycStatus?: KycStatus | null;
 }

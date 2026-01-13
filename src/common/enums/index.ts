@@ -5,3 +5,4 @@ export * from './transactions';
 export * from './documents';
 export * from './kycRecords';
 export * from './collections';
+export * from './kycStatus';

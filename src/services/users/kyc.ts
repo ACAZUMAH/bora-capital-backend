@@ -64,7 +64,7 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
     return updatedUser;
   } catch (error: any) {
     rollbar.error('KYC submission failed', { error, userId: data.userId });
-    throw createError.BadRequest(
+    throw createError.BadGateway(
       error.message || 'Failed to submit KYC. Please try again.'
     );
   }

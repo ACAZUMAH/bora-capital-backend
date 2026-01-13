@@ -45,7 +45,7 @@ export const addIndividualIdentity = async (
  */
 export const fetchIdentity = async (
   data: FetchIdentityInput
-): Promise<FetchIdentityResponse | undefined> => {
+): Promise<FetchIdentityResponse> => {
   try {
     const response = await bclClient.post<FetchIdentityResponse>(
       '/api/partner/fetchidentity_bcl',

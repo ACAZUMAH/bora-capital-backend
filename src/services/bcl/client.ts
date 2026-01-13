@@ -79,8 +79,8 @@ class BclApiClient {
 
   private async fetchNewToken(): Promise<string> {
     const response = await this.client.post('/api/auth/generate', {
-      VendorID: process.env.BCL_VENDOR_ID,
-      SecretKey: process.env.BCL_SECRET_KEY,
+      VendorID: `${process.env.BCL_VENDOR_ID}`,
+      SecretKey: `${process.env.BCL_SECRET_KEY}`,
     });
     if (response.data?.[0]?.AccessToken) {
       this.accessToken = response.data[0].AccessToken;

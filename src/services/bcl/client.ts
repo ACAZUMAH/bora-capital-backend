@@ -8,10 +8,11 @@ class BclApiClient {
   private client: AxiosInstance;
   private accessToken: string | null = null;
   private tokenExpiresAt: Date | null = null;
+  private tokenRefreshPromise: Promise<string> | null = null;
 
   constructor() {
     this.client = axios.create({
-      baseURL: process.env.BCL_API_BASE_URL,
+      baseURL: `${process.env.BCL_API_BASE_URL}`,
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
@@ -56,6 +57,9 @@ class BclApiClient {
    * Get or refresh BCL access token
    */
   async getAccessToken(): Promise<string> {
+    if (this.tokenRefreshPromise) {
+      return this.tokenRefreshPromise;
+    }
     // Return cached token if still valid (with 5 min buffer)
     if (this.accessToken && this.tokenExpiresAt) {
       const bufferTime = 5 * 60 * 1000; // 5 minutes
@@ -64,19 +68,25 @@ class BclApiClient {
       }
     }
 
-    // Fetch new token
+    // Fetch new token with promise deduplication
+    this.tokenRefreshPromise = this.fetchNewToken();
+    try {
+      return await this.tokenRefreshPromise;
+    } finally {
+      this.tokenRefreshPromise = null;
+    }
+  }
+
+  private async fetchNewToken(): Promise<string> {
     const response = await this.client.post('/api/auth/generate', {
       VendorID: process.env.BCL_VENDOR_ID,
       SecretKey: process.env.BCL_SECRET_KEY,
     });
-
     if (response.data?.[0]?.AccessToken) {
       this.accessToken = response.data[0].AccessToken;
-      // Assume token is valid for 1 hour
       this.tokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000);
       return this.accessToken!;
     }
-
     throw new Error('Failed to obtain BCL access token');
   }
 

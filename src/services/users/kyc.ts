@@ -6,6 +6,7 @@ import { addIndividualIdentity, fetchIdentity } from '../bcl';
 import { KycStatus } from 'src/common/enums';
 import { KycRecordsInput, UserDocument } from 'src/common/interfaces';
 import { rollbar } from 'src/loggers/rollbar';
+import logger from 'src/loggers/logger';
 
 /**
  * @description Submit/Update KYC data for a user.
@@ -17,6 +18,10 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
   // Check if KYC already submitted
   if (user.identityId) {
     throw createError.BadRequest('KYC already submitted for this user');
+  }
+
+  if (!user.phoneNumber) {
+    throw createError.BadRequest('Phone number is required for KYC submission');
   }
 
   try {
@@ -41,7 +46,7 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
       ResidencyCountryCode: data.residencyCountryCode,
       CurrencyCode: data.currencyCode,
       PhysicalAddress: data.physicalAddress,
-      MobileNumber: user.phoneNumber || '',
+      MobileNumber: user.phoneNumber!,
       PrimaryEmail: user.email,
       PinNumber: data.pinNumber,
     });
@@ -82,23 +87,28 @@ export const getKycRecords = async (user: UserDocument) => {
       MobileNumber: user.phoneNumber || '',
     });
 
+    if (!kycData) {
+      logger.warn('KYC records not found for user', { userId: user._id });
+      return null;
+    }
+
     return {
-      middleName: kycData.MiddleName,
-      title: kycData.Title,
-      residencyStatus: kycData.ResidencyStatus,
-      passportNumber: kycData.PassPortNumber,
-      idNumber: kycData.IDNumber,
-      maritalStatus: kycData.MaritalStatus,
-      sourceOfFunds: kycData.SourceOfFunds,
-      spouseName: kycData.SpouseName,
-      occupation: kycData.Occupation,
-      nextOfKin: kycData.NextOfKin,
-      postalAddress: kycData.PostalAddress,
-      nationalityCountryCode: kycData.NationalityCountryCode,
-      residencyCountryCode: kycData.ResidencyCountryCode,
-      currencyCode: kycData.CurrencyCode,
-      physicalAddress: kycData.PhysicalAddress,
-      pinNumber: kycData.PinNumber,
+      middleName: kycData?.MiddleName,
+      title: kycData?.Title,
+      residencyStatus: kycData?.ResidencyStatus,
+      passportNumber: kycData?.PassPortNumber,
+      idNumber: kycData?.IDNumber,
+      maritalStatus: kycData?.MaritalStatus,
+      sourceOfFunds: kycData?.SourceOfFunds,
+      spouseName: kycData?.SpouseName,
+      occupation: kycData?.Occupation,
+      nextOfKin: kycData?.NextOfKin,
+      postalAddress: kycData?.PostalAddress,
+      nationalityCountryCode: kycData?.NationalityCountryCode,
+      residencyCountryCode: kycData?.ResidencyCountryCode,
+      currencyCode: kycData?.CurrencyCode,
+      physicalAddress: kycData?.PhysicalAddress,
+      pinNumber: kycData?.PinNumber,
     };
   } catch (error: any) {
     rollbar.error('Failed to fetch KYC records', { error, userId: user._id });

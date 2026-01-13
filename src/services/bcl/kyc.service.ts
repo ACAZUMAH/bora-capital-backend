@@ -45,14 +45,17 @@ export const addIndividualIdentity = async (
  */
 export const fetchIdentity = async (
   data: FetchIdentityInput
-): Promise<FetchIdentityResponse> => {
+): Promise<FetchIdentityResponse | undefined> => {
   try {
     const response = await bclClient.post<FetchIdentityResponse>(
       '/api/partner/fetchidentity_bcl',
       data
     );
 
-    return response.Data?.identityDetails;
+    if (!response.Data?.identityDetails) {
+      throw createError.BadRequest('Identity details not found in response');
+    }
+    return response.Data.identityDetails;
   } catch (error: any) {
     if (error.response?.data?.Message) {
       throw createError.BadRequest(error.response.data.Message);

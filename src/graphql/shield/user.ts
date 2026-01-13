@@ -18,5 +18,6 @@ export const userShield = {
   },
   Mutation: {
     updateUser: and(isAuthenticated, canUpdateUser),
+    updateKyc: isAuthenticated,
   },
 };

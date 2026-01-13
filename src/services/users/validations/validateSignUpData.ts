@@ -33,11 +33,23 @@ const userValidationSchema = {
     email: { type: 'string', format: 'email' },
     phoneNumber: { type: 'string', format: 'phone' },
     password: { type: 'string' },
+    firstName: { type: 'string', minLength: 1 },
+    lastName: { type: 'string', minLength: 1 },
+    dateOfBirth: { type: 'string', minLength: 1 },
+    gender: { type: 'string', minLength: 1 },
   },
 
   additionalProperties: false,
 
-  required: ['email', 'password'],
+  required: [
+    'email',
+    'password',
+    'phoneNumber',
+    'firstName',
+    'lastName',
+    'dateOfBirth',
+    'gender',
+  ],
 
   errorMessage: {
     properties: {
@@ -45,11 +57,20 @@ const userValidationSchema = {
       phoneNumber: 'Phone number must be a valid international format',
       password:
         'Password must be at least 8 characters long, include (A-Z), (a-z), (1-9), and a special character',
+      firstName: 'First name is required',
+      lastName: 'Last name is required',
+      dateOfBirth: 'Date of birth is required',
+      gender: 'Gender is required',
     },
 
     required: {
       email: 'Email is required',
       password: 'Password is required',
+      phoneNumber: 'Phone number is required',
+      firstName: 'First name is required',
+      lastName: 'Last name is required',
+      dateOfBirth: 'Date of birth is required',
+      gender: 'Gender is required',
     },
   },
 };

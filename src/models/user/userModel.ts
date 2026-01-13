@@ -1,25 +1,30 @@
 import { Schema, model } from 'mongoose';
 import { UserDocument } from '../../common/interfaces/user';
-import { Collections, role } from 'src/common/enums';
-import { biometricSchema } from '../biometric/biometricModel';
-import { deviceSchema } from '../devices/deviceModel';
-import { preferencesSchema } from '../preferences/preferencesModel';
+import { Collections, KycStatus, role } from 'src/common/enums';
 
 const userSchema = new Schema<UserDocument>(
   {
-    fullName: { type: String },
+    // Auth
     email: { type: String, required: true, unique: true },
-    profile_url: {},
-    phoneNumber: { type: String, unique: true },
-    role: { type: String, enum: Object.values(role), default: role.CLIENT },
-    biometric: biometricSchema,
-    devices: [deviceSchema],
-    preferences: preferencesSchema,
+    phoneNumber: { type: String, sparse: true },
     password: { type: String, required: true },
+    role: { type: String, enum: Object.values(role), default: role.CLIENT },
+    refreshToken: { type: String },
 
-    advisors: [{ type: Schema.Types.ObjectId, ref: Collections.Users }],
+    // Basic profile (from signup)
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    dateOfBirth: { type: String, required: true },
+    gender: { type: String, required: true },
 
-    clients: [{ type: Schema.Types.ObjectId, ref: Collections.Users }],
+    // BCL linking (set after KYC)
+    kycStatus: {
+      type: String,
+      enum: Object.values(KycStatus),
+      default: KycStatus.PENDING,
+    },
+    identityId: { type: String, sparse: true },
+    accountNumbers: [{ type: String }],
   },
   { timestamps: true }
 );

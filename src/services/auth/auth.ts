@@ -1,15 +1,12 @@
 import { Types } from 'mongoose';
-import { generateOtp, jwtSign } from 'src/common/helpers';
+import { generateOtp, jwtSign, jwtVerify } from 'src/common/helpers';
 import { authModel, userModel } from 'src/models';
 import createError from 'http-errors';
 import { getUserById } from '../users';
 import { AuthInput } from 'src/common/interfaces';
+
 /**
  * Creates or updates an authentication record for a user with a unique OTP.
- * @param userId - The ID of the user for whom the OTP is being generated.
- * @param len - The length of the OTP to generate.
- * @returns The generated OTP as a string.
- * @throws Will throw an error if the database operation fails.
  */
 export const createAuth = async (data: AuthInput) => {
   let otp = generateOtp(data.len);
@@ -28,18 +25,16 @@ export const createAuth = async (data: AuthInput) => {
 };
 
 /**
- * Verifies an OTP, deletes the corresponding authentication record, and generates a JWT token.
- * @param otp - The OTP to verify.
- * @returns An object containing the authenticated user and a signed JWT token.
- * @throws Will throw an error if the OTP is invalid or expired.
+ * Verifies an OTP and generates JWT tokens.
+ * User can complete auth without KYC - they'll have limited access.
  */
 export const verifyOtpAndSignJwt = async (otp: string) => {
   const auth = await authModel.findOneAndDelete({ otp });
 
-  if (!auth) throw createError.BadRequest('Invalid otp');
+  if (!auth) throw createError.BadRequest('Invalid OTP');
 
   if (new Date(auth.expiresIn) < new Date())
-    throw createError.BadRequest('Otp expired');
+    throw createError.BadRequest('OTP expired');
 
   const user = await getUserById(auth.userId);
 
@@ -49,4 +44,27 @@ export const verifyOtpAndSignJwt = async (otp: string) => {
   await userModel.findByIdAndUpdate(user._id, { refreshToken });
 
   return { user, accessToken, refreshToken };
+};
+
+/**
+ * Refresh access token using a valid refresh token.
+ */
+export const refreshAccessToken = async (refreshToken: string) => {
+  try {
+    const data: any = jwtVerify(refreshToken, 'refresh');
+
+    if (!data?.id) throw createError.Unauthorized('Invalid refresh token');
+
+    const user = await getUserById(data.id);
+
+    if (user.refreshToken !== refreshToken) {
+      throw createError.Unauthorized('Refresh token has been revoked');
+    }
+
+    const newAccessToken = jwtSign({ id: user._id }, 'access');
+
+    return { accessToken: newAccessToken };
+  } catch (error: any) {
+    throw createError.Unauthorized(error.message || 'Invalid refresh token');
+  }
 };

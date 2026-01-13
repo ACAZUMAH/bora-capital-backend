@@ -8,29 +8,17 @@ import { userModel } from 'src/models';
 import { Types } from 'mongoose';
 import createError from 'http-errors';
 import { hashPassword } from 'src/common/helpers';
-import { createPortfolio } from '../portfolio';
-import { uploadPhoto } from '../uploads';
-import { DocumentsType } from 'src/common/enums';
 
 /**
- * @description create new user
- * @param data.fullName - full name of the user
+ * @description create new user (local database only)
  * @param data.email - email of the user
  * @param data.phoneNumber - phone number of the user
  * @param data.password - password of the user
- * @returns
+ * @returns created user object
  */
 export const createUser = async (data: CreateUserInput) => {
   validateCreateUserData(data);
-
   const user = await userModel.create({ ...data });
-
-  await createPortfolio({
-    userId: user._id,
-    name: 'Main Portfolio',
-    currency: 'GHS',
-  });
-
   return user;
 };
 
@@ -64,7 +52,7 @@ export const getUserById = async (id: string | Types.ObjectId) => {
 /**
  * @description get user by email
  * @param email - email of the user
- * @returns
+ * @returns user object
  */
 export const getUserByEmail = async (email: string) => {
   const user = await userModel.findOne({ email });
@@ -102,40 +90,66 @@ export const resetPassword = async (data: ResetPasswordInput) => {
 /**
  * @description update user details
  * @param data.userId - id of the user
- * @param data.fullName - full name of the user
  * @param data.phoneNumber - phone number of the user
- * @param data.devices - devices of the user
- * @param data.preferences - preferences of the user
- * @param data.biometric - biometric of the user
  * @returns updated user object
  */
 export const updateUser = async (data: UpdateUserInput) => {
   const user = await getUserById(data.userId);
 
-  const update: Record<string, any> = {};
-
-  if (data.fullName) update.fullName = data.fullName;
-  if (data.phoneNumber) update.phoneNumber = data.phoneNumber;
-  if (data.devices?.length) update.devices = data.devices;
-  if (data.preferences) update.preferences = data.preferences;
-  if (data.biometric) update.biometric = data.biometric;
-
-  if (data.profilePic) {
-    const upload = await uploadPhoto({
-      userId: user?._id,
-      file: data.profilePic,
-      documentType: DocumentsType.OTHER,
-      directory: 'Profiles',
-    });
-
-    update.profile_url = `${process.env.UPLOAD_BASE_URL}/${upload.directory}/${upload.fileName}`;
-  }
+  const update: Record<string, any> = {
+    ...(data.firstName && { firstName: data.firstName }),
+    ...(data.lastName && { lastName: data.lastName }),
+    ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
+    ...(data.gender && { gender: data.gender }),
+    ...(data.kycStatus && { kycStatus: data.kycStatus }),
+  };
 
   const updated = await userModel.findByIdAndUpdate(
     user._id,
-    {
-      $set: update,
-    },
+    { $set: update },
+    { new: true }
+  );
+
+  return updated;
+};
+
+/**
+ * @description Link BCL IdentityID to user
+ * @param userId - user id
+ * @param identityId - BCL IdentityID
+ * @returns updated user object
+ */
+export const linkIdentityId = async (
+  userId: string | Types.ObjectId,
+  identityId: string
+) => {
+  const user = await getUserById(userId);
+
+  const updated = await userModel.findByIdAndUpdate(
+    user._id,
+    { identityId },
+    { new: true }
+  );
+
+  return updated;
+};
+
+/**
+ * @description Link BCL AccountNumber to user
+ * @param userId - user id
+ * @param accountNumber - BCL Account Number
+ * @returns updated user object
+ */
+export const linkAccountNumber = async (
+  userId: string | Types.ObjectId,
+  accountNumber: string
+) => {
+  const user = await getUserById(userId);
+
+  // Add to array if not already present
+  const updated = await userModel.findByIdAndUpdate(
+    user._id,
+    { $addToSet: { accountNumbers: accountNumber } },
     { new: true }
   );
 

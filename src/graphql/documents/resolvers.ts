@@ -25,7 +25,8 @@ const getUserDocuments = (
 };
 
 const getClientsDocuments = (_: any, __: any, { user }: GraphqlContext) => {
-  return getUploadByUserIds(user?.clients || []);
+  // TODO: Refactor for BCL integration - clients are no longer stored locally
+  return [];
 };
 
 const getDocumentById = (_: any, args: QueryGetDocumentByIdArgs) => {

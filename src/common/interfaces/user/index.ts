@@ -1,33 +1,59 @@
 import { Types } from 'mongoose';
-import { role } from 'src/common/enums';
-import { BiometricDocument } from './biometric';
-import { DeviceDocument, DeviceInput } from './devices';
-import { PreferencesDocument, PreferencesInput } from './preferences';
+import { KycStatus, role } from 'src/common/enums';
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
-  fullName: string;
+  // Auth
   email: string;
   phoneNumber?: string;
-  profile_url?: string;
-  role: role;
-  biometric?: BiometricDocument;
-  devices?: Array<DeviceDocument>;
-  preferences?: PreferencesDocument;
-  refreshToken?: string;
   password: string;
+  role: role;
+  refreshToken?: string;
+
+  // Basic profile (from signup)
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+
+  // BCL linking (set after KYC)
+  kycStatus: KycStatus;
+  identityId?: string;
+  accountNumbers?: string[];
+
   createdAt: Date;
   updatedAt: Date;
-
-  advisors?: Array<string | Types.ObjectId>;
-  clients?: Array<string | Types.ObjectId>;
 }
 
 export interface CreateUserInput {
-  fullName: string;
   email: string;
   phoneNumber?: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  gender: string;
+}
+
+export interface KycRecordsInput {
+  userId: string | Types.ObjectId;
+  residencyStatus: string;
+  idNumber: string;
+  sourceOfFunds: string;
+  occupation: string;
+  nextOfKin: string;
+  postalAddress: string;
+  nationalityCountryCode: string;
+  residencyCountryCode: string;
+  currencyCode: string;
+  physicalAddress: string;
+  // Optional
+  middleName?: string | null;
+  title?: string | null;
+  passportNumber?: string | null;
+  maritalStatus?: string | null;
+  spouseName?: string | null;
+  pinNumber?: string | null;
 }
 
 export interface ResetPasswordInput {
@@ -37,10 +63,10 @@ export interface ResetPasswordInput {
 
 export interface UpdateUserInput {
   userId: string | Types.ObjectId;
-  fullName?: string | null;
   phoneNumber?: string | null;
-  devices?: Array<DeviceInput> | null;
-  preferences?: PreferencesInput | null;
-  biometric?: BiometricDocument | null;
-  profilePic?: string | null
+  firstName?: string | null;
+  lastName?: string | null;
+  dateOfBirth?: string | null;
+  gender?: string | null;
+  kycStatus?: KycStatus | null;
 }

@@ -101,18 +101,6 @@ export type AmortizationScheduleItem = {
   principalPayment: Scalars['Float']['output'];
 };
 
-export type BiometricInput = {
-  deviceId?: InputMaybe<Scalars['String']['input']>;
-  enabled?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-export type Biometrics = {
-  __typename?: 'Biometrics';
-  deviceId?: Maybe<Scalars['String']['output']>;
-  enabled?: Maybe<Scalars['Boolean']['output']>;
-  expiresAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
 export type ChatResponse = {
   __typename?: 'ChatResponse';
   response?: Maybe<Scalars['String']['output']>;
@@ -175,19 +163,6 @@ export type CreateTransactionInput = {
 export type DeleteDocumentInput = {
   id: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
-};
-
-export type DeviceInput = {
-  deviceId: Scalars['String']['input'];
-  lastUsed?: InputMaybe<Scalars['DateTime']['input']>;
-  refreshToken: Scalars['String']['input'];
-};
-
-export type Devices = {
-  __typename?: 'Devices';
-  deviceId?: Maybe<Scalars['String']['output']>;
-  lastUsed?: Maybe<Scalars['DateTime']['output']>;
-  refreshToken?: Maybe<Scalars['String']['output']>;
 };
 
 export type Document = {
@@ -343,6 +318,33 @@ export type InvestmentGrowthScheduleItem = {
   year: Scalars['Int']['output'];
 };
 
+export type KycRecords = {
+  __typename?: 'KycRecords';
+  currencyCode?: Maybe<Scalars['String']['output']>;
+  idNumber?: Maybe<Scalars['String']['output']>;
+  maritalStatus?: Maybe<Scalars['String']['output']>;
+  middleName?: Maybe<Scalars['String']['output']>;
+  nationalityCountryCode?: Maybe<Scalars['String']['output']>;
+  nextOfKin?: Maybe<Scalars['String']['output']>;
+  occupation?: Maybe<Scalars['String']['output']>;
+  passportNumber?: Maybe<Scalars['String']['output']>;
+  physicalAddress?: Maybe<Scalars['String']['output']>;
+  pinNumber?: Maybe<Scalars['String']['output']>;
+  postalAddress?: Maybe<Scalars['String']['output']>;
+  residencyCountryCode?: Maybe<Scalars['String']['output']>;
+  residencyStatus?: Maybe<Scalars['String']['output']>;
+  sourceOfFunds?: Maybe<Scalars['String']['output']>;
+  spouseName?: Maybe<Scalars['String']['output']>;
+  title?: Maybe<Scalars['String']['output']>;
+};
+
+export enum KycStatus {
+  APPROVED = 'APPROVED',
+  PENDING = 'PENDING',
+  REJECTED = 'REJECTED',
+  SUBMITTED = 'SUBMITTED'
+}
+
 export type LoanAmortizationInput = {
   principal: Scalars['Float']['input'];
   rate: Scalars['Float']['input'];
@@ -399,6 +401,7 @@ export type Mutation = {
   forgetPassword: AuthResponse;
   generateResponse?: Maybe<ChatResponse>;
   logout: AuthResponse;
+  refreshToken: RefreshTokenResponse;
   resendOtp: AuthResponse;
   resetUserPassword: AuthResponse;
   signin: AuthResponse;
@@ -406,6 +409,7 @@ export type Mutation = {
   updateFund: Fund;
   updateFundPerformances: FundPerformance;
   updateGoal: Goal;
+  updateKyc: User;
   updateTransaction: Transaction;
   updateTransactionStatus: Transaction;
   updateUser: User;
@@ -458,6 +462,11 @@ export type MutationGenerateResponseArgs = {
 };
 
 
+export type MutationRefreshTokenArgs = {
+  refreshToken: Scalars['String']['input'];
+};
+
+
 export type MutationResendOtpArgs = {
   email: Scalars['String']['input'];
 };
@@ -490,6 +499,11 @@ export type MutationUpdateFundPerformancesArgs = {
 
 export type MutationUpdateGoalArgs = {
   data: UpdateGoalInput;
+};
+
+
+export type MutationUpdateKycArgs = {
+  data: UpdateKycInput;
 };
 
 
@@ -546,23 +560,6 @@ export type Portfolio = {
   user?: Maybe<User>;
   userId: Scalars['ID']['output'];
   valuation?: Maybe<Scalars['Float']['output']>;
-};
-
-export type Preferences = {
-  __typename?: 'Preferences';
-  currency?: Maybe<Scalars['String']['output']>;
-  language?: Maybe<Scalars['String']['output']>;
-  notificationsEnabled?: Maybe<Scalars['Boolean']['output']>;
-  theme?: Maybe<Theme>;
-  timezone?: Maybe<Scalars['String']['output']>;
-};
-
-export type PreferencesInput = {
-  currency?: InputMaybe<Scalars['String']['input']>;
-  language?: InputMaybe<Scalars['String']['input']>;
-  notificationsEnabled?: InputMaybe<Scalars['Boolean']['input']>;
-  theme?: InputMaybe<Theme>;
-  timezone?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Query = {
@@ -696,7 +693,7 @@ export type QueryGetUserDocumentsArgs = {
 
 export enum Role {
   ADMIN = 'ADMIN',
-  ADVISORS = 'Advisors',
+  ADVISOR = 'ADVISOR',
   CLIENT = 'CLIENT'
 }
 
@@ -704,11 +701,6 @@ export type Subscription = {
   __typename?: 'Subscription';
   _empty?: Maybe<Scalars['String']['output']>;
 };
-
-export enum Theme {
-  DARK = 'DARK',
-  LIGHT = 'LIGHT'
-}
 
 export type Transaction = {
   __typename?: 'Transaction';
@@ -792,6 +784,25 @@ export type UpdateGoalInput = {
   userId?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type UpdateKycInput = {
+  currencyCode: Scalars['String']['input'];
+  idNumber: Scalars['String']['input'];
+  maritalStatus?: InputMaybe<Scalars['String']['input']>;
+  middleName?: InputMaybe<Scalars['String']['input']>;
+  nationalityCountryCode: Scalars['String']['input'];
+  nextOfKin: Scalars['String']['input'];
+  occupation: Scalars['String']['input'];
+  passportNumber?: InputMaybe<Scalars['String']['input']>;
+  physicalAddress: Scalars['String']['input'];
+  pinNumber?: InputMaybe<Scalars['String']['input']>;
+  postalAddress: Scalars['String']['input'];
+  residencyCountryCode: Scalars['String']['input'];
+  residencyStatus: Scalars['String']['input'];
+  sourceOfFunds: Scalars['String']['input'];
+  spouseName?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type UpdateTransactionInput = {
   amount?: InputMaybe<Scalars['Float']['input']>;
   bankAccountId?: InputMaybe<Scalars['ID']['input']>;
@@ -808,12 +819,13 @@ export type UpdateTransactionInput = {
 };
 
 export type UpdateUserInput = {
-  biometric?: InputMaybe<BiometricInput>;
-  devices?: InputMaybe<Array<InputMaybe<DeviceInput>>>;
-  fullName?: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['ID']['input'];
+  dateOfBirth?: InputMaybe<Scalars['String']['input']>;
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Scalars['String']['input']>;
+  kycStatus?: InputMaybe<KycStatus>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
-  preferences?: InputMaybe<PreferencesInput>;
+  userId: Scalars['ID']['input'];
 };
 
 export type Upload = {
@@ -831,14 +843,18 @@ export type Upload = {
 
 export type User = {
   __typename?: 'User';
-  biometric?: Maybe<Biometrics>;
+  accountNumbers?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
-  devices?: Maybe<Array<Maybe<Devices>>>;
+  dateOfBirth: Scalars['String']['output'];
   email: Scalars['String']['output'];
-  fullName?: Maybe<Scalars['String']['output']>;
+  firstName: Scalars['String']['output'];
+  gender: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  identityId?: Maybe<Scalars['String']['output']>;
+  kycRecords?: Maybe<KycRecords>;
+  kycStatus: KycStatus;
+  lastName: Scalars['String']['output'];
   phoneNumber?: Maybe<Scalars['String']['output']>;
-  preferences?: Maybe<Preferences>;
   role?: Maybe<Role>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -860,14 +876,22 @@ export enum FileType {
   IMAGE = 'IMAGE'
 }
 
+export type RefreshTokenResponse = {
+  __typename?: 'refreshTokenResponse';
+  accessToken: Scalars['String']['output'];
+};
+
 export type SigninInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 };
 
 export type SignupInput = {
+  dateOfBirth: Scalars['String']['input'];
   email: Scalars['String']['input'];
-  fullName: Scalars['String']['input'];
+  firstName: Scalars['String']['input'];
+  gender: Scalars['String']['input'];
+  lastName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phoneNumber: Scalars['String']['input'];
 };
@@ -954,8 +978,6 @@ export type ResolversTypes = {
   Allocation: ResolverTypeWrapper<Allocation>;
   AmortizationScheduleItem: ResolverTypeWrapper<AmortizationScheduleItem>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
-  BiometricInput: BiometricInput;
-  Biometrics: ResolverTypeWrapper<Biometrics>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   ChatResponse: ResolverTypeWrapper<ChatResponse>;
@@ -973,8 +995,6 @@ export type ResolversTypes = {
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   DateTimeISO: ResolverTypeWrapper<Scalars['DateTimeISO']['output']>;
   DeleteDocumentInput: DeleteDocumentInput;
-  DeviceInput: DeviceInput;
-  Devices: ResolverTypeWrapper<Devices>;
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
   Document: ResolverTypeWrapper<Document>;
   DocumentsType: DocumentsType;
@@ -1013,6 +1033,8 @@ export type ResolversTypes = {
   JSON: ResolverTypeWrapper<Scalars['JSON']['output']>;
   JSONObject: ResolverTypeWrapper<Scalars['JSONObject']['output']>;
   JWT: ResolverTypeWrapper<Scalars['JWT']['output']>;
+  KycRecords: ResolverTypeWrapper<KycRecords>;
+  KycStatus: KycStatus;
   LCCSubclass: ResolverTypeWrapper<Scalars['LCCSubclass']['output']>;
   Latitude: ResolverTypeWrapper<Scalars['Latitude']['output']>;
   LoanAmortizationInput: LoanAmortizationInput;
@@ -1046,8 +1068,6 @@ export type ResolversTypes = {
   PositiveFloat: ResolverTypeWrapper<Scalars['PositiveFloat']['output']>;
   PositiveInt: ResolverTypeWrapper<Scalars['PositiveInt']['output']>;
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']['output']>;
-  Preferences: ResolverTypeWrapper<Preferences>;
-  PreferencesInput: PreferencesInput;
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RGB: ResolverTypeWrapper<Scalars['RGB']['output']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']['output']>;
@@ -1058,7 +1078,6 @@ export type ResolversTypes = {
   SemVer: ResolverTypeWrapper<Scalars['SemVer']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Subscription: ResolverTypeWrapper<Record<PropertyKey, never>>;
-  Theme: Theme;
   Time: ResolverTypeWrapper<Scalars['Time']['output']>;
   TimeZone: ResolverTypeWrapper<Scalars['TimeZone']['output']>;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
@@ -1075,6 +1094,7 @@ export type ResolversTypes = {
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
   UpdateGoalInput: UpdateGoalInput;
+  UpdateKycInput: UpdateKycInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: ResolverTypeWrapper<Upload>;
@@ -1084,6 +1104,7 @@ export type ResolversTypes = {
   authResponse: ResolverTypeWrapper<AuthResponse>;
   authenticated: ResolverTypeWrapper<Authenticated>;
   fileType: FileType;
+  refreshTokenResponse: ResolverTypeWrapper<RefreshTokenResponse>;
   signinInput: SigninInput;
   signupInput: SignupInput;
   updateTransactionStatusInput: UpdateTransactionStatusInput;
@@ -1095,8 +1116,6 @@ export type ResolversParentTypes = {
   Allocation: Allocation;
   AmortizationScheduleItem: AmortizationScheduleItem;
   BigInt: Scalars['BigInt']['output'];
-  BiometricInput: BiometricInput;
-  Biometrics: Biometrics;
   Boolean: Scalars['Boolean']['output'];
   Byte: Scalars['Byte']['output'];
   ChatResponse: ChatResponse;
@@ -1114,8 +1133,6 @@ export type ResolversParentTypes = {
   DateTime: Scalars['DateTime']['output'];
   DateTimeISO: Scalars['DateTimeISO']['output'];
   DeleteDocumentInput: DeleteDocumentInput;
-  DeviceInput: DeviceInput;
-  Devices: Devices;
   DeweyDecimal: Scalars['DeweyDecimal']['output'];
   Document: Document;
   Duration: Scalars['Duration']['output'];
@@ -1153,6 +1170,7 @@ export type ResolversParentTypes = {
   JSON: Scalars['JSON']['output'];
   JSONObject: Scalars['JSONObject']['output'];
   JWT: Scalars['JWT']['output'];
+  KycRecords: KycRecords;
   LCCSubclass: Scalars['LCCSubclass']['output'];
   Latitude: Scalars['Latitude']['output'];
   LoanAmortizationInput: LoanAmortizationInput;
@@ -1185,8 +1203,6 @@ export type ResolversParentTypes = {
   PositiveFloat: Scalars['PositiveFloat']['output'];
   PositiveInt: Scalars['PositiveInt']['output'];
   PostalCode: Scalars['PostalCode']['output'];
-  Preferences: Preferences;
-  PreferencesInput: PreferencesInput;
   Query: Record<PropertyKey, never>;
   RGB: Scalars['RGB']['output'];
   RGBA: Scalars['RGBA']['output'];
@@ -1210,6 +1226,7 @@ export type ResolversParentTypes = {
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
   UpdateGoalInput: UpdateGoalInput;
+  UpdateKycInput: UpdateKycInput;
   UpdateTransactionInput: UpdateTransactionInput;
   UpdateUserInput: UpdateUserInput;
   Upload: Upload;
@@ -1218,6 +1235,7 @@ export type ResolversParentTypes = {
   Void: Scalars['Void']['output'];
   authResponse: AuthResponse;
   authenticated: Authenticated;
+  refreshTokenResponse: RefreshTokenResponse;
   signinInput: SigninInput;
   signupInput: SignupInput;
   updateTransactionStatusInput: UpdateTransactionStatusInput;
@@ -1244,12 +1262,6 @@ export type AmortizationScheduleItemResolvers<ContextType = any, ParentType exte
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
-
-export type BiometricsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Biometrics'] = ResolversParentTypes['Biometrics']> = {
-  deviceId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  enabled?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  expiresAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-};
 
 export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Byte'], any> {
   name: 'Byte';
@@ -1290,12 +1302,6 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export interface DateTimeIsoScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTimeISO'], any> {
   name: 'DateTimeISO';
 }
-
-export type DevicesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Devices'] = ResolversParentTypes['Devices']> = {
-  deviceId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  lastUsed?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-};
 
 export interface DeweyDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DeweyDecimal'], any> {
   name: 'DeweyDecimal';
@@ -1470,6 +1476,25 @@ export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
   name: 'JWT';
 }
 
+export type KycRecordsResolvers<ContextType = any, ParentType extends ResolversParentTypes['KycRecords'] = ResolversParentTypes['KycRecords']> = {
+  currencyCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  idNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  maritalStatus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  middleName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  nationalityCountryCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  nextOfKin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  occupation?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  passportNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  physicalAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  pinNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  postalAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  residencyCountryCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  residencyStatus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sourceOfFunds?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  spouseName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+};
+
 export interface LccSubclassScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LCCSubclass'], any> {
   name: 'LCCSubclass';
 }
@@ -1548,6 +1573,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
   generateResponse?: Resolver<Maybe<ResolversTypes['ChatResponse']>, ParentType, ContextType, RequireFields<MutationGenerateResponseArgs, 'prompt'>>;
   logout?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['refreshTokenResponse'], ParentType, ContextType, RequireFields<MutationRefreshTokenArgs, 'refreshToken'>>;
   resendOtp?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResendOtpArgs, 'email'>>;
   resetUserPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationResetUserPasswordArgs, 'newPassword'>>;
   signin?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSigninArgs, 'data'>>;
@@ -1555,6 +1581,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationUpdateFundArgs, 'data'>>;
   updateFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationUpdateFundPerformancesArgs, 'data'>>;
   updateGoal?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<MutationUpdateGoalArgs, 'data'>>;
+  updateKyc?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateKycArgs, 'data'>>;
   updateTransaction?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionArgs, 'data'>>;
   updateTransactionStatus?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<MutationUpdateTransactionStatusArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
@@ -1631,14 +1658,6 @@ export interface PositiveIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
 export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PostalCode'], any> {
   name: 'PostalCode';
 }
-
-export type PreferencesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Preferences'] = ResolversParentTypes['Preferences']> = {
-  currency?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  language?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  notificationsEnabled?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  theme?: Resolver<Maybe<ResolversTypes['Theme']>, ParentType, ContextType>;
-  timezone?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-};
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1767,14 +1786,18 @@ export type UploadResolvers<ContextType = any, ParentType extends ResolversParen
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  biometric?: Resolver<Maybe<ResolversTypes['Biometrics']>, ParentType, ContextType>;
+  accountNumbers?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  devices?: Resolver<Maybe<Array<Maybe<ResolversTypes['Devices']>>>, ParentType, ContextType>;
+  dateOfBirth?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  fullName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  identityId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  kycRecords?: Resolver<Maybe<ResolversTypes['KycRecords']>, ParentType, ContextType>;
+  kycStatus?: Resolver<ResolversTypes['KycStatus'], ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  preferences?: Resolver<Maybe<ResolversTypes['Preferences']>, ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
 };
@@ -1797,12 +1820,15 @@ export type AuthenticatedResolvers<ContextType = any, ParentType extends Resolve
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
+export type RefreshTokenResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['refreshTokenResponse'] = ResolversParentTypes['refreshTokenResponse']> = {
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
   Allocation?: AllocationResolvers<ContextType>;
   AmortizationScheduleItem?: AmortizationScheduleItemResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
-  Biometrics?: BiometricsResolvers<ContextType>;
   Byte?: GraphQLScalarType;
   ChatResponse?: ChatResponseResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
@@ -1813,7 +1839,6 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   DateTimeISO?: GraphQLScalarType;
-  Devices?: DevicesResolvers<ContextType>;
   DeweyDecimal?: GraphQLScalarType;
   Document?: DocumentResolvers<ContextType>;
   Duration?: GraphQLScalarType;
@@ -1844,6 +1869,7 @@ export type Resolvers<ContextType = any> = {
   JSON?: GraphQLScalarType;
   JSONObject?: GraphQLScalarType;
   JWT?: GraphQLScalarType;
+  KycRecords?: KycRecordsResolvers<ContextType>;
   LCCSubclass?: GraphQLScalarType;
   Latitude?: GraphQLScalarType;
   LoanAmortizationResult?: LoanAmortizationResultResolvers<ContextType>;
@@ -1873,7 +1899,6 @@ export type Resolvers<ContextType = any> = {
   PositiveFloat?: GraphQLScalarType;
   PositiveInt?: GraphQLScalarType;
   PostalCode?: GraphQLScalarType;
-  Preferences?: PreferencesResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
@@ -1898,5 +1923,6 @@ export type Resolvers<ContextType = any> = {
   Void?: GraphQLScalarType;
   authResponse?: AuthResponseResolvers<ContextType>;
   authenticated?: AuthenticatedResolvers<ContextType>;
+  refreshTokenResponse?: RefreshTokenResponseResolvers<ContextType>;
 };
 

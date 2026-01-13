@@ -1,45 +1,33 @@
-export const userTypeDefs = `#graphql
-    enum Theme {
-        LIGHT
-        DARK
-    }
+import { kycRecordsTypeDefs } from './kyc/kycRecordsTypeDefs';
 
+export const userTypeDefs = `#graphql
+    ${kycRecordsTypeDefs}
+    
     enum Role {
         ADMIN
         CLIENT
-        Advisors
-    }
-
-    type Biometrics {
-        enabled: Boolean
-        deviceId: String
-        expiresAt: DateTime
-    }
-
-    type Devices {
-        deviceId: String
-        refreshToken: String
-        lastUsed: DateTime
-    }
-
-    type Preferences {
-        theme: Theme
-        currency: String
-        language: String
-        timezone: String
-        notificationsEnabled: Boolean
+        ADVISOR
     }
 
     type User {
         id: ID!
-        fullName: String
         email: String!
         phoneNumber: String
         role: Role
-        biometric: Biometrics
-        preferences: Preferences
-        # kycRecords: [KycRecords]
-        devices: [Devices]
+
+        firstName: String!
+        lastName: String!
+        dateOfBirth: String!
+        gender: String!
+        
+        # KYC status
+        kycStatus: KycStatus!
+        identityId: String
+        accountNumbers: [String]
+
+        # KYC records (fetched from BCL API)
+        kycRecords: KycRecords
+        
         createdAt: DateTime
         updatedAt: DateTime
     }
@@ -49,33 +37,14 @@ export const userTypeDefs = `#graphql
         getUserById(userId: ID!): User!
     }
 
-    input DeviceInput {
-        deviceId: String!
-        refreshToken: String!
-        lastUsed: DateTime
-    }
-
-    input BiometricInput {
-        enabled: Boolean
-        deviceId: String
-    }
-
-    input PreferencesInput {
-        theme: Theme
-        currency: String
-        language: String
-        timezone: String
-        notificationsEnabled: Boolean
-    }
-
     input UpdateUserInput {
-        id: ID!
-        
-        fullName: String
+        userId: ID!
         phoneNumber: String
-        devices: [DeviceInput]
-        biometric: BiometricInput
-        preferences: PreferencesInput
+        firstName: String
+        lastName: String
+        dateOfBirth: String
+        gender: String
+        kycStatus: KycStatus
     }
 
     extend type Mutation {

@@ -9,11 +9,18 @@ export const authTypeDefs = `#graphql
         message: String
     }
 
+    type refreshTokenResponse {
+        accessToken: String!
+    }
+
     input signupInput {
-        fullName: String!
         email: String!
         phoneNumber: String!
         password: String!
+        firstName: String!
+        lastName: String!
+        dateOfBirth: String!
+        gender: String!
     }
 
     input signinInput {
@@ -29,5 +36,6 @@ export const authTypeDefs = `#graphql
         resetUserPassword(newPassword: String!): authResponse!
         resendOtp(email: String!): authResponse!
         verifyOtpAndCompleteAuth(otp: String!): authenticated!
+        refreshToken(refreshToken: String!): refreshTokenResponse!
     }
 `;

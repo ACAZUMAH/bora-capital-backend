@@ -1,11 +1,14 @@
-import { GraphqlContext } from 'src/common/interfaces';
+import { CreateUserInput, GraphqlContext } from 'src/common/interfaces';
 import * as GraphqlTypes from 'src/common/interfaces/graphql';
 import * as services from 'src/services/auth';
-import { verifyOtpAndSignJwt } from 'src/services/auth/auth';
+import {
+  verifyOtpAndSignJwt,
+  refreshAccessToken,
+} from 'src/services/auth/auth';
 import { resetPassword } from 'src/services/users';
 
-export const signup = (_: any, args: GraphqlTypes.MutationSignupArgs) => {
-  return services.register({ ...args.data });
+export const signup = (_: any, args: { data: CreateUserInput }) => {
+  return services.register(args.data);
 };
 
 const signin = (
@@ -18,7 +21,7 @@ const signin = (
 
 const logout = (_: any, __: any, { user }: GraphqlContext) => {
   return services.logout(user!._id!);
-}
+};
 
 const forgetPassword = (
   _: any,
@@ -35,10 +38,7 @@ const resetUserPassword = (
   return resetPassword({ userId: user?._id!, newPassword: args.newPassword });
 };
 
-const resendOtp = (
-  _: any,
-  args: GraphqlTypes.MutationResendOtpArgs
-) => {
+const resendOtp = (_: any, args: GraphqlTypes.MutationResendOtpArgs) => {
   return services.resendOtp(args.email);
 };
 
@@ -47,6 +47,10 @@ const verifyOtpAndCompleteAuth = (
   args: GraphqlTypes.MutationVerifyOtpAndCompleteAuthArgs
 ) => {
   return verifyOtpAndSignJwt(args.otp);
+};
+
+const refreshToken = (_: any, args: { refreshToken: string }) => {
+  return refreshAccessToken(args.refreshToken);
 };
 
 export const authResolvers = {
@@ -58,5 +62,6 @@ export const authResolvers = {
     logout,
     resendOtp,
     verifyOtpAndCompleteAuth,
+    refreshToken,
   },
 };

@@ -11,3 +11,5 @@ google.ts
 
 .vscode
 /generated/prisma
+
+# API_DOC.MD

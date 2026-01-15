@@ -116,11 +116,21 @@ export const getKycRecords = async (user: UserDocument) => {
       postalAddress: kycData?.PostalAddress,
       nationalityCountryCode: kycData?.NationalityCountryCode,
       residencyCountryCode: kycData?.ResidencyCountryCode,
-      currencyCode: kycData?.CurrencyCode,
+      currencyCode: kycData?.CurrencyId,
       physicalAddress: kycData?.PhysicalAddress,
       pinNumber: kycData?.PinNumber,
+      VATNumber: kycData?.VATNumber,
+      workPermit: kycData?.WorkPermit,
+      secondaryEmail: kycData?.SecondaryEmail,
+      comments: kycData?.Comments,
+      imgPhotoString: kycData?.imgPhotoString,
+      imgSignatureString: kycData?.imgSignatureString,
+      imgBankProofString: kycData?.imgBankProofString,
+      imgIDString: kycData?.imgIDString,
+      imgPINString: kycData?.imgPINString,
     };
   } catch (error: any) {
+    console.log('Error fetching KYC records:', error.message, error);
     rollbar.error('Failed to fetch KYC records', { error, userId: user._id });
     return null;
   }

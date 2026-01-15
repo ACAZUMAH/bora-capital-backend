@@ -325,8 +325,15 @@ export type InvestmentGrowthScheduleItem = {
 
 export type KycRecords = {
   __typename?: 'KycRecords';
+  VATNumber?: Maybe<Scalars['String']['output']>;
+  comments?: Maybe<Scalars['String']['output']>;
   currencyCode?: Maybe<Scalars['String']['output']>;
   idNumber?: Maybe<Scalars['String']['output']>;
+  imgBankProofString?: Maybe<Scalars['String']['output']>;
+  imgIDString?: Maybe<Scalars['String']['output']>;
+  imgPINString?: Maybe<Scalars['String']['output']>;
+  imgPhotoString?: Maybe<Scalars['String']['output']>;
+  imgSignatureString?: Maybe<Scalars['String']['output']>;
   maritalStatus?: Maybe<Scalars['String']['output']>;
   middleName?: Maybe<Scalars['String']['output']>;
   nationalityCountryCode?: Maybe<Scalars['String']['output']>;
@@ -338,9 +345,11 @@ export type KycRecords = {
   postalAddress?: Maybe<Scalars['String']['output']>;
   residencyCountryCode?: Maybe<Scalars['String']['output']>;
   residencyStatus?: Maybe<Scalars['String']['output']>;
+  secondaryEmail?: Maybe<Scalars['String']['output']>;
   sourceOfFunds?: Maybe<Scalars['String']['output']>;
   spouseName?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
+  workPermit?: Maybe<Scalars['String']['output']>;
 };
 
 export enum KycStatus {
@@ -698,7 +707,7 @@ export type QueryGetUserDocumentsArgs = {
 
 export type RelationInput = {
   beneficiaryPercentage: Scalars['String']['input'];
-  dob: Scalars['String']['input'];
+  dob: Scalars['DateTime']['input'];
   email: Scalars['String']['input'];
   idNumber: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -1496,8 +1505,15 @@ export interface JwtScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 }
 
 export type KycRecordsResolvers<ContextType = any, ParentType extends ResolversParentTypes['KycRecords'] = ResolversParentTypes['KycRecords']> = {
+  VATNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  comments?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   currencyCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   idNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imgBankProofString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imgIDString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imgPINString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imgPhotoString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  imgSignatureString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   maritalStatus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   middleName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   nationalityCountryCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -1509,9 +1525,11 @@ export type KycRecordsResolvers<ContextType = any, ParentType extends ResolversP
   postalAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   residencyCountryCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   residencyStatus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  secondaryEmail?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sourceOfFunds?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   spouseName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  workPermit?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export interface LccSubclassScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['LCCSubclass'], any> {

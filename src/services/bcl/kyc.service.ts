@@ -50,10 +50,10 @@ export const fetchIdentity = async (
       data
     );
 
-    if (!response?.identityDetails) {
+    if (!response?.IdentityDetails) {
       throw createError.BadRequest('Identity details not found in response');
     }
-    return response.identityDetails;
+    return response.IdentityDetails[0];
   } catch (error: any) {
     if (error.response?.data?.Message) {
       throw createError.BadRequest(error.response.data.Message);

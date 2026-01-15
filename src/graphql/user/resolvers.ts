@@ -17,8 +17,8 @@ const updateUser = (_: any, args: MutationUpdateUserArgs) => {
 };
 
 // Field resolver for User.kycRecords - fetches from BCL
-const kycRecords = (parent: UserDocument) => {
-  return getKycRecords(parent);
+const kycRecords = async (parent: UserDocument) => {
+  return await getKycRecords(parent);
 };
 
 export const UserResolvers = {

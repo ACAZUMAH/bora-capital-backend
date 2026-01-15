@@ -23,6 +23,15 @@ export const kycRecordsTypeDefs = `#graphql
         currencyCode: String
         physicalAddress: String
         pinNumber: String
+        VATNumber: String
+        workPermit: String
+        secondaryEmail: String
+        comments: String
+        imgPhotoString: String
+        imgSignatureString: String
+        imgBankProofString: String
+        imgIDString: String
+        imgPINString: String
     }
 
     input RelationInput {

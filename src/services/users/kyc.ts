@@ -7,6 +7,7 @@ import { KycStatus } from 'src/common/enums';
 import { KycRecordsInput, UserDocument } from 'src/common/interfaces';
 import { rollbar } from 'src/loggers/rollbar';
 import logger from 'src/loggers/logger';
+import { formatDate } from 'src/common/helpers/date';
 
 /**
  * @description Submit/Update KYC data for a user.
@@ -32,7 +33,7 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
       LastName: user.lastName,
       Gender: user.gender,
       Title: data.title,
-      DateOfBirth: user.dateOfBirth,
+      DateOfBirth: formatDate(user.dateOfBirth),
       ResidencyStatus: data.residencyStatus,
       PassPortNumber: data.passportNumber,
       IDNumber: data.idNumber,
@@ -49,6 +50,15 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
       MobileNumber: user.phoneNumber!,
       PrimaryEmail: user.email,
       PinNumber: data.pinNumber,
+      Relations: data.relations?.map(r => ({
+        RelationshipID: r.relationshipId,
+        Name: r.name,
+        Email: r.email,
+        PhoneNumber: r.phoneNumber,
+        IDNumber: r.idNumber,
+        DOB: formatDate(r.dob),
+        BeneficiaryPercentage: r.beneficiaryPercentage,
+      })),
     });
 
     // Update user with identityId and kycStatus
@@ -106,11 +116,21 @@ export const getKycRecords = async (user: UserDocument) => {
       postalAddress: kycData?.PostalAddress,
       nationalityCountryCode: kycData?.NationalityCountryCode,
       residencyCountryCode: kycData?.ResidencyCountryCode,
-      currencyCode: kycData?.CurrencyCode,
+      currencyCode: kycData?.CurrencyId,
       physicalAddress: kycData?.PhysicalAddress,
       pinNumber: kycData?.PinNumber,
+      VATNumber: kycData?.VATNumber,
+      workPermit: kycData?.WorkPermit,
+      secondaryEmail: kycData?.SecondaryEmail,
+      comments: kycData?.Comments,
+      imgPhotoString: kycData?.imgPhotoString,
+      imgSignatureString: kycData?.imgSignatureString,
+      imgBankProofString: kycData?.imgBankProofString,
+      imgIDString: kycData?.imgIDString,
+      imgPINString: kycData?.imgPINString,
     };
   } catch (error: any) {
+    console.log('Error fetching KYC records:', error.message, error);
     rollbar.error('Failed to fetch KYC records', { error, userId: user._id });
     return null;
   }

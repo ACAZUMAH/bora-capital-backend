@@ -1,4 +1,4 @@
-import { CreateUserInput, GraphqlContext } from 'src/common/interfaces';
+import { GraphqlContext } from 'src/common/interfaces';
 import * as GraphqlTypes from 'src/common/interfaces/graphql';
 import * as services from 'src/services/auth';
 import {
@@ -7,7 +7,7 @@ import {
 } from 'src/services/auth/auth';
 import { resetPassword } from 'src/services/users';
 
-export const signup = (_: any, args: { data: CreateUserInput }) => {
+export const signup = (_: any, args: GraphqlTypes.MutationSignupArgs) => {
   return services.register(args.data);
 };
 

@@ -37,11 +37,6 @@ export interface AddIdentityInput {
   Relations?: BclRelation[] | null;
 }
 
-export interface AddIdentityResponse {
-  Status: Array<{ Status: string; Description: string }>;
-  IdentityID: Array<{ IdentityID: string }>;
-}
-
 export interface FetchIdentityInput {
   IdentityID: string;
   PrimaryEmail: string;

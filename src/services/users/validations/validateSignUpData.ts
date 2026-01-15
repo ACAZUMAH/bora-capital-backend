@@ -35,7 +35,12 @@ const userValidationSchema = {
     password: { type: 'string' },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', minLength: 1 },
-    dateOfBirth: { type: 'string', minLength: 1 },
+    dateOfBirth: {
+      anyOf: [
+        { type: 'string', format: 'date' },
+        { type: 'string', format: 'date-time' },
+      ],
+    },
     gender: { type: 'string', minLength: 1 },
   },
 
@@ -78,7 +83,19 @@ const userValidationSchema = {
 export const validateCreateUserData = (data: CreateUserInput) => {
   const validate = ajv.compile(userValidationSchema);
 
-  const isValid = validate(data);
+  const normalizedDob =
+    data.dateOfBirth instanceof Date
+      ? Number.isNaN(data.dateOfBirth.getTime())
+        ? data.dateOfBirth
+        : data.dateOfBirth.toISOString()
+      : data.dateOfBirth;
+
+  const validationData = {
+    ...data,
+    dateOfBirth: normalizedDob,
+  };
+
+  const isValid = validate(validationData);
 
   if (!isValid) {
     throw createError(400, ajv.errorsText(validate.errors));

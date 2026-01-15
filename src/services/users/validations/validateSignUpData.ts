@@ -35,7 +35,12 @@ const userValidationSchema = {
     password: { type: 'string' },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', minLength: 1 },
-    dateOfBirth: { type: 'string', format: 'date-time' },
+    dateOfBirth: {
+      anyOf: [
+        { type: 'string', format: 'date' },
+        { type: 'string', format: 'date-time' },
+      ],
+    },
     gender: { type: 'string', minLength: 1 },
   },
 

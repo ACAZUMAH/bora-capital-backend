@@ -35,7 +35,7 @@ const userValidationSchema = {
     password: { type: 'string' },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', minLength: 1 },
-    dateOfBirth: { type: 'string', minLength: 1 },
+    dateOfBirth: { type: 'string', format: 'date-time' },
     gender: { type: 'string', minLength: 1 },
   },
 
@@ -78,7 +78,16 @@ const userValidationSchema = {
 export const validateCreateUserData = (data: CreateUserInput) => {
   const validate = ajv.compile(userValidationSchema);
 
-  const isValid = validate(data);
+  // Convert Date object to ISO string for validation
+  const validationData = {
+    ...data,
+    dateOfBirth:
+      data.dateOfBirth instanceof Date
+        ? data.dateOfBirth.toISOString()
+        : data.dateOfBirth,
+  };
+
+  const isValid = validate(validationData);
 
   if (!isValid) {
     throw createError(400, ajv.errorsText(validate.errors));

@@ -223,6 +223,11 @@ export type FundsConnection = {
   pageInfo: PageInfo;
 };
 
+export enum Gender {
+  F = 'F',
+  M = 'M'
+}
+
 export type GetFundsFilters = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -691,6 +696,16 @@ export type QueryGetUserDocumentsArgs = {
   userId: Scalars['ID']['input'];
 };
 
+export type RelationInput = {
+  beneficiaryPercentage: Scalars['String']['input'];
+  dob: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  idNumber: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  relationshipId: Scalars['String']['input'];
+};
+
 export enum Role {
   ADMIN = 'ADMIN',
   ADVISOR = 'ADVISOR',
@@ -796,6 +811,7 @@ export type UpdateKycInput = {
   physicalAddress: Scalars['String']['input'];
   pinNumber?: InputMaybe<Scalars['String']['input']>;
   postalAddress: Scalars['String']['input'];
+  relations?: InputMaybe<Array<RelationInput>>;
   residencyCountryCode: Scalars['String']['input'];
   residencyStatus: Scalars['String']['input'];
   sourceOfFunds: Scalars['String']['input'];
@@ -887,10 +903,10 @@ export type SigninInput = {
 };
 
 export type SignupInput = {
-  dateOfBirth: Scalars['String']['input'];
+  dateOfBirth: Scalars['DateTime']['input'];
   email: Scalars['String']['input'];
   firstName: Scalars['String']['input'];
-  gender: Scalars['String']['input'];
+  gender: Gender;
   lastName: Scalars['String']['input'];
   password: Scalars['String']['input'];
   phoneNumber: Scalars['String']['input'];
@@ -1006,6 +1022,7 @@ export type ResolversTypes = {
   FundPerformanceConnection: ResolverTypeWrapper<FundPerformanceConnection>;
   FundsConnection: ResolverTypeWrapper<FundsConnection>;
   GUID: ResolverTypeWrapper<Scalars['GUID']['output']>;
+  Gender: Gender;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   GetFundsFilters: GetFundsFilters;
   Goal: ResolverTypeWrapper<Goal>;
@@ -1071,6 +1088,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RGB: ResolverTypeWrapper<Scalars['RGB']['output']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']['output']>;
+  RelationInput: RelationInput;
   Role: Role;
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']['output']>;
   SESSN: ResolverTypeWrapper<Scalars['SESSN']['output']>;
@@ -1206,6 +1224,7 @@ export type ResolversParentTypes = {
   Query: Record<PropertyKey, never>;
   RGB: Scalars['RGB']['output'];
   RGBA: Scalars['RGBA']['output'];
+  RelationInput: RelationInput;
   RoutingNumber: Scalars['RoutingNumber']['output'];
   SESSN: Scalars['SESSN']['output'];
   SafeInt: Scalars['SafeInt']['output'];

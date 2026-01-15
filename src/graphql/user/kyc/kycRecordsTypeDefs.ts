@@ -25,6 +25,16 @@ export const kycRecordsTypeDefs = `#graphql
         pinNumber: String
     }
 
+    input RelationInput {
+        relationshipId: String!
+        name: String!
+        email: String!
+        phoneNumber: String!
+        idNumber: String!
+        dob: DateTime!
+        beneficiaryPercentage: String!
+    }
+
     input UpdateKycInput {
         residencyStatus: String!
         idNumber: String!
@@ -43,6 +53,7 @@ export const kycRecordsTypeDefs = `#graphql
         maritalStatus: String
         spouseName: String
         pinNumber: String
+        relations: [RelationInput!]
     }
 
     extend type Mutation {

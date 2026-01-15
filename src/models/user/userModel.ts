@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { UserDocument } from '../../common/interfaces/user';
-import { Collections, KycStatus, role } from 'src/common/enums';
+import { Collections, Gender, KycStatus, role } from 'src/common/enums';
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -15,7 +15,7 @@ const userSchema = new Schema<UserDocument>(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     dateOfBirth: { type: String, required: true },
-    gender: { type: String, required: true },
+    gender: { type: String, enum: Object.values(Gender), required: true },
 
     // BCL linking (set after KYC)
     kycStatus: {

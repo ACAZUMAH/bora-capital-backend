@@ -1,6 +1,5 @@
 import {
   AddIdentityInput,
-  AddIdentityResponse,
   FetchIdentityInput,
   FetchIdentityResponse,
 } from 'src/common/interfaces/bcl';
@@ -15,22 +14,21 @@ export const addIndividualIdentity = async (
   data: AddIdentityInput
 ): Promise<string> => {
   try {
-    const response = await bclClient.post<AddIdentityResponse>(
+    const response = await bclClient.post(
       '/api/partner/addindividualidentity_bcl',
       data
     );
-
     // Check for success
     if (
-      response.Status?.[0]?.Status === '0' &&
-      response.IdentityID?.[0]?.IdentityID
+      response?.Status?.[0]?.Status === '0' &&
+      response?.IdentityID?.[0]?.IdentityID
     ) {
-      return response.IdentityID[0].IdentityID;
+      return response?.IdentityID[0].IdentityID;
     }
 
     // Handle failure
     const errorMessage =
-      response.Status?.[0]?.Description || 'Failed to create identity';
+      response?.Status?.[0]?.Description || 'Failed to create identity';
     throw createError.BadRequest(errorMessage);
   } catch (error: any) {
     if (error.response?.data?.Message) {
@@ -47,15 +45,15 @@ export const fetchIdentity = async (
   data: FetchIdentityInput
 ): Promise<FetchIdentityResponse> => {
   try {
-    const response = await bclClient.post<FetchIdentityResponse>(
+    const response = await bclClient.post(
       '/api/partner/fetchidentity_bcl',
       data
     );
 
-    if (!response.Data?.identityDetails) {
+    if (!response?.identityDetails) {
       throw createError.BadRequest('Identity details not found in response');
     }
-    return response.Data.identityDetails;
+    return response.identityDetails;
   } catch (error: any) {
     if (error.response?.data?.Message) {
       throw createError.BadRequest(error.response.data.Message);

@@ -92,7 +92,7 @@ describe('BCL KYC Service', () => {
       const mockIdentityDetails = { FirstName: 'John', LastName: 'Doe' };
       const mockResponse = {
         Status: [{ Status: '0', Description: 'Request successful' }],
-        Data: { identityDetails: mockIdentityDetails },
+        identityDetails: mockIdentityDetails,
       };
 
       mockBclClientPost.mockResolvedValue(mockResponse);

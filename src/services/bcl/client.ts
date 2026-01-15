@@ -78,7 +78,7 @@ class BclApiClient {
   }
 
   private async fetchNewToken(): Promise<string> {
-    const response = await this.client.post('/api/auth/generate', {
+    const response = await this.client.post('/api/auth/generateaccesstoken', {
       VendorID: `${process.env.BCL_VENDOR_ID}`,
       SecretKey: `${process.env.BCL_SECRET_KEY}`,
     });
@@ -93,7 +93,7 @@ class BclApiClient {
   /**
    * Make authenticated POST request to BCL API
    */
-  async post<T>(endpoint: string, data: any): Promise<T> {
+  async post(endpoint: string, data: any) {
     const response = await this.client.post(endpoint, data);
     return response.data;
   }
@@ -101,7 +101,7 @@ class BclApiClient {
   /**
    * Make authenticated GET request to BCL API
    */
-  async get<T>(endpoint: string, params?: any): Promise<T> {
+  async get(endpoint: string, params?: any) {
     const response = await this.client.get(endpoint, { params });
     return response.data;
   }

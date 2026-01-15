@@ -1,4 +1,8 @@
 export const authTypeDefs = `#graphql
+    enum Gender {
+        M
+        F
+    }
     type authenticated {
        user: User,
        accessToken: String!
@@ -19,8 +23,8 @@ export const authTypeDefs = `#graphql
         password: String!
         firstName: String!
         lastName: String!
-        dateOfBirth: String!
-        gender: String!
+        dateOfBirth: DateTime!
+        gender: Gender!
     }
 
     input signinInput {

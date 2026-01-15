@@ -78,13 +78,16 @@ const userValidationSchema = {
 export const validateCreateUserData = (data: CreateUserInput) => {
   const validate = ajv.compile(userValidationSchema);
 
-  // Convert Date object to ISO string for validation
+  const normalizedDob =
+    data.dateOfBirth instanceof Date
+      ? Number.isNaN(data.dateOfBirth.getTime())
+        ? data.dateOfBirth
+        : data.dateOfBirth.toISOString()
+      : data.dateOfBirth;
+
   const validationData = {
     ...data,
-    dateOfBirth:
-      data.dateOfBirth instanceof Date
-        ? data.dateOfBirth.toISOString()
-        : data.dateOfBirth,
+    dateOfBirth: normalizedDob,
   };
 
   const isValid = validate(validationData);

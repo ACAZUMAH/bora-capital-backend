@@ -17,7 +17,6 @@ import { hashPassword } from 'src/common/helpers';
  * @returns created user object
  */
 export const createUser = async (data: CreateUserInput) => {
-  console.log(data);
   validateCreateUserData(data);
   const user = await userModel.create({ ...data });
   return user;

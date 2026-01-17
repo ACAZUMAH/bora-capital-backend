@@ -85,13 +85,6 @@ export type Scalars = {
   Void: { input: any; output: any; }
 };
 
-export type Allocation = {
-  __typename?: 'Allocation';
-  assetClass: Scalars['String']['output'];
-  percentage: Scalars['Float']['output'];
-  totalValue: Scalars['Float']['output'];
-};
-
 export type AmortizationScheduleItem = {
   __typename?: 'AmortizationScheduleItem';
   balance: Scalars['Float']['output'];
@@ -565,15 +558,9 @@ export type PerformanceFilters = {
 
 export type Portfolio = {
   __typename?: 'Portfolio';
-  asOf?: Maybe<Scalars['DateTime']['output']>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  currency: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  user?: Maybe<User>;
-  userId: Scalars['ID']['output'];
-  valuation?: Maybe<Scalars['Float']['output']>;
+  offerPrice: Scalars['Float']['output'];
+  portfolioId: Scalars['ID']['output'];
+  portfolioName: Scalars['String']['output'];
 };
 
 export type Query = {
@@ -581,7 +568,6 @@ export type Query = {
   _empty?: Maybe<Scalars['String']['output']>;
   calculateInvestmentGrowth: InvestmentGrowthResult;
   calculateLoanAmortization: LoanAmortizationResult;
-  getAssetAllocations: Array<Allocation>;
   getClientsDocuments: Array<Maybe<Document>>;
   getDocumentById?: Maybe<Document>;
   getFundById: Fund;
@@ -594,8 +580,8 @@ export type Query = {
   getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
   getMarketNewsById?: Maybe<MarketNews>;
-  getPortfolioById: Portfolio;
-  getPortfoliosByUserId: Array<Portfolio>;
+  getPortfolioById?: Maybe<Portfolio>;
+  getPortfolios: Array<Portfolio>;
   getTransactionById: Transaction;
   getTransactions: TransactionConnection;
   getUserById: User;
@@ -613,11 +599,6 @@ export type QueryCalculateInvestmentGrowthArgs = {
 
 export type QueryCalculateLoanAmortizationArgs = {
   data: LoanAmortizationInput;
-};
-
-
-export type QueryGetAssetAllocationsArgs = {
-  portfolioId: Scalars['ID']['input'];
 };
 
 
@@ -678,11 +659,6 @@ export type QueryGetMarketNewsByIdArgs = {
 
 export type QueryGetPortfolioByIdArgs = {
   portfolioId: Scalars['ID']['input'];
-};
-
-
-export type QueryGetPortfoliosByUserIdArgs = {
-  userId: Scalars['ID']['input'];
 };
 
 
@@ -1000,7 +976,6 @@ export type DirectiveResolverFn<TResult = Record<PropertyKey, never>, TParent = 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']['output']>;
-  Allocation: ResolverTypeWrapper<Allocation>;
   AmortizationScheduleItem: ResolverTypeWrapper<AmortizationScheduleItem>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -1140,7 +1115,6 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber']['output'];
-  Allocation: Allocation;
   AmortizationScheduleItem: AmortizationScheduleItem;
   BigInt: Scalars['BigInt']['output'];
   Boolean: Scalars['Boolean']['output'];
@@ -1272,12 +1246,6 @@ export type ResolversParentTypes = {
 export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
   name: 'AccountNumber';
 }
-
-export type AllocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Allocation'] = ResolversParentTypes['Allocation']> = {
-  assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  percentage?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  totalValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-};
 
 export type AmortizationScheduleItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['AmortizationScheduleItem'] = ResolversParentTypes['AmortizationScheduleItem']> = {
   balance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
@@ -1673,15 +1641,9 @@ export interface PortScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type PortfolioResolvers<ContextType = any, ParentType extends ResolversParentTypes['Portfolio'] = ResolversParentTypes['Portfolio']> = {
-  asOf?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  valuation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  offerPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  portfolioName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export interface PositiveFloatScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['PositiveFloat'], any> {
@@ -1700,7 +1662,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _empty?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   calculateInvestmentGrowth?: Resolver<ResolversTypes['InvestmentGrowthResult'], ParentType, ContextType, RequireFields<QueryCalculateInvestmentGrowthArgs, 'data'>>;
   calculateLoanAmortization?: Resolver<ResolversTypes['LoanAmortizationResult'], ParentType, ContextType, RequireFields<QueryCalculateLoanAmortizationArgs, 'data'>>;
-  getAssetAllocations?: Resolver<Array<ResolversTypes['Allocation']>, ParentType, ContextType, RequireFields<QueryGetAssetAllocationsArgs, 'portfolioId'>>;
   getClientsDocuments?: Resolver<Array<Maybe<ResolversTypes['Document']>>, ParentType, ContextType>;
   getDocumentById?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType, RequireFields<QueryGetDocumentByIdArgs, 'id'>>;
   getFundById?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
@@ -1713,8 +1674,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
   getMarketNewsById?: Resolver<Maybe<ResolversTypes['MarketNews']>, ParentType, ContextType, RequireFields<QueryGetMarketNewsByIdArgs, 'id'>>;
-  getPortfolioById?: Resolver<ResolversTypes['Portfolio'], ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
-  getPortfoliosByUserId?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfoliosByUserIdArgs, 'userId'>>;
+  getPortfolioById?: Resolver<Maybe<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
+  getPortfolios?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType>;
   getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
   getTransactions?: Resolver<ResolversTypes['TransactionConnection'], ParentType, ContextType, RequireFields<QueryGetTransactionsArgs, 'filters'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
@@ -1863,7 +1824,6 @@ export type RefreshTokenResponseResolvers<ContextType = any, ParentType extends 
 
 export type Resolvers<ContextType = any> = {
   AccountNumber?: GraphQLScalarType;
-  Allocation?: AllocationResolvers<ContextType>;
   AmortizationScheduleItem?: AmortizationScheduleItemResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;

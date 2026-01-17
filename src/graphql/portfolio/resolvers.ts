@@ -1,42 +1,26 @@
-import { GraphqlContext } from 'src/common/interfaces';
-import {
-  QueryGetAssetAllocationsArgs,
-  QueryGetPortfolioByIdArgs,
-} from 'src/common/interfaces/graphql';
-import * as services from 'src/services/portfolio';
-import { idResolver } from '../general';
+import { BclPortfolio } from 'src/common/interfaces';
+import { fetchPortfolioById, fetchPortfolios } from 'src/services/portfolio';
 
-const getPortfolioById = (_: any, args: QueryGetPortfolioByIdArgs) => {
-  return services.getPortfolioById(args.portfolioId);
+const getPortfolios = async () => {
+  const portfolios = await fetchPortfolios();
+  return portfolios.map(normalizePortfolio);
 };
 
-const getPortfoliosByUserId = (_: any, { user }: GraphqlContext) => {
-  return services.getPortfoliosByUserId(`${user?._id}`);
+const getPortfolioById = async (_: any, args: { portfolioId: string }) => {
+  const portfolio = await fetchPortfolioById(args.portfolioId);
+  return portfolio ? normalizePortfolio(portfolio) : null;
 };
 
-export const getAssetAllocations = async (
-  _: any,
-  args: QueryGetAssetAllocationsArgs
-) => {
-  return services.calculateAssetAllocations(args.portfolioId);
-};
-
-export const user = (
-  parent: { userId: string },
-  _: any,
-  { userLoader }: GraphqlContext
-) => {
-  return parent.userId ? userLoader.load(parent.userId) : null;
-};
+// Normalize BCL response to GraphQL schema
+const normalizePortfolio = (p: BclPortfolio) => ({
+  portfolioId: p.PortfolioID,
+  portfolioName: p.PortfolioName,
+  offerPrice: p.OfferPrice,
+});
 
 export const portfolioResolvers = {
   Query: {
+    getPortfolios,
     getPortfolioById,
-    getPortfoliosByUserId,
-    getAssetAllocations,
-  },
-  Portfolio: {
-    id: idResolver,
-    user,
   },
 };

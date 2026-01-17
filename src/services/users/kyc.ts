@@ -2,12 +2,12 @@ import { Types } from 'mongoose';
 import createError from 'http-errors';
 import { userModel } from 'src/models';
 import { getUserById } from './index';
-import { addIndividualIdentity, fetchIdentity } from '../bcl';
 import { KycStatus } from 'src/common/enums';
 import { KycRecordsInput, UserDocument } from 'src/common/interfaces';
 import { rollbar } from 'src/loggers/rollbar';
 import logger from 'src/loggers/logger';
 import { formatDate } from 'src/common/helpers/date';
+import { addIndividualIdentity, fetchIdentity } from './kyc.service';
 
 /**
  * @description Submit/Update KYC data for a user.

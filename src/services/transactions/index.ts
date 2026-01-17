@@ -6,7 +6,6 @@ import {
 import { TransactionModel } from 'src/models';
 import { getUserById } from '../users';
 import { getFundById } from '../funds';
-import { getPortfolioById } from '../portfolio';
 import { FilterQuery, isValidObjectId, Types } from 'mongoose';
 import createError from 'http-errors';
 import {
@@ -48,13 +47,11 @@ export const createTransaction = async (data: CreateTransactionInput) => {
 
   const fund = await getFundById(data.fundId);
 
-  const portfolio = await getPortfolioById(data.portfolioId);
-
   const transaction = await TransactionModel.create({
     ...data,
     userId: user._id,
     fundId: fund._id,
-    portfolioId: portfolio._id,
+    portfolioId: data.portfolioId,
   });
 
   return transaction;

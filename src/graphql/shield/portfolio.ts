@@ -2,9 +2,8 @@ import { isAuthenticated } from './general';
 
 export const portfolioShield = {
   Query: {
+    getPortfolios: isAuthenticated,
     getPortfolioById: isAuthenticated,
-    getPortfoliosByUserId: isAuthenticated,
-    getAssetAllocations: isAuthenticated,
   },
   Mutation: {},
 };

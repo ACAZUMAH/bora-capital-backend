@@ -1,27 +1,13 @@
-import { Types } from 'mongoose';
-import { HoldingsDocument } from '../holdings';
-
-export interface PortfolioDocument {
-  _id: string | Types.ObjectId;
-  userId: string | Types.ObjectId;
-  name: string;
-  valuation: number;
-  currency: string;
-  asOf: Date;
-  createdAt: Date;
-  updatedAt: Date;
+/**
+ * BCL Portfolio types
+ */
+export interface BclPortfolio {
+  PortfolioID: string;
+  PortfolioName: string;
+  OfferPrice: number;
 }
 
-export interface CreatePortfolioInput {
-  userId: string | Types.ObjectId;
-  name?: string;
-  currency?: string;
-}
-
-export interface UpdatePortfolioInput {
-  portfolioId: string | Types.ObjectId;
-  name?: string;
-  currency?: string;
-  valuation?: number;
-  asOf?: Date;
+export interface FetchPortfoliosResponse {
+  Status: Array<{ Status: string; Description: string }>;
+  Portfolios: BclPortfolio[];
 }

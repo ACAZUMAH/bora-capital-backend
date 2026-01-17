@@ -3,8 +3,8 @@ import {
   FetchIdentityInput,
   FetchIdentityResponse,
 } from 'src/common/interfaces/bcl';
-import { bclClient } from './client';
 import createError from 'http-errors';
+import { bclClient } from '../bcl';
 
 /**
  * Add individual identity (KYC) to BCL

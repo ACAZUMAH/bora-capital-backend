@@ -7,7 +7,6 @@ import { TransactionStatus, TransactionType } from 'src/common/enums';
 import {
   FundsPerformanceModel,
   holdingsModel,
-  portfolioModel,
   TransactionModel,
 } from 'src/models';
 import createError from 'http-errors';
@@ -103,13 +102,13 @@ export const updateTransactionStatus = async (
             );
 
             // Update portfolio valuation
-            await portfolioModel.findByIdAndUpdate(
-              trx.portfolioId,
-              {
-                $inc: { valuation: trx.amount },
-              },
-              { session: sessions }
-            );
+            // await portfolioModel.findByIdAndUpdate(
+            //   trx.portfolioId,
+            //   {
+            //     $inc: { valuation: trx.amount },
+            //   },
+            //   { session: sessions }
+            // );
             8;
           }
         }
@@ -148,50 +147,50 @@ export const updateTransactionStatus = async (
               { session: sessions }
             );
 
-            // Update portfolio valuation
-            await portfolioModel.findByIdAndUpdate(
-              trx.portfolioId,
-              {
-                $inc: { valuation: -costBasis },
-              },
-              { session: sessions }
-            );
+            // // Update portfolio valuation
+            // await portfolioModel.findByIdAndUpdate(
+            //   trx.portfolioId,
+            //   {
+            //     $inc: { valuation: -costBasis },
+            //   },
+            //   { session: sessions }
+            // );
           }
         }
 
         if (trx.type === TransactionType.DEPOSIT) {
           // Update portfolio valuation
-          await portfolioModel.findByIdAndUpdate(
-            trx.portfolioId,
-            {
-              $inc: { valuation: trx.amount },
-              $set: { asOf: new Date() },
-            },
-            { session: sessions }
-          );
+          // await portfolioModel.findByIdAndUpdate(
+          //   trx.portfolioId,
+          //   {
+          //     $inc: { valuation: trx.amount },
+          //     $set: { asOf: new Date() },
+          //   },
+          //   { session: sessions }
+          // );
         }
 
         if (trx.type === TransactionType.WITHDRAWAL) {
           // Update portfolio valuation
-          await portfolioModel.findByIdAndUpdate(
-            trx.portfolioId,
-            {
-              $inc: { valuation: -trx.amount },
-              $set: { asOf: new Date() },
-            },
-            { session: sessions }
-          );
+          // await portfolioModel.findByIdAndUpdate(
+          //   trx.portfolioId,
+          //   {
+          //     $inc: { valuation: -trx.amount },
+          //     $set: { asOf: new Date() },
+          //   },
+          //   { session: sessions }
+          // );
         }
 
         if (trx.type === TransactionType.TRANSFER) {
           // update timestamp
-          await portfolioModel.findByIdAndUpdate(
-            trx.portfolioId,
-            {
-              $set: { asOf: new Date() },
-            },
-            { session: sessions }
-          );
+          // await portfolioModel.findByIdAndUpdate(
+          //   trx.portfolioId,
+          //   {
+          //     $set: { asOf: new Date() },
+          //   },
+          //   { session: sessions }
+          // );
         }
 
         return await TransactionModel.findByIdAndUpdate(

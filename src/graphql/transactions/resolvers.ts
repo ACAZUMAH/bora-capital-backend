@@ -4,7 +4,10 @@ import { idResolver } from '../general';
 import { GraphqlContext } from 'src/common/interfaces';
 import * as status from 'src/services/transactions/updateStatus';
 
-const getTransactions = (_: any, args: GraphqlTypes.QueryGetTransactionsArgs) => {
+const getTransactions = (
+  _: any,
+  args: GraphqlTypes.QueryGetTransactionsArgs
+) => {
   return services.getTransactions({ ...args.filters });
 };
 
@@ -44,14 +47,6 @@ export const funds = (
   return parent.fundId ? fundsLoader.load(parent.fundId) : null;
 };
 
-export const portfolio = (
-  parent: { portfolioId: string },
-  _: any,
-  { portfolioLoader }: GraphqlContext
-) => {
-  return parent.portfolioId ? portfolioLoader.load(parent.portfolioId) : null;
-};
-
 export const transactionsResolvers = {
   Query: {
     getTransactions,
@@ -61,7 +56,6 @@ export const transactionsResolvers = {
   Transaction: {
     id: idResolver,
     funds,
-    portfolio,
   },
 
   Mutation: {

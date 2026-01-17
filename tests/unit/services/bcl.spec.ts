@@ -9,10 +9,13 @@ jest.mock('src/services/bcl/client', () => ({
   },
 }));
 
-import {
-  addIndividualIdentity,
-  fetchIdentity,
-} from 'src/services/bcl/kyc.service';
+// Mock uuid to prevent ESM issues
+jest.mock('uuid', () => ({
+  v4: jest.fn(() => 'mock-uuid'),
+}));
+
+// Import AFTER mocks are set up
+import { addIndividualIdentity, fetchIdentity } from 'src/services/users';
 
 describe('BCL KYC Service', () => {
   beforeEach(() => {

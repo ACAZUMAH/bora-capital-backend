@@ -14,3 +14,4 @@ export * from './funds';
 export * from './crons';
 export * from './news';
 export * from './calculators';
+export * from './accounts';

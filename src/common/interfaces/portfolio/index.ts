@@ -6,8 +6,3 @@ export interface BclPortfolio {
   PortfolioName: string;
   OfferPrice: number;
 }
-
-export interface FetchPortfoliosResponse {
-  Status: Array<{ Status: string; Description: string }>;
-  Portfolios: BclPortfolio[];
-}

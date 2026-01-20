@@ -18,10 +18,6 @@ export interface BclCreateAccountRequest {
   CurrencyCode: string;
 }
 
-export interface BclCreateAccountResponse {
-  CIAccountNumber: Array<{ AccountNumber: string }>;
-}
-
 export interface BclFetchAccountRequest {
   IdentityID: string;
   PrimaryEmail: string;

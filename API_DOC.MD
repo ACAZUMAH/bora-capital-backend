@@ -1,26 +1,45 @@
-## 1. Overview
+# BCL IMS API
 
-The BCL IMS API is a standardized REST API that enables secure system-to-system integration for investment management operations including investor onboarding, KYC, portfolios, accounts, balances, transactions, statements, and reference data.
-
-All investment data is accessed strictly through these APIs.
+**Standardized API for Data and System Integration**
 
 ---
 
-## 2. Authentication
+## Abstract
+
+The **BCL IMS API** provides a complete set of secure endpoints for managing investors, KYC data, collective investment products, investment accounts, transactions, and reference data.
+
+---
+
+## Base URL
+
+```
+https://{{host}}
+```
+
+---
+
+## Authentication
 
 ### Generate Access Token
 
-Endpoint  
+**Endpoint**
+
+```
 POST /api/auth/generate
+```
 
-Purpose  
-Generates an access token required for all subsequent API requests.
+**Purpose**
+Generates an access token required for all protected endpoints.
 
-Request Fields  
-VendorID (string, mandatory)  
-SecretKey (string, mandatory)
+**Request Fields**
 
-Example Request
+| Field     | Type   | Required |
+| --------- | ------ | -------- |
+| VendorID  | string | Yes      |
+| SecretKey | string | Yes      |
+
+**Example Request**
+
 ```json
 {
   "VendorID": "xx",
@@ -28,7 +47,15 @@ Example Request
 }
 ```
 
-Success Response
+**Failure Response (400)**
+
+```json
+{
+  "Message": "Login Failed"
+}
+```
+
+**Success Response**
 
 ```json
 [
@@ -38,68 +65,63 @@ Success Response
 ]
 ```
 
-Failure Response
-
-```json
-{
-  "Message": "Login Failed"
-}
-```
-
-Error Codes
-400 – Login failed
-403 – Invalid or missing token
-
 ---
 
-## 3. Investor Identity and KYC
+## KYC & IDENTITY MANAGEMENT
 
-### Add Individual Identity (KYC)
+### Add Individual KYC
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/addindividualidentity_bcl
+```
 
-Description
+**Purpose**
 Uploads KYC details of a new investor.
 
-Request Fields
+**Request Fields**
 
-Personal Information
-FirstName (string, mandatory)
-MiddleName (string, optional)
-LastName (string, mandatory)
-Gender (string, mandatory)
-Title (string, optional)
-DateOfBirth (date, mandatory)
-ResidencyStatus (string, mandatory)
-PassPortNumber (string, optional)
-IDNumber (string, mandatory)
-MaritalStatus (string, optional)
+**Personal Details**
 
-Additional Information
-SourceOfFunds (string, mandatory)
-SpouseName (string, optional)
-Occupation (string, mandatory)
-NextOfKin (string, mandatory)
-PostalAddress (string, mandatory)
-NationalityCountryCode (string, mandatory)
-ResidencyCountryCode (string, mandatory)
-CurrencyCode (string, mandatory)
-PhysicalAddress (string, mandatory)
-MobileNumber (string, mandatory)
-PrimaryEmail (string, mandatory)
-PinNumber (string, optional)
+| Field                  | Type   | Required |
+| ---------------------- | ------ | -------- |
+| FirstName              | string | Yes      |
+| MiddleName             | string | No       |
+| LastName               | string | Yes      |
+| Gender                 | string | Yes      |
+| Title                  | string | No       |
+| DateOfBirth            | date   | Yes      |
+| ResidencyStatus        | string | Yes      |
+| PassPortNumber         | string | No       |
+| IDNumber               | string | Yes      |
+| MaritalStatus          | string | No       |
+| SourceOfFunds          | string | Yes      |
+| SpouseName             | string | No       |
+| Occupation             | string | Yes      |
+| NextOfKin              | string | Yes      |
+| PostalAddress          | string | Yes      |
+| NationalityCountryCode | string | Yes      |
+| ResidencyCountryCode   | string | Yes      |
+| CurrencyCode           | string | Yes      |
+| PhysicalAddress        | string | Yes      |
+| MobileNumber           | string | Yes      |
+| PrimaryEmail           | string | Yes      |
+| PinNumber              | string | No       |
 
-Relations Array
-RelationshipID (string, mandatory)
-Name (string, mandatory)
-Email (string, mandatory)
-PhoneNumber (string, mandatory)
-IDNumber (string, mandatory)
-DOB (date, mandatory)
-BeneficiaryPercentage (string, mandatory)
+**Relations Array Fields**
 
-Example Request
+| Field                 | Type   | Required |
+| --------------------- | ------ | -------- |
+| RelationshipID        | string | Yes      |
+| Name                  | string | Yes      |
+| Email                 | string | Yes      |
+| PhoneNumber           | string | Yes      |
+| IDNumber              | string | Yes      |
+| DOB                   | date   | Yes      |
+| BeneficiaryPercentage | string | Yes      |
+
+**Complete Example Request**
 
 ```json
 {
@@ -134,12 +156,29 @@ Example Request
       "IDNumber": "000000001",
       "DOB": "01 Jan 1970",
       "BeneficiaryPercentage": "50"
+    },
+    {
+      "RelationshipID": "2",
+      "Name": "Doe Jr",
+      "Email": "jdoejr@boradvisors.com",
+      "PhoneNumber": "+254000000000",
+      "IDNumber": "000000001",
+      "DOB": "01 Jan 1970",
+      "BeneficiaryPercentage": "50"
     }
   ]
 }
 ```
 
-Success Response
+**Failure Response (400)**
+
+```json
+{
+  "Message": "Request failed"
+}
+```
+
+**Success Response**
 
 ```json
 {
@@ -157,27 +196,20 @@ Success Response
 }
 ```
 
-Failure Response
-
-```json
-{
-  "Message": "Request failed"
-}
-```
-
 ---
 
-### Fetch / Verify Investor Identity
+### Fetch / Verify KYC
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/fetchidentity_bcl
+```
 
-Request Fields
-IdentityID (string, mandatory)
-PrimaryEmail (string, mandatory)
-MobileNumber (string, mandatory)
+**Purpose**
+Verifies an investor and retrieves full KYC details.
 
-Example Request
+**Example Request**
 
 ```json
 {
@@ -187,7 +219,7 @@ Example Request
 }
 ```
 
-Failure Response
+**Failure Response (400)**
 
 ```json
 {
@@ -195,27 +227,7 @@ Failure Response
 }
 ```
 
----
-
-## 4. Investment Products (Portfolios)
-
-### Fetch Portfolios with Offer Prices
-
-Endpoint
-POST /api/partner/fetchciportfolios_bcl
-
-Request Fields
-PortfolioID (string, optional)
-
-Example Request
-
-```json
-{
-  "PortfolioID": ""
-}
-```
-
-Success Response
+**Success Response**
 
 ```json
 {
@@ -225,11 +237,39 @@ Success Response
       "Description": "Request successful"
     }
   ],
-  "Portfolios": [
+  "IdentityDetails": [
     {
-      "PortfolioID": "BBF1100",
-      "PortfolioName": "BORA BALANCED UNIT TRUST",
-      "OfferPrice": 0.2096
+      "IdentityType": "I",
+      "FirstName": "JOHN",
+      "MiddleName": "",
+      "LastName": "DOE",
+      "Gender": "M",
+      "Title": "MR",
+      "DateOfBirth": "1970-01-01T00:00:00",
+      "ResidencyStatus": "1",
+      "PassPortNumber": "1234567",
+      "VATNumber": null,
+      "IDNumber": "123456789",
+      "WorkPermit": null,
+      "MaritalStatus": "M",
+      "SpouseName": "Jane Doe",
+      "Occupation": "IT",
+      "NextOfKin": "JJ Doe",
+      "PostalAddress": "123",
+      "NationalityCountryCode": "KE",
+      "ResidencyCountryCode": "KE",
+      "CurrencyID": "KES",
+      "PhysicalAddress": "J ROAD 123, P COURT NO 10",
+      "MobileNumber": "+233700000000",
+      "PrimaryEmail": "sample@boradvisors.com",
+      "SecondaryEmail": null,
+      "PinNumber": "1234",
+      "Comments": null,
+      "imgPhotoString": null,
+      "imgSignatureString": null,
+      "imgBankProofString": null,
+      "imgIDString": null,
+      "imgPINString": null
     }
   ]
 }
@@ -237,29 +277,103 @@ Success Response
 
 ---
 
-## 5. Investment Accounts
+## PRODUCTS (PORTFOLIOS)
 
-### Create Investment Account
+### Fetch Products with Offer Prices
 
-Endpoint
-POST /api/partner/addciaccount_bcl
+**Endpoint**
 
-Request Fields
-IdentityID (string, mandatory)
-PrimaryEmail (string, mandatory)
-MobileNumber (string, mandatory)
-PortfolioID (string, mandatory)
-AccountName (string, mandatory)
-CurrencyCode (string, mandatory)
+```
+POST /api/partner/fetchciportfolios_bcl
+```
 
-Success Response
+**Example Request**
 
 ```json
 {
-  "CIAccountNumber": [
+  "PortfolioID": ""
+}
+```
+
+**Failure Response (403)**
+
+```json
+{
+  "Response": 403,
+  "Message": "Invalid token"
+}
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request successful" }
+  ],
+  "Portfolios": [
     {
-      "AccountNumber": "BB00252"
+      "PortfolioID": "BBF1100",
+      "PortfolioName": "BORA BALANCED UNIT TRUST",
+      "OfferPrice": 0.2096
+    },
+    {
+      "PortfolioID": "BFI1100",
+      "PortfolioName": "BORA FIXED INCOME UNIT TRUST",
+      "OfferPrice": 0.2011
+    },
+    {
+      "PortfolioID": "BGF1100",
+      "PortfolioName": "BORA GLOBAL BALANCED TRUST",
+      "OfferPrice": 0.9998
     }
+  ]
+}
+```
+
+---
+
+## INVESTMENT ACCOUNTS
+
+### Create Investment Account
+
+**Endpoint**
+
+```
+POST /api/partner/addciaccount_bcl
+```
+
+**Example Request**
+
+```json
+{
+  "IdentityID": "0000001099",
+  "PrimaryEmail": "sample@boradvisors.com",
+  "MobileNumber": "+233700000000",
+  "PortfolioID": "BBF1100",
+  "AccountName": "John Doe",
+  "CurrencyCode": "GHS"
+}
+```
+
+**Failure Response (403)**
+
+```json
+{
+  "Response": 403,
+  "Message": "Invalid token"
+}
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request successful" }
+  ],
+  "CIAccountNumber": [
+    { "AccountNumber": "BB00252" }
   ]
 }
 ```
@@ -268,46 +382,118 @@ Success Response
 
 ### Fetch Investment Account
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/fetchciaccount_bcl
+```
 
-Request Fields
-IdentityID
-PrimaryEmail
-MobileNumber
-AccountNumber
+**Example Request**
 
-Optional Field
-ReturnNav (boolean)
+```json
+{
+  "IdentityID": "0000001099",
+  "PrimaryEmail": "sample@boradvisors.com",
+  "MobileNumber": "+233700000000",
+  "AccountNumber": "BB00252"
+}
+```
+
+**Failure Response**
+
+```json
+{
+  "Message": "Request failed, access to account denied."
+}
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request successful" }
+  ],
+  "Account": [
+    {
+      "PortfolioID": "BBF1100",
+      "PortfolioName": "BORA BALANCED UNIT TRUST",
+      "AccountNumber": "BB00252",
+      "AccountName": "JOHN DOE"
+    }
+  ]
+}
+```
 
 ---
 
-### Fetch All Accounts for Investor
+### Fetch Investment Account With Balance
 
-Endpoint
-POST /api/partner/fetchciaccounts_bcl
+**Additional Field**
 
-Optional Field
-ReturnNav (boolean)
+```json
+"ReturnNav": true
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request successful" }
+  ],
+  "Account": [
+    {
+      "PortfolioID": "BBF1100",
+      "PortfolioName": "BORA BALANCED UNIT TRUST",
+      "AccountNumber": "BB00252",
+      "AccountName": "JOHN DOE",
+      "Amount": 0.0,
+      "Nav": 0.0
+    }
+  ]
+}
+```
 
 ---
 
-## 6. Transactions
+## TRANSACTIONS
 
 ### Deposit Cash
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/depositcicash_bcl
+```
 
-Request Fields
-TransactionReference (mandatory)
-extTranID (mandatory)
-AccountNumber (mandatory)
-TransactionDate (mandatory)
-Amount (mandatory)
-Narration (optional)
+**Example Request**
 
-Success Response
+```json
+{
+  "TransactionReference": "FTX00000",
+  "extTranID": "001",
+  "AccountNumber": "BB00252",
+  "TransactionDate": "07 Jan 2026",
+  "Amount": "1200",
+  "Narration": "Sample Deposit"
+}
+```
+
+**Failure Response**
+
+```json
+{
+  "Status": [
+    {
+      "statusCode": "1",
+      "statusMessage": "Invalid **: Deposit Upload Failed"
+    }
+  ]
+}
+```
+
+**Success Response**
 
 ```json
 {
@@ -325,54 +511,112 @@ Success Response
 
 ### Withdrawal Request
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/addcicashwithdrawal_bcl
+```
 
-Request Fields
-PrimaryEmail
-MobileNumber
-AccountNumber
-TransactionDate
-Amount
-Comment (optional)
-
----
-
-## 7. Statements
-
-### Fetch Mini Statement
-
-Endpoint
-POST /api/partner/fetchministatement_bcl
-
----
-
-### Fetch Statement by Date Range
-
-Endpoint
-POST /api/partner/fetchciaccountStatement_bcl
-
-Request Fields
-PrimaryEmail
-MobileNumber
-AccountNumber
-FromDate
-ToDate
-
----
-
-## 8. Reference Data
-
-### Fetch Relations
-
-Endpoint
-POST /api/partner/fetchdata
-
-Request
+**Example Request**
 
 ```json
 {
-  "RequestID": "IdentityRelations"
+  "PrimaryEmail": "sample@boradvisors.com",
+  "MobileNumber": "+233700000000",
+  "AccountNumber": "BB00252",
+  "TransactionDate": "09 Jan 2026",
+  "Amount": "900",
+  "Comment": "Sample Withdrawal"
+}
+```
+
+**Failure Response**
+
+```json
+{
+  "Message": "Invalid Account Number"
+}
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request Successful" }
+  ]
+}
+```
+
+---
+
+## STATEMENTS
+
+### Fetch Mini Statement
+
+**Endpoint**
+
+```
+POST /api/partner/fetchministatement_bcl
+```
+
+**Failure Response**
+
+```json
+{
+  "Message": "Request failed, access to account denied"
+}
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Request successful" }
+  ],
+  "CIMiniStatementDetails": [
+    {
+      "TranID": 614560,
+      "TransactionType": "Deposit",
+      "TransactionDate": "2026-01-07T00:00:00",
+      "Instrument": "CASH",
+      "CurrencyName": "GHANA CEDI",
+      "Amount": 1200.0,
+      "Price": 0.2011,
+      "Units": 5967.1805,
+      "Remarks": "Auto Approval"
+    }
+  ]
+}
+```
+
+---
+
+## REFERENCE DATA
+
+### Fetch Relations
+
+**Endpoint**
+
+```
+POST /api/partner/fetchdata
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Success" }
+  ],
+  "Data": [
+    { "RelationID": "DA", "Relation": "Daughter" },
+    { "RelationID": "G", "Relation": "Guardian" },
+    { "RelationID": "N", "Relation": "Next Of Kin" },
+    { "RelationID": "S", "Relation": "Spouse" },
+    { "RelationID": "T", "Relation": "Trustee" }
+  ]
 }
 ```
 
@@ -380,32 +624,82 @@ Request
 
 ### Fetch Banks
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/fetchbanks
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Success" }
+  ],
+  "BankDetails": [
+    { "BankID": 1, "BankName": "BANK OF GHANA" },
+    { "BankID": 2, "BankName": "STANDARD CHARTERED BANK (GH) LTD." },
+    { "BankID": 3, "BankName": "BARCLAYS BANK (GH) LTD" }
+  ]
+}
+```
 
 ---
 
 ### Fetch Countries
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/fetchcountries
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Success" }
+  ],
+  "Countries": [
+    { "CountryID": 1, "CountryCode": "BY", "CountryName": "Belarus" },
+    { "CountryID": 2, "CountryCode": "NA", "CountryName": "Namibia" },
+    { "CountryID": 3, "CountryCode": "ZW", "CountryName": "Zimbabwe" }
+  ]
+}
+```
 
 ---
 
 ### Fetch File Types
 
-Endpoint
+**Endpoint**
+
+```
 POST /api/partner/fetchfiletypes
+```
+
+**Success Response**
+
+```json
+{
+  "Status": [
+    { "Status": "0", "Description": "Success" }
+  ],
+  "FileTypesDetails": [
+    { "FileCode": "BA", "FileName": "Proof of bank account" },
+    { "FileCode": "ID", "FileName": "Identification document" },
+    { "FileCode": "P", "FileName": "Photograph" }
+  ]
+}
+```
 
 ---
 
-## 9. Common Errors
+## FINAL NOTES
 
-403 Invalid token
-Request failed
-Access denied
-Invalid IdentityID
-Invalid AccountNumber
-
----
+* This README mirrors the PDF documentation exactly.
+* All example inputs, success responses, and failure responses are explicitly included.
+* This document is safe to hand directly to an AI agent or developer without supplemental context.
 

@@ -74,7 +74,7 @@ describe('KYC Service', () => {
     test('should throw error when BCL API fails', async () => {
       mockBclClientPost.mockRejectedValue({
         response: {
-          data: { Message: 'Request failed' },
+          Message: 'Request failed',
         },
       });
 

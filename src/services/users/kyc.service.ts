@@ -31,8 +31,8 @@ export const addIndividualIdentity = async (
       response?.Status?.[0]?.Description || 'Failed to create identity';
     throw createError.BadRequest(errorMessage);
   } catch (error: any) {
-    if (error.response?.data?.Message) {
-      throw createError.BadRequest(error.response.data.Message);
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
     }
     throw error;
   }

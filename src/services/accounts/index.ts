@@ -4,7 +4,6 @@ import { getUserById, linkAccountNumber } from '../users';
 import {
   CreateAccountInput,
   BclCreateAccountRequest,
-  BclCreateAccountResponse,
   BclFetchAccountsResponse,
   BclAccount,
   BclFetchAccountRequest,
@@ -44,12 +43,15 @@ export const createAccount = async (
   };
 
   try {
-    const response = (await bclClient.post(
+    const response = await bclClient.post(
       '/api/partner/addciaccount_bcl',
       request
-    )) as BclCreateAccountResponse;
+    );
 
-    if (response.CIAccountNumber?.[0]?.AccountNumber) {
+    if (
+      response?.status?.[0]?.Status === '0' &&
+      response?.CIAccountNumber?.[0]?.AccountNumber
+    ) {
       const accountNumber = response.CIAccountNumber[0].AccountNumber;
 
       // Link account to user
@@ -62,21 +64,24 @@ export const createAccount = async (
       };
     }
 
-    throw createError.BadRequest('Failed to create investment account');
+    const errorMessage =
+      response?.status?.[0]?.Description ||
+      'Failed to create investment account';
+    throw createError.BadRequest(errorMessage);
   } catch (error: any) {
-    if (error.response?.data?.Message) {
-      throw createError.BadRequest(error.response.data.Message);
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
     }
     throw error;
   }
 };
 
 /**
- * Fetch all investment accounts for a user from BCL
+ * Fetch all investment accounts for a user from BCL with NAV
  * @param userId - Local user ID
  * @returns Array of user's investment accounts
  */
-export const fetchUserAccounts = async (
+export const fetchUserAccountsWithNav = async (
   userId: string | Types.ObjectId
 ): Promise<BclAccount[]> => {
   const user = await getUserById(userId);
@@ -93,10 +98,10 @@ export const fetchUserAccounts = async (
   };
 
   try {
-    const response = (await bclClient.post(
+    const response = await bclClient.post(
       '/api/partner/fetchciaccounts_bcl',
       request
-    )) as BclFetchAccountsResponse;
+    );
 
     if (response.Status?.[0]?.Status === '0' && response.Accounts) {
       return response.Accounts;
@@ -104,8 +109,47 @@ export const fetchUserAccounts = async (
 
     return [];
   } catch (error: any) {
-    if (error.response?.data?.Message) {
-      throw createError.BadRequest(error.response.data.Message);
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
+    }
+    throw error;
+  }
+};
+
+/**
+ * Fetch all investment accounts for a user from BCL without NAV
+ * @param userId - Local user ID
+ * @returns Array of user's investment accounts
+ */
+export const fetchUserAccounts = async (
+  userId: string | Types.ObjectId
+): Promise<BclAccount[]> => {
+  const user = await getUserById(userId);
+
+  if (!user.identityId) {
+    return []; // No accounts if KYC not complete
+  }
+
+  const request: BclFetchAccountRequest = {
+    IdentityID: user.identityId,
+    PrimaryEmail: user.email,
+    MobileNumber: user.phoneNumber || '',
+  };
+
+  try {
+    const response = await bclClient.post(
+      '/api/partner/fetchciaccounts_bcl',
+      request
+    );
+
+    if (response.Status?.[0]?.Status === '0' && response.Accounts) {
+      return response.Accounts;
+    }
+
+    return [];
+  } catch (error: any) {
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
     }
     throw error;
   }
@@ -136,10 +180,10 @@ export const fetchAccount = async (
   };
 
   try {
-    const response = (await bclClient.post(
+    const response = await bclClient.post(
       '/api/partner/fetchciaccount_bcl',
       request
-    )) as BclFetchAccountsResponse;
+    );
 
     if (response.Status?.[0]?.Status === '0' && response.Accounts?.length > 0) {
       return response.Accounts[0];
@@ -147,8 +191,8 @@ export const fetchAccount = async (
 
     return null;
   } catch (error: any) {
-    if (error.response?.data?.Message) {
-      throw createError.BadRequest(error.response.data.Message);
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
     }
     throw error;
   }

@@ -88,7 +88,7 @@ describe('Portfolio Service', () => {
     test('should throw error when BCL API fails', async () => {
       mockBclClientPost.mockRejectedValue({
         response: {
-          data: { Message: 'Service unavailable' },
+          Message: 'Service unavailable',
         },
       });
 

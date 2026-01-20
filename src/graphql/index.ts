@@ -19,7 +19,7 @@ import { marketNewsResolvers, marketNewsTypeDefs } from './news';
 import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
 import { goalsResolvers, goalsTypeDefs } from './goals';
 import { chatBotResolvers, chatBotTypeDefs } from './chatBot';
-import { accountResolvers, accountTypeDefs } from './account';
+import { accountResolvers, accountTypeDefs } from './accounts';
 
 const typeDefs = [
   generalTypeDefs,

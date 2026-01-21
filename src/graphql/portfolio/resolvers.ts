@@ -3,7 +3,7 @@ import { fetchPortfolioById, fetchPortfolios } from 'src/services/portfolio';
 
 const getPortfolios = async () => {
   const portfolios = await fetchPortfolios();
-  return portfolios?.map(normalizePortfolio);
+  return portfolios ? portfolios.map(normalizePortfolio) : [];
 };
 
 const getPortfolioById = async (_: any, args: { portfolioId: string }) => {

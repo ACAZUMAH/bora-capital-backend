@@ -4,6 +4,7 @@ import {
   TransactionStatus,
   TransactionType,
 } from 'src/common/enums';
+import { BclStatus } from '../bcl';
 
 export interface TransactionsDocument {
   _id: string | Types.ObjectId;
@@ -55,4 +56,37 @@ export interface TransactionsFilters {
   search?: string | null;
   startDate?: Date | null;
   endDate?: Date | null;
+}
+
+// ============ Transactions ============
+export interface DepositTransactionStatus {
+  statusCode: string;
+  statusMessage: string;
+  erpReffID?: string;
+}
+
+export interface DepositCashSuccessResponse {
+  Status: DepositTransactionStatus[];
+}
+
+export interface WithdrawalSuccessResponse {
+  Status: BclStatus[];
+}
+
+// ============ Statements ============
+export interface MiniStatementItem {
+  TranID: number;
+  TransactionType: string;
+  TransactionDate: string;
+  Instrument: string;
+  CurrencyName: string;
+  Amount: number;
+  Price: number;
+  Units: number;
+  Remarks: string;
+}
+
+export interface FetchMiniStatementSuccessResponse {
+  Status: BclStatus[];
+  CIMiniStatementDetails: MiniStatementItem[];
 }

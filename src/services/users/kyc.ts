@@ -16,7 +16,6 @@ import { addIndividualIdentity, fetchIdentity } from './kyc.service';
 export const updateKycRecords = async (data: KycRecordsInput) => {
   const user = await getUserById(data.userId);
 
-  // Check if KYC already submitted
   if (user.identityId) {
     throw createError.BadRequest('KYC already submitted for this user');
   }
@@ -26,7 +25,6 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
   }
 
   try {
-    // Merge user signup data with KYC data and call BCL API
     const identityId = await addIndividualIdentity({
       FirstName: user.firstName,
       MiddleName: data.middleName,
@@ -61,7 +59,6 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
       })),
     });
 
-    // Update user with identityId and kycStatus
     const updatedUser = await userModel.findByIdAndUpdate(
       user._id,
       {
@@ -74,6 +71,7 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
     return updatedUser;
   } catch (error: any) {
     rollbar.error('KYC submission failed', { error, userId: data.userId });
+    logger.error('KYC submission failed', { error, userId: data.userId });
     throw createError.BadGateway(
       error.message || 'Failed to submit KYC. Please try again.'
     );
@@ -85,7 +83,6 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
  * Returns null if user hasn't completed KYC yet.
  */
 export const getKycRecords = async (user: UserDocument) => {
-  // Return null if no identityId (KYC not submitted)
   if (!user.identityId) {
     return null;
   }
@@ -116,7 +113,7 @@ export const getKycRecords = async (user: UserDocument) => {
       postalAddress: kycData?.PostalAddress,
       nationalityCountryCode: kycData?.NationalityCountryCode,
       residencyCountryCode: kycData?.ResidencyCountryCode,
-      currencyCode: kycData?.CurrencyId,
+      currencyCode: kycData?.CurrencyID,
       physicalAddress: kycData?.PhysicalAddress,
       pinNumber: kycData?.PinNumber,
       VATNumber: kycData?.VATNumber,
@@ -130,7 +127,7 @@ export const getKycRecords = async (user: UserDocument) => {
       imgPINString: kycData?.imgPINString,
     };
   } catch (error: any) {
-    console.log('Error fetching KYC records:', error.message, error);
+    logger.error('Error fetching KYC records:', error.message, error);
     rollbar.error('Failed to fetch KYC records', { error, userId: user._id });
     return null;
   }

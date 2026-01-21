@@ -4,11 +4,20 @@ import { getUserById, linkAccountNumber } from '../users';
 import {
   CreateAccountInput,
   BclCreateAccountRequest,
-  BclFetchAccountsResponse,
+  BclCreateAccountResponse,
+  BclCreateAccountSuccessResponse,
+  BclFetchAccountsApiResponse,
+  BclFetchAccountResponse,
   BclAccount,
   BclFetchAccountRequest,
 } from 'src/common/interfaces';
 import { Types } from 'mongoose';
+import {
+  isCreateAccountSuccess,
+  isFetchAccountsSuccess,
+  isFetchAccountSuccess,
+} from './helpers';
+import logger from 'src/loggers/logger';
 
 /**
  * Create an investment account in BCL
@@ -19,14 +28,9 @@ import { Types } from 'mongoose';
 export const createAccount = async (
   userId: string | Types.ObjectId,
   data: CreateAccountInput
-): Promise<{
-  accountNumber: string;
-  accountName: string;
-  portfolioId: string;
-}> => {
+) => {
   const user = await getUserById(userId);
 
-  // User must have completed KYC
   if (!user.identityId) {
     throw createError.BadRequest(
       'Please complete KYC before creating an investment account'
@@ -43,18 +47,21 @@ export const createAccount = async (
   };
 
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/addciaccount_bcl',
       request
-    );
+    )) as BclCreateAccountResponse;
 
+    if ('Message' in response && !('Status' in response)) {
+      throw createError.BadRequest(response.Message);
+    }
     if (
-      response?.status?.[0]?.Status === '0' &&
-      response?.CIAccountNumber?.[0]?.AccountNumber
+      isCreateAccountSuccess(response) &&
+      response.Status?.[0]?.Status === '0' &&
+      response.CIAccountNumber?.[0]?.AccountNumber
     ) {
       const accountNumber = response.CIAccountNumber[0].AccountNumber;
 
-      // Link account to user
       await linkAccountNumber(userId, accountNumber);
 
       return {
@@ -65,14 +72,17 @@ export const createAccount = async (
     }
 
     const errorMessage =
-      response?.status?.[0]?.Description ||
+      (response as BclCreateAccountSuccessResponse).Status?.[0]?.Description ||
       'Failed to create investment account';
     throw createError.BadRequest(errorMessage);
   } catch (error: any) {
+    if (error.status) {
+      logger.error('creating account failed', error);
+      return;
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
   }
 };
 
@@ -83,11 +93,11 @@ export const createAccount = async (
  */
 export const fetchUserAccountsWithNav = async (
   userId: string | Types.ObjectId
-): Promise<BclAccount[]> => {
+) => {
   const user = await getUserById(userId);
 
   if (!user.identityId) {
-    return []; // No accounts if KYC not complete
+    return [];
   }
 
   const request: BclFetchAccountRequest = {
@@ -98,21 +108,31 @@ export const fetchUserAccountsWithNav = async (
   };
 
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/fetchciaccounts_bcl',
       request
-    );
+    )) as BclFetchAccountsApiResponse;
 
-    if (response.Status?.[0]?.Status === '0' && response.Accounts) {
+    if ('Message' in response) {
+      throw createError.BadRequest(response.Message);
+    }
+
+    if (
+      isFetchAccountsSuccess(response) &&
+      response.Status?.[0]?.Status === '0'
+    ) {
       return response.Accounts;
     }
 
     return [];
   } catch (error: any) {
+    if (error.status) {
+      logger.error('fetching user accounts failed', error);
+      return;
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
   }
 };
 
@@ -121,13 +141,11 @@ export const fetchUserAccountsWithNav = async (
  * @param userId - Local user ID
  * @returns Array of user's investment accounts
  */
-export const fetchUserAccounts = async (
-  userId: string | Types.ObjectId
-): Promise<BclAccount[]> => {
+export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
   const user = await getUserById(userId);
 
   if (!user.identityId) {
-    return []; // No accounts if KYC not complete
+    return [];
   }
 
   const request: BclFetchAccountRequest = {
@@ -137,21 +155,34 @@ export const fetchUserAccounts = async (
   };
 
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/fetchciaccounts_bcl',
       request
-    );
+    )) as BclFetchAccountsApiResponse;
 
-    if (response.Status?.[0]?.Status === '0' && response.Accounts) {
+    if ('Message' in response) {
+      throw createError.BadRequest(response.Message);
+    }
+
+    if (
+      isFetchAccountsSuccess(response) &&
+      response.Status?.[0]?.Status === '0'
+    ) {
       return response.Accounts;
     }
 
     return [];
   } catch (error: any) {
+    if (error.status) {
+      logger.error(
+        'fetching user accounts failed',
+        JSON.stringify(error, null, 2)
+      );
+      return;
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
   }
 };
 
@@ -164,7 +195,7 @@ export const fetchUserAccounts = async (
 export const fetchAccount = async (
   userId: string | Types.ObjectId,
   accountNumber: string
-): Promise<BclAccount | null> => {
+) => {
   const user = await getUserById(userId);
 
   if (!user.identityId) {
@@ -180,20 +211,33 @@ export const fetchAccount = async (
   };
 
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/fetchciaccount_bcl',
       request
-    );
+    )) as BclFetchAccountResponse;
 
-    if (response.Status?.[0]?.Status === '0' && response.Accounts?.length > 0) {
-      return response.Accounts[0];
+    if ('Message' in response && !('Status' in response)) {
+      throw createError.BadRequest(response.Message);
+    }
+
+    if (
+      isFetchAccountSuccess(response) &&
+      response.Status?.[0]?.Status === '0'
+    ) {
+      return response.Account?.[0] || null;
     }
 
     return null;
   } catch (error: any) {
+    if (error.status) {
+      logger.error(
+        'fetching user account failed',
+        JSON.stringify(error, null, 2)
+      );
+      return;
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
   }
 };

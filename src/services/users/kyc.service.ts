@@ -1,67 +1,91 @@
 import {
   AddIdentityInput,
+  AddIdentityResponse,
+  AddIdentitySuccessResponse,
   FetchIdentityInput,
   FetchIdentityResponse,
-} from 'src/common/interfaces/bcl';
+  FetchIdentityApiResponse,
+  FetchIdentitySuccessResponse,
+} from 'src/common/interfaces/user/kyc';
 import createError from 'http-errors';
 import { bclClient } from '../bcl';
+import { isAddIdentitySuccess, isFetchIdentitySuccess } from './helper';
+import logger from 'src/loggers/logger';
 
 /**
  * Add individual identity (KYC) to BCL
- * Called during user registration to create BCL identity
+ * @param data individual identity details
+ * @returns identity id
  */
-export const addIndividualIdentity = async (
-  data: AddIdentityInput
-): Promise<string> => {
+export const addIndividualIdentity = async (data: AddIdentityInput) => {
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/addindividualidentity_bcl',
       data
-    );
-    // Check for success
-    if (
-      response?.Status?.[0]?.Status === '0' &&
-      response?.IdentityID?.[0]?.IdentityID
-    ) {
-      return response?.IdentityID[0].IdentityID;
+    )) as AddIdentityResponse;
+
+    if ('Message' in response && !('Status' in response)) {
+      throw createError.BadRequest(response.Message);
     }
 
-    // Handle failure
+    if (
+      isAddIdentitySuccess(response) &&
+      response.Status?.[0]?.Status === '0' &&
+      response.IdentityID?.[0]?.IdentityID
+    ) {
+      return response.IdentityID[0].IdentityID;
+    }
+
     const errorMessage =
-      response?.Status?.[0]?.Description || 'Failed to create identity';
+      (response as AddIdentitySuccessResponse).Status?.[0]?.Description ||
+      'Failed to create identity';
     throw createError.BadRequest(errorMessage);
   } catch (error: any) {
+    if (error.status) {
+      logger.error('adding identity failed', error);
+      return;
+    }
+    if (error.response?.data?.Message) {
+      throw createError.BadRequest(error.response.data.Message);
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
   }
 };
 
 /**
  * Fetch/verify investor identity from BCL
+ * @param data filters for fetching identity
+ * @returns investor identity details
  */
-export const fetchIdentity = async (
-  data: FetchIdentityInput
-): Promise<FetchIdentityResponse> => {
+export const fetchIdentity = async (data: FetchIdentityInput) => {
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/fetchidentity_bcl',
       data
-    );
+    )) as FetchIdentityApiResponse;
+
+    if ('Message' in response && !('Status' in response)) {
+      throw createError.BadRequest(response.Message);
+    }
 
     if (
-      !Array.isArray(response?.IdentityDetails) ||
-      response.IdentityDetails.length === 0
+      isFetchIdentitySuccess(response) &&
+      Array.isArray(response.IdentityDetails) &&
+      response.IdentityDetails.length > 0
     ) {
-      throw createError.BadRequest('Identity details not found in response');
+      return response.IdentityDetails[0];
     }
 
-    return response.IdentityDetails[0];
+    throw createError.BadRequest('Identity details not found in response');
   } catch (error: any) {
-    if (error.response?.data?.Message) {
-      throw createError.BadRequest(error.response.data.Message);
+    if (error.status) {
+      logger.error('fetching identity failed', error);
+      return;
     }
-    throw error;
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
+    }
   }
 };

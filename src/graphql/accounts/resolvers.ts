@@ -7,7 +7,16 @@ import * as accountService from 'src/services/accounts';
 
 const getMyAccounts = async (_: any, __: any, { user }: GraphqlContext) => {
   const accounts = await accountService.fetchUserAccounts(user!._id!);
-  return accounts.map(normalizeAccount);
+  return accounts?.map(normalizeAccount);
+};
+
+const getMyAccountsWithNav = async (
+  _: any,
+  __: any,
+  { user }: GraphqlContext
+) => {
+  const accounts = await accountService.fetchUserAccountsWithNav(user!._id!);
+  return accounts?.map(normalizeAccount);
 };
 
 const getAccount = async (
@@ -36,15 +45,15 @@ const normalizeAccount = (a: BclAccount) => ({
   accountName: a.AccountName,
   portfolioId: a.PortfolioID,
   portfolioName: a.PortfolioName,
-  currencyCode: a.CurrencyCode,
-  balance: a.Balance,
-  nav: a.NAV,
+  balance: a.Amount,
+  nav: a.Nav,
 });
 
 export const accountResolvers = {
   Query: {
     getMyAccounts,
     getAccount,
+    getMyAccountsWithNav,
   },
   Mutation: {
     createAccount,

@@ -29,11 +29,12 @@ export const fetchPortfolios = async (portfolioId?: string) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('fetching portfolios failed', error);
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 
@@ -46,5 +47,5 @@ export const fetchPortfolioById = async (
   portfolioId: string
 ): Promise<BclPortfolio | null> => {
   const portfolios = await fetchPortfolios(portfolioId);
-  return portfolios?.find(p => p.PortfolioID === portfolioId) || null;
+  return portfolios.find(p => p.PortfolioID === portfolioId) || null;
 };

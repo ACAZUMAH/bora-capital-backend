@@ -83,6 +83,7 @@ export const createAccount = async (
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 
@@ -133,6 +134,7 @@ export const fetchUserAccountsWithNav = async (
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 
@@ -183,6 +185,7 @@ export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 
@@ -234,10 +237,11 @@ export const fetchAccount = async (
         'fetching user account failed',
         JSON.stringify(error, null, 2)
       );
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };

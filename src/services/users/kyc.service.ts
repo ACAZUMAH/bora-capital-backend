@@ -43,7 +43,7 @@ export const addIndividualIdentity = async (data: AddIdentityInput) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('adding identity failed', error);
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.data?.Message) {
       throw createError.BadRequest(error.response.data.Message);
@@ -51,6 +51,7 @@ export const addIndividualIdentity = async (data: AddIdentityInput) => {
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 
@@ -82,7 +83,7 @@ export const fetchIdentity = async (data: FetchIdentityInput) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('fetching identity failed', error);
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);

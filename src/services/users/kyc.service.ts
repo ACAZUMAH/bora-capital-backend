@@ -43,7 +43,9 @@ export const addIndividualIdentity = async (data: AddIdentityInput) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('adding identity failed', error);
-      throw createError.BadRequest(error.response.Message);
+      const message =
+        error.response?.Message ?? error.message ?? 'Request failed';
+      throw createError.BadRequest(message);
     }
     if (error.response?.data?.Message) {
       throw createError.BadRequest(error.response.data.Message);

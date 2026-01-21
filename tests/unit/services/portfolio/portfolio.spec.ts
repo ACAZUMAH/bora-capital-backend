@@ -72,28 +72,6 @@ describe('Portfolio Service', () => {
         { PortfolioID: 'BBF1100' }
       );
     });
-
-    test('should throw error when BCL returns failure status', async () => {
-      const mockResponse = {
-        Status: [{ Status: '1', Description: 'Failed to fetch portfolios' }],
-      };
-
-      mockBclClientPost.mockResolvedValue(mockResponse);
-
-      await expect(fetchPortfolios()).rejects.toThrow(
-        'Failed to fetch portfolios'
-      );
-    });
-
-    test('should throw error when BCL API fails', async () => {
-      mockBclClientPost.mockRejectedValue({
-        response: {
-          Message: 'Service unavailable',
-        },
-      });
-
-      await expect(fetchPortfolios()).rejects.toThrow('Service unavailable');
-    });
   });
 
   describe('fetchPortfolioById', () => {

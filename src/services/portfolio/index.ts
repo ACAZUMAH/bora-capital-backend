@@ -1,33 +1,40 @@
 import createError from 'http-errors';
 import { bclClient } from '../bcl';
-import { BclPortfolio } from 'src/common/interfaces';
+import { BclPortfolio, FetchPortfoliosResponse } from 'src/common/interfaces';
+import { isSuccessResponse } from './helpers';
+import logger from 'src/loggers/logger';
 
 /**
  * Fetch available portfolios (investment products) from BCL
  * @param portfolioId - Optional portfolio ID to filter
  * @returns Array of portfolios with offer prices
  */
-export const fetchPortfolios = async (
-  portfolioId?: string
-): Promise<BclPortfolio[]> => {
+export const fetchPortfolios = async (portfolioId?: string) => {
   try {
-    const response = await bclClient.post(
+    const response = (await bclClient.post(
       '/api/partner/fetchciportfolios_bcl',
       { PortfolioID: portfolioId || '' }
-    );
+    )) as FetchPortfoliosResponse;
 
-    if (response.Status?.[0]?.Status === '0' && response.Portfolios) {
+    if ('Message' in response) {
+      throw createError.BadRequest(response.Message);
+    }
+    if (isSuccessResponse(response) && response.Status?.[0]?.Status === '0') {
       return response.Portfolios;
     }
 
     throw createError.BadRequest(
-      response.Message || 'Failed to fetch portfolios'
+      response.Status?.[0]?.Description || 'Failed to fetch portfolios'
     );
   } catch (error: any) {
+    if (error.status) {
+      logger.error('fetching portfolios failed', error);
+      throw createError.BadRequest(error.response.Message);
+    }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    throw error;
+    throw createError.BadRequest(`bad request: ${error}`);
   }
 };
 

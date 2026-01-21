@@ -7,7 +7,6 @@ export * from './transactions';
 export * from './documents';
 export * from './signature';
 export * from './holdings';
-export * from './user/kycRecords';
 export * from './goals';
 export * from './resources';
 export * from './funds';

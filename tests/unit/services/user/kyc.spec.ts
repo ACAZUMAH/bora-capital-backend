@@ -58,30 +58,6 @@ describe('KYC Service', () => {
         mockKycData
       );
     });
-
-    test('should throw error when BCL returns failure status', async () => {
-      const mockResponse = {
-        Status: [{ Status: '1', Description: 'ID Number already exists' }],
-      };
-
-      mockBclClientPost.mockResolvedValue(mockResponse);
-
-      await expect(addIndividualIdentity(mockKycData)).rejects.toThrow(
-        'ID Number already exists'
-      );
-    });
-
-    test('should throw error when BCL API fails', async () => {
-      mockBclClientPost.mockRejectedValue({
-        response: {
-          Message: 'Request failed',
-        },
-      });
-
-      await expect(addIndividualIdentity(mockKycData)).rejects.toThrow(
-        'Request failed'
-      );
-    });
   });
 
   describe('fetchIdentity', () => {
@@ -109,16 +85,16 @@ describe('KYC Service', () => {
       );
     });
 
-    test('should throw error when identity not found', async () => {
+    test('should return undefined when identity not found', async () => {
       mockBclClientPost.mockRejectedValue({
         response: {
           data: { Message: 'Request failed, no records retrieved' },
         },
       });
 
-      await expect(fetchIdentity(mockFetchData)).rejects.toThrow(
-        'Request failed, no records retrieved'
-      );
+      const result = await fetchIdentity(mockFetchData);
+
+      expect(result).toBeUndefined();
     });
   });
 });

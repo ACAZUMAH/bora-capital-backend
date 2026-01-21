@@ -1,8 +1,5 @@
-import { Types } from 'mongoose';
+import { BclStatus } from '../bcl';
 
-/**
- * BCL Account types
- */
 export interface CreateAccountInput {
   portfolioId: string;
   accountName: string;
@@ -18,6 +15,20 @@ export interface BclCreateAccountRequest {
   CurrencyCode: string;
 }
 
+export interface BclCreateAccountSuccessResponse {
+  Status: BclStatus[];
+  CIAccountNumber: Array<{ AccountNumber: string }>;
+}
+
+export interface BclCreateAccountFailureResponse {
+  Response?: number;
+  Message: string;
+}
+
+export type BclCreateAccountResponse =
+  | BclCreateAccountSuccessResponse
+  | BclCreateAccountFailureResponse;
+
 export interface BclFetchAccountRequest {
   IdentityID: string;
   PrimaryEmail: string;
@@ -27,16 +38,36 @@ export interface BclFetchAccountRequest {
 }
 
 export interface BclAccount {
-  AccountNumber: string;
-  AccountName: string;
   PortfolioID: string;
   PortfolioName: string;
-  CurrencyCode: string;
-  Balance?: number;
-  NAV?: number;
+  AccountNumber: string;
+  AccountName: string;
+  Amount?: number;
+  Nav?: number;
 }
 
+export interface BclFetchAccountSuccessResponse {
+  Status: BclStatus[];
+  Account: BclAccount[];
+}
+
+export interface BclFetchAccountFailureResponse {
+  Message: string;
+}
+
+export type BclFetchAccountResponse =
+  | BclFetchAccountSuccessResponse
+  | BclFetchAccountFailureResponse;
+
 export interface BclFetchAccountsResponse {
-  Status: Array<{ Status: string; Description: string }>;
+  Status: BclStatus[];
   Accounts: BclAccount[];
 }
+
+export interface BclFetchAccountsFailureResponse {
+  Message: string;
+}
+
+export type BclFetchAccountsApiResponse =
+  | BclFetchAccountsResponse
+  | BclFetchAccountsFailureResponse;

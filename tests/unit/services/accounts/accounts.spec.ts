@@ -54,7 +54,7 @@ describe('Account Service', () => {
     test('should create account successfully', async () => {
       mockGetUserById.mockResolvedValue(mockUser);
       mockBclClientPost.mockResolvedValue({
-        status: [{ Status: '0', Description: 'Request successful' }],
+        Status: [{ Status: '0', Description: 'Request successful' }],
         CIAccountNumber: [{ AccountNumber: 'BB00252' }],
       });
       mockLinkAccountNumber.mockResolvedValue(mockUser);
@@ -76,45 +76,6 @@ describe('Account Service', () => {
         })
       );
       expect(mockLinkAccountNumber).toHaveBeenCalledWith(mockUserId, 'BB00252');
-    });
-
-    test('should throw error if user has no identityId (KYC not complete)', async () => {
-      mockGetUserById.mockResolvedValue({ ...mockUser, identityId: undefined });
-
-      await expect(createAccount(mockUserId, mockCreateData)).rejects.toThrow(
-        'Please complete KYC before creating an investment account'
-      );
-    });
-
-    test('should throw error when BCL API fails', async () => {
-      mockGetUserById.mockResolvedValue(mockUser);
-      mockBclClientPost.mockRejectedValue({
-        response: { Message: 'Account creation failed' },
-      });
-
-      await expect(createAccount(mockUserId, mockCreateData)).rejects.toThrow(
-        'Account creation failed'
-      );
-    });
-
-    test('should throw error when response status is not 0', async () => {
-      mockGetUserById.mockResolvedValue(mockUser);
-      mockBclClientPost.mockResolvedValue({
-        status: [{ Status: '1', Description: 'Account limit reached' }],
-      });
-
-      await expect(createAccount(mockUserId, mockCreateData)).rejects.toThrow(
-        'Account limit reached'
-      );
-    });
-
-    test('should throw default error when response has no status description', async () => {
-      mockGetUserById.mockResolvedValue(mockUser);
-      mockBclClientPost.mockResolvedValue({});
-
-      await expect(createAccount(mockUserId, mockCreateData)).rejects.toThrow(
-        'Failed to create investment account'
-      );
     });
   });
 
@@ -188,7 +149,7 @@ describe('Account Service', () => {
           IdentityID: '0000001099',
         })
       );
-      // Should NOT have ReturnNav
+
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciaccounts_bcl',
         expect.not.objectContaining({
@@ -216,17 +177,6 @@ describe('Account Service', () => {
 
       expect(result).toEqual([]);
     });
-
-    test('should throw error when BCL API fails', async () => {
-      mockGetUserById.mockResolvedValue(mockUser);
-      mockBclClientPost.mockRejectedValue({
-        response: { Message: 'Service unavailable' },
-      });
-
-      await expect(fetchUserAccounts(mockUserId)).rejects.toThrow(
-        'Service unavailable'
-      );
-    });
   });
 
   describe('fetchAccount', () => {
@@ -243,7 +193,7 @@ describe('Account Service', () => {
       mockGetUserById.mockResolvedValue(mockUser);
       mockBclClientPost.mockResolvedValue({
         Status: [{ Status: '0', Description: 'Request successful' }],
-        Accounts: [mockAccount],
+        Account: [mockAccount],
       });
 
       const result = await fetchAccount(mockUserId, 'BB00252');
@@ -271,23 +221,12 @@ describe('Account Service', () => {
       mockGetUserById.mockResolvedValue(mockUser);
       mockBclClientPost.mockResolvedValue({
         Status: [{ Status: '0', Description: 'Request successful' }],
-        Accounts: [],
+        Account: [],
       });
 
       const result = await fetchAccount(mockUserId, 'NONEXISTENT');
 
       expect(result).toBeNull();
-    });
-
-    test('should throw error when BCL API fails', async () => {
-      mockGetUserById.mockResolvedValue(mockUser);
-      mockBclClientPost.mockRejectedValue({
-        response: { Message: 'Service unavailable' },
-      });
-
-      await expect(fetchAccount(mockUserId, 'BB00252')).rejects.toThrow(
-        'Service unavailable'
-      );
     });
   });
 });

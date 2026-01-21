@@ -17,6 +17,7 @@ export const accountTypeDefs = `#graphql
 
     extend type Query {
         getMyAccounts: [Account!]!
+        getMyAccountsWithNav: [Account!]!
         getAccount(accountNumber: String!): Account
     }
 

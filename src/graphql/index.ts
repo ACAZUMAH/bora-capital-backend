@@ -13,8 +13,7 @@ import { holdingsTypeDefs } from './holdings/typeDefs';
 import { holdingsResolvers } from './holdings/resolvers';
 import { transactionsResolvers, transactionsTypeDefs } from './transactions';
 import { fundsResolvers, fundsTypeDefs } from './funds';
-import { uploadResolvers, uploadTypedefs } from './upload';
-import { documentsResolvers, documentsTypedefs } from './documents';
+// import { documentsResolvers, documentsTypedefs } from './documents';
 import { marketNewsResolvers, marketNewsTypeDefs } from './news';
 import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
 import { goalsResolvers, goalsTypeDefs } from './goals';
@@ -30,8 +29,7 @@ const typeDefs = [
   holdingsTypeDefs,
   transactionsTypeDefs,
   fundsTypeDefs,
-  uploadTypedefs,
-  documentsTypedefs,
+  // documentsTypedefs,
   marketNewsTypeDefs,
   calculatorsTypeDefs,
   goalsTypeDefs,
@@ -48,8 +46,7 @@ const resolvers = [
   holdingsResolvers,
   transactionsResolvers,
   fundsResolvers,
-  uploadResolvers,
-  documentsResolvers,
+  // documentsResolvers,
   marketNewsResolvers,
   calculatorsResolvers,
   goalsResolvers,

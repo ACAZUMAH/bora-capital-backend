@@ -1,30 +1,12 @@
-import { Types } from 'mongoose';
-import { DocumentsType } from 'src/common/enums';
+import { BclStatus } from '../bcl';
 
-export interface DocumentsDocument {
-  _id: Types.ObjectId;
-  userId: Types.ObjectId | string;
-  fileName: string;
-  documentType: DocumentsType;
-  size: number;
-  mimeType: string;
-  directory: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface IFileType {
+  FileTypeId: string;
+  FileTypeName: string;
+  Extension: string;
 }
 
-export interface CreateDocumentInput {
-  userId: string | Types.ObjectId;
-  fileName: string;
-  documentType: DocumentsType;
-  size: number;
-  mimeType: string;
-  directory: string;
-}
-
-export interface uploadDocumentInput {
-  userId: Types.ObjectId | string;
-  file: string;
-  directory: string;
-  documentType: DocumentsType;
+export interface FetchFileTypesSuccessResponse {
+  Status: BclStatus[];
+  FileTypeDetails: IFileType[];
 }

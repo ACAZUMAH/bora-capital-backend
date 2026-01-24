@@ -1,66 +1,37 @@
+import { GraphqlContext } from 'src/common/interfaces';
 import * as GraphqlTypes from 'src/common/interfaces/graphql';
 import * as services from 'src/services/transactions';
-import { idResolver } from '../general';
-import { GraphqlContext } from 'src/common/interfaces';
-import * as status from 'src/services/transactions/updateStatus';
+
+const depositCash = (_: any, args: GraphqlTypes.MutationDepositCashArgs) => {
+  const erpReffID = services.depositCash({ ...args.data });
+  return { erpReffID };
+};
+
+const withdrawCash = (_: any, args: GraphqlTypes.MutationWithdrawCashArgs) => {
+  const description = services.withdrawCash({ ...args.data });
+  return { description };
+};
 
 const getTransactions = (
   _: any,
-  args: GraphqlTypes.QueryGetTransactionsArgs
+  args: GraphqlTypes.QueryGetTransactionsArgs,
+  { user }: GraphqlContext
 ) => {
-  return services.getTransactions({ ...args.filters });
+  return services.fetchMiniStatement({
+    userId: user?._id!,
+    accountNumber: args.filters.accountNumber,
+  });
 };
 
-const createTransaction = (
-  _: any,
-  args: GraphqlTypes.MutationCreateTransactionArgs
-) => {
-  return services.createTransaction({ ...args.data });
-};
-
-const getTransactionById = (
-  _: any,
-  args: GraphqlTypes.QueryGetTransactionByIdArgs
-) => {
-  return services.getTransactionById(args.id);
-};
-
-const updateTransaction = (
-  _: any,
-  args: GraphqlTypes.MutationUpdateTransactionArgs
-) => {
-  return services.updateTransaction({ ...args.data });
-};
-
-const updateTransactionStatus = (
-  _: any,
-  args: GraphqlTypes.MutationUpdateTransactionStatusArgs
-) => {
-  return status.updateTransactionStatus({ ...args.data });
-};
-
-export const funds = (
-  parent: { fundId: string },
-  _: any,
-  { fundsLoader }: GraphqlContext
-) => {
-  return parent.fundId ? fundsLoader.load(parent.fundId) : null;
-};
+const getTransactionsWithDateRanges = () => {};
 
 export const transactionsResolvers = {
   Query: {
     getTransactions,
-    getTransactionById,
+    getTransactionsWithDateRanges,
   },
-
-  Transaction: {
-    id: idResolver,
-    funds,
-  },
-
   Mutation: {
-    createTransaction,
-    updateTransaction,
-    updateTransactionStatus,
+    depositCash,
+    withdrawCash,
   },
 };

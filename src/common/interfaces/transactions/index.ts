@@ -1,64 +1,36 @@
 import { Types } from 'mongoose';
-import {
-  PaymentMethod,
-  TransactionStatus,
-  TransactionType,
-} from 'src/common/enums';
 import { BclStatus } from '../bcl';
 
-export interface TransactionsDocument {
-  _id: string | Types.ObjectId;
+export interface DepositCashInput {
+  transactionReference: string;
+  extTranID: string;
+  accountNumber: string;
+  transactionDate: string;
+  amount: string;
+  narration: string;
+}
+
+export interface WithdrawCashInput {
+  primaryEmail: string;
+  mobileNumber: string;
+  accountNumber: string;
+  transactionDate: string;
+  amount: string;
+  comment: string;
+}
+
+export interface FetchMiniStatementFilters {
   userId: string | Types.ObjectId;
-  fundId: string | Types.ObjectId;
-  portfolioId: string | Types.ObjectId;
-  type: TransactionType;
-  amount: number;
-  currency: string;
-  quantity: number;
-  providerId: string | Types.ObjectId;
-  bankAccountId: string | Types.ObjectId;
-  reference: string;
-  description: string;
-  paymentStatus: TransactionStatus;
-  paymentMethod: PaymentMethod;
-  transactionDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  accountNumber: string;
 }
 
-export interface CreateTransactionInput {
-  userId: string;
-  fundId: string;
-  portfolioId: string;
-  type: TransactionType;
-  amount: number;
-  currency: string;
-  quantity: number;
-  providerId?: string | null;
-  bankAccountId?: string | null;
-  reference?: string | null;
-  description?: string | null;
-  paymentStatus?: TransactionStatus | null;
-  paymentMethod?: PaymentMethod | null;
-}
-export interface UpdateTransactionInput {}
-
-export interface TransactionsFilters {
-  limit?: number | null;
-  page?: number | null;
-  userId?: string | null;
-  fundId?: string | null;
-  portfolioId?: string | null;
-  providerId?: string | null;
-  bankAccountId?: string | null;
-  type?: TransactionType | null;
-  status?: TransactionStatus | null;
-  search?: string | null;
-  startDate?: Date | null;
-  endDate?: Date | null;
+export interface FetchMiniStatementWithDateRangesFilters {
+  userId: string | Types.ObjectId;
+  accountNumber: string;
+  fromDate: string;
+  toDate: string;
 }
 
-// ============ Transactions ============
 export interface DepositTransactionStatus {
   statusCode: string;
   statusMessage: string;
@@ -73,12 +45,14 @@ export interface WithdrawalSuccessResponse {
   Status: BclStatus[];
 }
 
-// ============ Statements ============
 export interface MiniStatementItem {
   TranID: number;
   TransactionType: string;
   TransactionDate: string;
   Instrument: string;
+  ChequeNumber: string;
+  BankID: string;
+  BankName: string;
   CurrencyName: string;
   Amount: number;
   Price: number;
@@ -89,4 +63,15 @@ export interface MiniStatementItem {
 export interface FetchMiniStatementSuccessResponse {
   Status: BclStatus[];
   CIMiniStatementDetails: MiniStatementItem[];
+}
+
+export interface Bank {
+  BankID: string;
+  BankName: string;
+  BankCode: string;
+}
+
+export interface FetchBanksSuccessResponse {
+  Status: BclStatus[];
+  BankDetails: Bank[];
 }

@@ -1,116 +1,63 @@
 export const transactionsTypeDefs = `#graphql
-    enum TransactionType {
-        DEPOSIT
-        WITHDRAWAL
-        TRANSFER
-        BUY
-        SELL
-    }
-
-    enum TransactionStatus {
-        PENDING
-        COMPLETED
-        FAILED
-        CANCELLED
-    }
-
-    enum PaymentMethod {
-        BANK_TRANSFER
-        CARD
-        CASH
-        MOBILE_MONEY
-    } 
-
     type Transaction {
         id: ID!
-        portfolioId: ID!
-        fundId: ID!
-        userId: ID!
-        type: TransactionType!
-        amount: Float!
-        currency: String!
-        quantity: Float!
-        providerId: String
-        bankAccountId: ID
-        reference: String!
-        description: String
-        status: TransactionStatus!
+        transactionType: String!
         transactionDate: DateTime!
-
-        createdAt: DateTime
-        updatedAt: DateTime
-
-        # funds relation
-        funds: Fund
-
-        # portfolio relation
-        portfolio: Portfolio
-    }
-
-    type TransactionConnection {
-        edges: [Transaction!]!
-        pageInfo: PageInfo!
+        instrument: String
+        chequeNumber: String
+        bankId: String
+        bankName: String
+        currencyName: String
+        amount: Float
+        price: Float
+        units: Float
+        remarks: String
     }
 
     input TransactionFilters {
-        limit: Int
-        page: Int
-        userId: ID
-        fundId: ID
-        portfolioId: ID
-        providerId: String
-        type: TransactionType
-        status: TransactionStatus
-        search: String
-        startDate: DateTime
-        endDate: DateTime
+        accountNumber: String!
+    }
+
+    input TransactionsWithDateRangesFilters {
+        accountNumber: String!
+        fromDate: String!
+        toDate: String!
     }
 
     extend type Query {
         getTransactionById(id: ID!): Transaction!
-        getTransactions(filters: TransactionFilters!): TransactionConnection!
+        getTransactions(filters: TransactionFilters!): [Transaction]!
+        getTransactionsWithDateRanges(filters: TransactionsWithDateRangesFilters!): [Transaction]!
     }
 
-    input CreateTransactionInput {
-        portfolioId: ID!
-        fundId: ID!
-        userId: ID!
-        type: TransactionType!
-        amount: Float!
-        currency: String!
-        quantity: Float!
-        providerId: String
-        bankAccountId: ID
-        reference: String
-        description: String
-        PaymentStatus: TransactionStatus
-        paymentMethod: PaymentMethod
-        transactionDate: DateTime
+    type DepositCashSuccessResponse {
+        erpReffID: String
     }
 
-    input UpdateTransactionInput {
-        id: ID!
-        type: TransactionType
-        amount: Float
-        currency: String
-        quantity: Float
-        providerId: String
-        bankAccountId: ID
-        reference: String
-        description: String
-        paymentStatus: TransactionStatus
-        paymentMethod: PaymentMethod
-        transactionDate: DateTime
+    type WithdrawalSuccessResponse {
+        Description: String
     }
 
-    input updateTransactionStatusInput {
-        id: ID!
-        status: TransactionStatus!
+    input DepositCashInput {
+        transactionReference: String!
+        extTranID: String!
+        accountNumber: String!
+        transactionDate: String!
+        amount: String!
+        narration: String!
+    }
+
+    input WithdrawCashInput {
+        primaryEmail: String!
+        mobileNumber: String!
+        accountNumber: String!
+        transactionDate: String!
+        amount: String!
+        comment: String!
     }
 
     extend type Mutation {
-        createTransaction(data: CreateTransactionInput!): Transaction!
-        updateTransaction(data: UpdateTransactionInput!): Transaction!
-        updateTransactionStatus(data: updateTransactionStatusInput!): Transaction!
+        depositCash(data: DepositCashInput!): DepositCashSuccessResponse!
+        withdrawCash(data: WithdrawCashInput!): WithdrawalSuccessResponse!
     }
 `;

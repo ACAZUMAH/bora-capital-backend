@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { KycStatus, role } from 'src/common/enums';
 import { Gender } from '../graphql';
+import { BclStatus } from '../bcl';
 
 export interface UserDocument {
   _id: string | Types.ObjectId;
@@ -81,4 +82,14 @@ export interface UpdateUserInput {
   dateOfBirth?: string | null;
   gender?: string | null;
   kycStatus?: KycStatus | null;
+}
+
+export interface Country {
+  CountryCode: string;
+  CountryName: string;
+}
+
+export interface FetchCountriesSuccessResponse {
+  Status: BclStatus[];
+  CountryDetails: Country[];
 }

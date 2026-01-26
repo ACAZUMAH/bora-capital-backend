@@ -92,3 +92,34 @@ export const fetchIdentity = async (data: FetchIdentityInput) => {
     }
   }
 };
+
+/**
+ * Fetches all relationships (e.g., son, trustee) for an investor.
+ * @param requestID request ID
+ * @returns relations
+ */
+export const getRelations = async (requestID: string) => {
+  try {
+    const response = await bclClient.post('/api/partner/fetchdata', {
+      RequestID: requestID,
+    });
+
+    if ('Message' in response && !('Status' in response)) {
+      throw createError.BadRequest(response.Message);
+    }
+
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      return response.data;
+    }
+
+    throw createError.BadRequest('Identity details not found in response');
+  } catch (error: any) {
+    if (error.status) {
+      logger.error('fetching identity failed', error);
+      throw createError.BadRequest(error.response.Message);
+    }
+    if (error.response?.Message) {
+      throw createError.BadRequest(error.response.Message);
+    }
+  }
+};

@@ -164,13 +164,13 @@ describe('Transaction Services', () => {
       );
     });
 
-    test('should return empty array (log only) when http error has status', async () => {
+    test('should throw error when http error has status', async () => {
       const error = { status: 500, message: 'Server error' };
       (bclClient.post as jest.Mock<any>).mockRejectedValue(error);
 
-      const result = await fetchMiniStatement(mockFetchData);
-
-      expect(result).toEqual([]);
+      await expect(fetchMiniStatement(mockFetchData)).rejects.toThrow(
+        'Server error'
+      );
     });
 
     test('should throw BadRequest when BCL response has error message', async () => {
@@ -252,13 +252,13 @@ describe('Transaction Services', () => {
       );
     });
 
-    test('should return empty array (log only) when http error has status', async () => {
+    test('should throw error when http error has status', async () => {
       const error = { status: 500, message: 'Server error' };
       (bclClient.post as jest.Mock<any>).mockRejectedValue(error);
 
-      const result = await fetchTransactionsWithDateRanges(mockFilterData);
-
-      expect(result).toEqual([]);
+      await expect(
+        fetchTransactionsWithDateRanges(mockFilterData)
+      ).rejects.toThrow('Server error');
     });
 
     test('should throw BadRequest when BCL response has error message', async () => {

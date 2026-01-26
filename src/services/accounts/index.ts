@@ -78,7 +78,7 @@ export const createAccount = async (
   } catch (error: any) {
     if (error.status) {
       logger.error('creating account failed', error);
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
@@ -129,7 +129,7 @@ export const fetchUserAccountsWithNav = async (
   } catch (error: any) {
     if (error.status) {
       logger.error('fetching user accounts failed', error);
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
@@ -180,7 +180,7 @@ export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
         'fetching user accounts failed',
         JSON.stringify(error, null, 2)
       );
-      return;
+      throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);

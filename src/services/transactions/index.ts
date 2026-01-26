@@ -122,12 +122,18 @@ export const fetchMiniStatement = async (data: FetchMiniStatementFilters) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('fetch mini statement failed', error);
-      return [];
+      throw createError.BadRequest(
+        error.response?.Message ||
+          error.message ||
+          'Failed to fetch mini statement'
+      );
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    return [];
+    throw createError.BadRequest(
+      error.message || 'Failed to fetch mini statement'
+    );
   }
 };
 
@@ -180,11 +186,17 @@ export const fetchTransactionsWithDateRanges = async (
   } catch (error: any) {
     if (error.status) {
       logger.error('fetch transactions with date ranges failed', error);
-      return [];
+      throw createError.BadRequest(
+        error.response?.Message ||
+          error.message ||
+          'Failed to fetch transactions with date ranges'
+      );
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    return [];
+    throw createError.BadRequest(
+      error.message || 'Failed to fetch transactions with date ranges'
+    );
   }
 };

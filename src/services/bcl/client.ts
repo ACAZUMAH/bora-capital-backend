@@ -60,9 +60,9 @@ class BclApiClient {
     if (this.tokenRefreshPromise) {
       return this.tokenRefreshPromise;
     }
-    // Return cached token if still valid (with 5 min buffer)
+    // Return cached token if still valid (with 10 sec buffer)
     if (this.accessToken && this.tokenExpiresAt) {
-      const bufferTime = 5 * 60 * 1000; // 5 minutes
+      const bufferTime = 10 * 1000; // 10 seconds
       if (new Date() < new Date(this.tokenExpiresAt.getTime() - bufferTime)) {
         return this.accessToken;
       }
@@ -84,7 +84,7 @@ class BclApiClient {
     });
     if (response.data?.[0]?.AccessToken) {
       this.accessToken = response.data[0].AccessToken;
-      this.tokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000);
+      this.tokenExpiresAt = new Date(Date.now() + 1 * 60 * 1000); // 1 minute
       return this.accessToken!;
     }
     throw new Error('Failed to obtain BCL access token');

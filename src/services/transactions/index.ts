@@ -26,7 +26,7 @@ export const depositCash = async (data: DepositCashInput) => {
     )) as DepositCashSuccessResponse;
 
     if ('Status' in response && response.Status?.[0]?.statusCode === '0') {
-      return response.Status?.[0]?.erpReffID;
+      return { erpReffID: response.Status?.[0]?.erpReffID };
     }
 
     const errorMessage =
@@ -55,7 +55,7 @@ export const withdrawCash = async (data: WithdrawCashInput) => {
     )) as WithdrawalSuccessResponse;
 
     if ('Status' in response && response.Status?.[0]?.Status === '0') {
-      return response.Status?.[0]?.Description;
+      return { description: response.Status?.[0]?.Description };
     }
 
     const errorMessage =

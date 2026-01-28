@@ -45,7 +45,7 @@ describe('Transaction Services', () => {
 
       const result = await depositCash(mockDepositData);
 
-      expect(result).toEqual('ERP123');
+      expect(result).toEqual({ erpReffID: 'ERP123' });
       expect(bclClient.post).toHaveBeenCalledWith(
         '/api/partner/depositcicash_bcl',
         mockDepositData
@@ -90,7 +90,7 @@ describe('Transaction Services', () => {
 
       const result = await withdrawCash(mockWithdrawData);
 
-      expect(result).toEqual('Success');
+      expect(result).toEqual({ description: 'Success' });
       expect(bclClient.post).toHaveBeenCalledWith(
         '/api/partner/addcicashwithdrawal_bcl',
         mockWithdrawData

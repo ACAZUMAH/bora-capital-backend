@@ -15,7 +15,10 @@ export const getCountries = async () => {
       response.Status?.[0]?.Status === '0' &&
       Array.isArray(response.CountryDetails)
     ) {
-      return response.CountryDetails;
+      return response.CountryDetails.map(country => ({
+        countryCode: country.CountryCode,
+        countryName: country.CountryName,
+      }));
     }
 
     const errorMessage =

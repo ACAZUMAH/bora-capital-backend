@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 import { bclClient } from '../bcl';
 import { BclPortfolio, FetchPortfoliosResponse } from 'src/common/interfaces';
-import { isSuccessResponse } from './helpers';
+import { isSuccessResponse, normalizePortfolio } from './helpers';
 import logger from 'src/loggers/logger';
 
 /**
@@ -20,7 +20,7 @@ export const fetchPortfolios = async (portfolioId?: string) => {
       throw createError.BadRequest(response.Message);
     }
     if (isSuccessResponse(response) && response.Status?.[0]?.Status === '0') {
-      return response.Portfolios;
+      return response.Portfolios.map(normalizePortfolio);
     }
 
     throw createError.BadRequest(
@@ -43,9 +43,7 @@ export const fetchPortfolios = async (portfolioId?: string) => {
  * @param portfolioId - Portfolio ID
  * @returns Portfolio or null if not found
  */
-export const fetchPortfolioById = async (
-  portfolioId: string
-): Promise<BclPortfolio | null> => {
+export const fetchPortfolioById = async (portfolioId: string) => {
   const portfolios = await fetchPortfolios(portfolioId);
-  return portfolios.find(p => p.PortfolioID === portfolioId) || null;
+  return portfolios.find(p => p.portfolioId === portfolioId) || null;
 };

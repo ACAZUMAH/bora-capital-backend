@@ -105,9 +105,22 @@ export type AmortizationScheduleItem = {
   principalPayment: Scalars['Float']['output'];
 };
 
+export type Bank = {
+  __typename?: 'Bank';
+  bankCode: Scalars['String']['output'];
+  bankId: Scalars['String']['output'];
+  bankName: Scalars['String']['output'];
+};
+
 export type ChatResponse = {
   __typename?: 'ChatResponse';
   response?: Maybe<Scalars['String']['output']>;
+};
+
+export type Country = {
+  __typename?: 'Country';
+  countryCode: Scalars['String']['output'];
+  countryName: Scalars['String']['output'];
 };
 
 export type CreateAccountInput = {
@@ -156,6 +169,13 @@ export type DepositCashSuccessResponse = {
   erpReffID?: Maybe<Scalars['String']['output']>;
 };
 
+export type FileType = {
+  __typename?: 'FileType';
+  extension: Scalars['String']['output'];
+  fileTypeId: Scalars['String']['output'];
+  fileTypeName: Scalars['String']['output'];
+};
+
 export type Fund = {
   __typename?: 'Fund';
   assetClass: Scalars['String']['output'];
@@ -202,17 +222,6 @@ export type GetFundsFilters = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type GetMiniStatementInput = {
-  accountNumber: Scalars['String']['input'];
-  fromDate?: InputMaybe<Scalars['String']['input']>;
-  fundId: Scalars['ID']['input'];
-  mobileNumber: Scalars['String']['input'];
-  portfolioId: Scalars['ID']['input'];
-  primaryEmail: Scalars['String']['input'];
-  toDate?: InputMaybe<Scalars['String']['input']>;
-  userId: Scalars['ID']['input'];
 };
 
 export type Goal = {
@@ -538,6 +547,9 @@ export type Query = {
   calculateInvestmentGrowth: InvestmentGrowthResult;
   calculateLoanAmortization: LoanAmortizationResult;
   getAccount?: Maybe<Account>;
+  getBanks: Array<Maybe<Bank>>;
+  getCountries: Array<Maybe<Country>>;
+  getFileTypes: Array<Maybe<FileType>>;
   getFundById: Fund;
   getFundPerformanceById: FundPerformance;
   getFundPerformances: FundPerformanceConnection;
@@ -548,7 +560,6 @@ export type Query = {
   getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
   getMarketNewsById?: Maybe<MarketNews>;
-  getMiniStatement?: Maybe<Array<Maybe<Transaction>>>;
   getMyAccounts: Array<Account>;
   getMyAccountsWithNav: Array<Account>;
   getPortfolioById?: Maybe<Portfolio>;
@@ -628,11 +639,6 @@ export type QueryGetMarketNewsByIdArgs = {
 };
 
 
-export type QueryGetMiniStatementArgs = {
-  data: GetMiniStatementInput;
-};
-
-
 export type QueryGetPortfolioByIdArgs = {
   portfolioId: Scalars['ID']['input'];
 };
@@ -655,6 +661,17 @@ export type QueryGetTransactionsWithDateRangesArgs = {
 
 export type QueryGetUserByIdArgs = {
   userId: Scalars['ID']['input'];
+};
+
+export type Relation = {
+  __typename?: 'Relation';
+  beneficiaryPercentage?: Maybe<Scalars['String']['output']>;
+  dob?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  idNumber?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  relationshipId: Scalars['String']['output'];
 };
 
 export type RelationInput = {
@@ -680,18 +697,18 @@ export type Subscription = {
 
 export type Transaction = {
   __typename?: 'Transaction';
-  amount: Scalars['Float']['output'];
-  bankId: Scalars['String']['output'];
-  bankName: Scalars['String']['output'];
-  chequeNumber: Scalars['String']['output'];
-  currencyName: Scalars['String']['output'];
+  amount?: Maybe<Scalars['Float']['output']>;
+  bankId?: Maybe<Scalars['String']['output']>;
+  bankName?: Maybe<Scalars['String']['output']>;
+  chequeNumber?: Maybe<Scalars['String']['output']>;
+  currencyName?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  instrument: Scalars['String']['output'];
-  price: Scalars['Float']['output'];
-  remarks: Scalars['String']['output'];
+  instrument?: Maybe<Scalars['String']['output']>;
+  price?: Maybe<Scalars['Float']['output']>;
+  remarks?: Maybe<Scalars['String']['output']>;
   transactionDate: Scalars['DateTime']['output'];
   transactionType: Scalars['String']['output'];
-  units: Scalars['Float']['output'];
+  units?: Maybe<Scalars['Float']['output']>;
 };
 
 export type TransactionFilters = {
@@ -773,6 +790,7 @@ export type User = {
   kycStatus: KycStatus;
   lastName: Scalars['String']['output'];
   phoneNumber?: Maybe<Scalars['String']['output']>;
+  relations?: Maybe<Array<Maybe<Relation>>>;
   role?: Maybe<Role>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -899,10 +917,12 @@ export type ResolversTypes = {
   Account: ResolverTypeWrapper<Account>;
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']['output']>;
   AmortizationScheduleItem: ResolverTypeWrapper<AmortizationScheduleItem>;
+  Bank: ResolverTypeWrapper<Bank>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   ChatResponse: ResolverTypeWrapper<ChatResponse>;
+  Country: ResolverTypeWrapper<Country>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
   CreateAccountInput: CreateAccountInput;
@@ -920,6 +940,7 @@ export type ResolversTypes = {
   DeweyDecimal: ResolverTypeWrapper<Scalars['DeweyDecimal']['output']>;
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
+  FileType: ResolverTypeWrapper<FileType>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Fund: ResolverTypeWrapper<Fund>;
   FundPerformance: ResolverTypeWrapper<FundPerformance>;
@@ -929,7 +950,6 @@ export type ResolversTypes = {
   Gender: Gender;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   GetFundsFilters: GetFundsFilters;
-  GetMiniStatementInput: GetMiniStatementInput;
   Goal: ResolverTypeWrapper<Goal>;
   GoalsConnection: ResolverTypeWrapper<GoalsConnection>;
   GoalsFilters: GoalsFilters;
@@ -992,6 +1012,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<Record<PropertyKey, never>>;
   RGB: ResolverTypeWrapper<Scalars['RGB']['output']>;
   RGBA: ResolverTypeWrapper<Scalars['RGBA']['output']>;
+  Relation: ResolverTypeWrapper<Relation>;
   RelationInput: RelationInput;
   Role: Role;
   RoutingNumber: ResolverTypeWrapper<Scalars['RoutingNumber']['output']>;
@@ -1033,10 +1054,12 @@ export type ResolversParentTypes = {
   Account: Account;
   AccountNumber: Scalars['AccountNumber']['output'];
   AmortizationScheduleItem: AmortizationScheduleItem;
+  Bank: Bank;
   BigInt: Scalars['BigInt']['output'];
   Boolean: Scalars['Boolean']['output'];
   Byte: Scalars['Byte']['output'];
   ChatResponse: ChatResponse;
+  Country: Country;
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
   CreateAccountInput: CreateAccountInput;
@@ -1054,6 +1077,7 @@ export type ResolversParentTypes = {
   DeweyDecimal: Scalars['DeweyDecimal']['output'];
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
+  FileType: FileType;
   Float: Scalars['Float']['output'];
   Fund: Fund;
   FundPerformance: FundPerformance;
@@ -1062,7 +1086,6 @@ export type ResolversParentTypes = {
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
   GetFundsFilters: GetFundsFilters;
-  GetMiniStatementInput: GetMiniStatementInput;
   Goal: Goal;
   GoalsConnection: GoalsConnection;
   GoalsFilters: GoalsFilters;
@@ -1124,6 +1147,7 @@ export type ResolversParentTypes = {
   Query: Record<PropertyKey, never>;
   RGB: Scalars['RGB']['output'];
   RGBA: Scalars['RGBA']['output'];
+  Relation: Relation;
   RelationInput: RelationInput;
   RoutingNumber: Scalars['RoutingNumber']['output'];
   SESSN: Scalars['SESSN']['output'];
@@ -1181,6 +1205,12 @@ export type AmortizationScheduleItemResolvers<ContextType = any, ParentType exte
   principalPayment?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
+export type BankResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bank'] = ResolversParentTypes['Bank']> = {
+  bankCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bankId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bankName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
   name: 'BigInt';
 }
@@ -1191,6 +1221,11 @@ export interface ByteScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type ChatResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChatResponse'] = ResolversParentTypes['ChatResponse']> = {
   response?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+};
+
+export type CountryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Country'] = ResolversParentTypes['Country']> = {
+  countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  countryName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
@@ -1240,6 +1275,12 @@ export interface DurationScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
+
+export type FileTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['FileType'] = ResolversParentTypes['FileType']> = {
+  extension?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fileTypeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  fileTypeName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
 
 export type FundResolvers<ContextType = any, ParentType extends ResolversParentTypes['Fund'] = ResolversParentTypes['Fund']> = {
   assetClass?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1583,6 +1624,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   calculateInvestmentGrowth?: Resolver<ResolversTypes['InvestmentGrowthResult'], ParentType, ContextType, RequireFields<QueryCalculateInvestmentGrowthArgs, 'data'>>;
   calculateLoanAmortization?: Resolver<ResolversTypes['LoanAmortizationResult'], ParentType, ContextType, RequireFields<QueryCalculateLoanAmortizationArgs, 'data'>>;
   getAccount?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType, RequireFields<QueryGetAccountArgs, 'accountNumber'>>;
+  getBanks?: Resolver<Array<Maybe<ResolversTypes['Bank']>>, ParentType, ContextType>;
+  getCountries?: Resolver<Array<Maybe<ResolversTypes['Country']>>, ParentType, ContextType>;
+  getFileTypes?: Resolver<Array<Maybe<ResolversTypes['FileType']>>, ParentType, ContextType>;
   getFundById?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
   getFundPerformanceById?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
   getFundPerformances?: Resolver<ResolversTypes['FundPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
@@ -1593,7 +1637,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
   getMarketNewsById?: Resolver<Maybe<ResolversTypes['MarketNews']>, ParentType, ContextType, RequireFields<QueryGetMarketNewsByIdArgs, 'id'>>;
-  getMiniStatement?: Resolver<Maybe<Array<Maybe<ResolversTypes['Transaction']>>>, ParentType, ContextType, RequireFields<QueryGetMiniStatementArgs, 'data'>>;
   getMyAccounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
   getMyAccountsWithNav?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
   getPortfolioById?: Resolver<Maybe<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
@@ -1614,6 +1657,16 @@ export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes[
 export interface RgbaScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGBA'], any> {
   name: 'RGBA';
 }
+
+export type RelationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Relation'] = ResolversParentTypes['Relation']> = {
+  beneficiaryPercentage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dob?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  idNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  relationshipId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
 
 export interface RoutingNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RoutingNumber'], any> {
   name: 'RoutingNumber';
@@ -1648,18 +1701,18 @@ export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<Resolvers
 }
 
 export type TransactionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = {
-  amount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  bankId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bankName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  chequeNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  currencyName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  amount?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  bankId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bankName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  chequeNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  currencyName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  instrument?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  remarks?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  instrument?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  remarks?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   transactionDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   transactionType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  units?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  units?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
 export interface UrlScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['URL'], any> {
@@ -1695,6 +1748,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   kycStatus?: Resolver<ResolversTypes['KycStatus'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  relations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Relation']>>>, ParentType, ContextType>;
   role?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
 };
@@ -1729,9 +1783,11 @@ export type Resolvers<ContextType = any> = {
   Account?: AccountResolvers<ContextType>;
   AccountNumber?: GraphQLScalarType;
   AmortizationScheduleItem?: AmortizationScheduleItemResolvers<ContextType>;
+  Bank?: BankResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   ChatResponse?: ChatResponseResolvers<ContextType>;
+  Country?: CountryResolvers<ContextType>;
   CountryCode?: GraphQLScalarType;
   CountryName?: GraphQLScalarType;
   Cuid?: GraphQLScalarType;
@@ -1744,6 +1800,7 @@ export type Resolvers<ContextType = any> = {
   DeweyDecimal?: GraphQLScalarType;
   Duration?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
+  FileType?: FileTypeResolvers<ContextType>;
   Fund?: FundResolvers<ContextType>;
   FundPerformance?: FundPerformanceResolvers<ContextType>;
   FundPerformanceConnection?: FundPerformanceConnectionResolvers<ContextType>;
@@ -1803,6 +1860,7 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   RGB?: GraphQLScalarType;
   RGBA?: GraphQLScalarType;
+  Relation?: RelationResolvers<ContextType>;
   RoutingNumber?: GraphQLScalarType;
   SESSN?: GraphQLScalarType;
   SafeInt?: GraphQLScalarType;

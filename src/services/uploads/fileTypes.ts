@@ -15,7 +15,11 @@ export const getFileTypes = async () => {
       response.Status?.[0]?.Status === '0' &&
       Array.isArray(response.FileTypeDetails)
     ) {
-      return response.FileTypeDetails;
+      return response.FileTypeDetails.map(fileType => ({
+        fileTypeId: fileType.FileTypeId,
+        fileTypeName: fileType.FileTypeName,
+        extension: fileType.Extension,
+      }));
     }
 
     const errorMessage =

@@ -1,7 +1,9 @@
 import { kycRecordsTypeDefs } from './kyc/kycRecordsTypeDefs';
+import { lookupsTypeDefs } from '../lookups/typeDefs';
 
 export const userTypeDefs = `#graphql
     ${kycRecordsTypeDefs}
+    ${lookupsTypeDefs}
     
     enum Role {
         ADMIN
@@ -27,6 +29,7 @@ export const userTypeDefs = `#graphql
 
         # KYC records (fetched from BCL API)
         kycRecords: KycRecords
+        relations: [Relation]
         
         createdAt: DateTime
         updatedAt: DateTime

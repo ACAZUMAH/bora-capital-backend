@@ -15,7 +15,11 @@ export const getBanks = async () => {
       response.Status?.[0]?.Status === '0' &&
       Array.isArray(response.BankDetails)
     ) {
-      return response.BankDetails;
+      return response.BankDetails.map(bank => ({
+        bankId: bank.BankID,
+        bankName: bank.BankName,
+        bankCode: bank.BankCode,
+      }));
     }
 
     const errorMessage =

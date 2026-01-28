@@ -44,7 +44,18 @@ describe('Portfolio Service', () => {
 
       const result = await fetchPortfolios();
 
-      expect(result).toEqual(mockPortfolios);
+      expect(result).toEqual([
+        {
+          portfolioId: 'BBF1100',
+          portfolioName: 'BORA BALANCED UNIT TRUST',
+          offerPrice: 0.2096,
+        },
+        {
+          portfolioId: 'BBF1200',
+          portfolioName: 'BORA GROWTH FUND',
+          offerPrice: 0.315,
+        },
+      ]);
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciportfolios_bcl',
         { PortfolioID: '' }
@@ -66,7 +77,13 @@ describe('Portfolio Service', () => {
 
       const result = await fetchPortfolios('BBF1100');
 
-      expect(result).toEqual([mockPortfolio]);
+      expect(result).toEqual([
+        {
+          portfolioId: 'BBF1100',
+          portfolioName: 'BORA BALANCED UNIT TRUST',
+          offerPrice: 0.2096,
+        },
+      ]);
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciportfolios_bcl',
         { PortfolioID: 'BBF1100' }
@@ -90,7 +107,11 @@ describe('Portfolio Service', () => {
 
       const result = await fetchPortfolioById('BBF1100');
 
-      expect(result).toEqual(mockPortfolio);
+      expect(result).toEqual({
+        portfolioId: 'BBF1100',
+        portfolioName: 'BORA BALANCED UNIT TRUST',
+        offerPrice: 0.2096,
+      });
     });
 
     test('should return null when portfolio not found', async () => {

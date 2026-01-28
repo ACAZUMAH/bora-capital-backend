@@ -16,6 +16,7 @@ import {
   isCreateAccountSuccess,
   isFetchAccountsSuccess,
   isFetchAccountSuccess,
+  normalizeAccount,
 } from './helpers';
 import logger from 'src/loggers/logger';
 
@@ -122,7 +123,7 @@ export const fetchUserAccountsWithNav = async (
       isFetchAccountsSuccess(response) &&
       response.Status?.[0]?.Status === '0'
     ) {
-      return response.Accounts;
+      return response.Accounts.map(normalizeAccount);
     }
 
     return [];
@@ -170,7 +171,7 @@ export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
       isFetchAccountsSuccess(response) &&
       response.Status?.[0]?.Status === '0'
     ) {
-      return response.Accounts;
+      return response.Accounts.map(normalizeAccount);
     }
 
     return [];
@@ -227,7 +228,8 @@ export const fetchAccount = async (
       isFetchAccountSuccess(response) &&
       response.Status?.[0]?.Status === '0'
     ) {
-      return response.Account?.[0] || null;
+      const account = response.Account?.[0];
+      return account ? normalizeAccount(account) : null;
     }
 
     return null;

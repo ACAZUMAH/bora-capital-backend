@@ -88,8 +88,8 @@ describe('Account Service', () => {
           PortfolioID: 'BBF1100',
           PortfolioName: 'BORA BALANCED UNIT TRUST',
           CurrencyCode: 'KES',
-          Balance: 10000,
-          NAV: 0.2096,
+          Amount: 10000,
+          Nav: 0.2096,
         },
       ];
 
@@ -101,7 +101,16 @@ describe('Account Service', () => {
 
       const result = await fetchUserAccountsWithNav(mockUserId);
 
-      expect(result).toEqual(mockAccounts);
+      expect(result).toEqual([
+        {
+          accountNumber: 'BB00252',
+          accountName: 'My Account',
+          portfolioId: 'BBF1100',
+          portfolioName: 'BORA BALANCED UNIT TRUST',
+          balance: 10000,
+          nav: 0.2096,
+        },
+      ]);
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciaccounts_bcl',
         expect.objectContaining({
@@ -130,7 +139,7 @@ describe('Account Service', () => {
           PortfolioID: 'BBF1100',
           PortfolioName: 'BORA BALANCED UNIT TRUST',
           CurrencyCode: 'KES',
-          Balance: 10000,
+          Amount: 10000,
         },
       ];
 
@@ -142,7 +151,16 @@ describe('Account Service', () => {
 
       const result = await fetchUserAccounts(mockUserId);
 
-      expect(result).toEqual(mockAccounts);
+      expect(result).toEqual([
+        {
+          accountNumber: 'BB00252',
+          accountName: 'My Account',
+          portfolioId: 'BBF1100',
+          portfolioName: 'BORA BALANCED UNIT TRUST',
+          balance: 10000,
+          nav: undefined,
+        },
+      ]);
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciaccounts_bcl',
         expect.objectContaining({
@@ -187,7 +205,7 @@ describe('Account Service', () => {
         PortfolioID: 'BBF1100',
         PortfolioName: 'BORA BALANCED UNIT TRUST',
         CurrencyCode: 'KES',
-        Balance: 10000,
+        Amount: 10000,
       };
 
       mockGetUserById.mockResolvedValue(mockUser);
@@ -198,7 +216,14 @@ describe('Account Service', () => {
 
       const result = await fetchAccount(mockUserId, 'BB00252');
 
-      expect(result).toEqual(mockAccount);
+      expect(result).toEqual({
+        accountNumber: 'BB00252',
+        accountName: 'My Account',
+        portfolioId: 'BBF1100',
+        portfolioName: 'BORA BALANCED UNIT TRUST',
+        balance: 10000,
+        nav: undefined,
+      });
       expect(mockBclClientPost).toHaveBeenCalledWith(
         '/api/partner/fetchciaccount_bcl',
         expect.objectContaining({

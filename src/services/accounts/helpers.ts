@@ -1,4 +1,5 @@
 import {
+  BclAccount,
   BclCreateAccountResponse,
   BclCreateAccountSuccessResponse,
   BclFetchAccountResponse,
@@ -24,3 +25,12 @@ export const isFetchAccountsSuccess = (
 ): response is BclFetchAccountsResponse => {
   return 'Status' in response && 'Accounts' in response;
 };
+
+export const normalizeAccount = (a: BclAccount) => ({
+  accountNumber: a.AccountNumber,
+  accountName: a.AccountName,
+  portfolioId: a.PortfolioID,
+  portfolioName: a.PortfolioName,
+  balance: a.Amount,
+  nav: a.Nav,
+});

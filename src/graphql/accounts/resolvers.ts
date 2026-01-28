@@ -1,13 +1,8 @@
-import {
-  GraphqlContext,
-  CreateAccountInput,
-  BclAccount,
-} from 'src/common/interfaces';
+import { GraphqlContext, CreateAccountInput } from 'src/common/interfaces';
 import * as accountService from 'src/services/accounts';
 
 const getMyAccounts = async (_: any, __: any, { user }: GraphqlContext) => {
-  const accounts = await accountService.fetchUserAccounts(user!._id!);
-  return accounts?.map(normalizeAccount);
+  return await accountService.fetchUserAccounts(user!._id!);
 };
 
 const getMyAccountsWithNav = async (
@@ -15,8 +10,7 @@ const getMyAccountsWithNav = async (
   __: any,
   { user }: GraphqlContext
 ) => {
-  const accounts = await accountService.fetchUserAccountsWithNav(user!._id!);
-  return accounts?.map(normalizeAccount);
+  return await accountService.fetchUserAccountsWithNav(user!._id!);
 };
 
 const getAccount = async (
@@ -24,11 +18,7 @@ const getAccount = async (
   args: { accountNumber: string },
   { user }: GraphqlContext
 ) => {
-  const account = await accountService.fetchAccount(
-    user!._id!,
-    args.accountNumber
-  );
-  return account ? normalizeAccount(account) : null;
+  return await accountService.fetchAccount(user!._id!, args.accountNumber);
 };
 
 const createAccount = async (
@@ -38,16 +28,6 @@ const createAccount = async (
 ) => {
   return accountService.createAccount(user!._id!, args.data);
 };
-
-// Normalize BCL response to GraphQL schema
-const normalizeAccount = (a: BclAccount) => ({
-  accountNumber: a.AccountNumber,
-  accountName: a.AccountName,
-  portfolioId: a.PortfolioID,
-  portfolioName: a.PortfolioName,
-  balance: a.Amount,
-  nav: a.Nav,
-});
 
 export const accountResolvers = {
   Query: {

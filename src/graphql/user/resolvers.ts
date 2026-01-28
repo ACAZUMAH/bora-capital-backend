@@ -2,6 +2,7 @@ import { GraphqlContext, UserDocument } from 'src/common/interfaces';
 import { MutationUpdateUserArgs } from 'src/common/interfaces/graphql';
 import * as UserService from 'src/services/users';
 import { getKycRecords } from 'src/services/users/kyc';
+import { getRelations } from 'src/services/users/kyc.service';
 import { KycRecordsResolvers } from './kyc/kycRecordsResolvers';
 
 const me = (_: any, __: any, { user }: GraphqlContext) => {
@@ -21,6 +22,10 @@ const kycRecords = async (parent: UserDocument) => {
   return await getKycRecords(parent);
 };
 
+const relations = async (parent: UserDocument) => {
+  return parent.identityId ? getRelations(parent.identityId) : null;
+};
+
 export const UserResolvers = {
   Query: {
     me,
@@ -32,5 +37,6 @@ export const UserResolvers = {
   },
   User: {
     kycRecords,
+    relations,
   },
 };

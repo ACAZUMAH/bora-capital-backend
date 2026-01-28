@@ -19,6 +19,7 @@ import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
 import { goalsResolvers, goalsTypeDefs } from './goals';
 import { chatBotResolvers, chatBotTypeDefs } from './chatBot';
 import { accountResolvers, accountTypeDefs } from './accounts';
+import { lookupsResolvers, lookupsTypeDefs } from './lookups';
 
 const typeDefs = [
   generalTypeDefs,
@@ -35,6 +36,7 @@ const typeDefs = [
   goalsTypeDefs,
   chatBotTypeDefs,
   accountTypeDefs,
+  lookupsTypeDefs,
 ];
 
 const resolvers = [
@@ -52,6 +54,7 @@ const resolvers = [
   goalsResolvers,
   chatBotResolvers,
   accountResolvers,
+  lookupsResolvers,
 ];
 
 const executableSchema = makeExecutableSchema({

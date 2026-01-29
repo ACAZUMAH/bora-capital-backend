@@ -27,11 +27,11 @@ export const getCountries = async () => {
   } catch (error: any) {
     if (error.status) {
       logger.error('fetch countries failed', error);
-      return [];
+      throw createError.BadRequest(error.message);
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
-    return [];
+    throw createError.InternalServerError('Failed to fetch countries');
   }
 };

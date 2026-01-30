@@ -107,9 +107,9 @@ export type AmortizationScheduleItem = {
 
 export type Bank = {
   __typename?: 'Bank';
-  bankCode: Scalars['String']['output'];
-  bankId: Scalars['String']['output'];
-  bankName: Scalars['String']['output'];
+  bankCode?: Maybe<Scalars['String']['output']>;
+  bankId?: Maybe<Scalars['String']['output']>;
+  bankName?: Maybe<Scalars['String']['output']>;
 };
 
 export type BanksFilters = {
@@ -127,8 +127,8 @@ export type CountriesFilters = {
 
 export type Country = {
   __typename?: 'Country';
-  countryCode: Scalars['String']['output'];
-  countryName: Scalars['String']['output'];
+  countryCode?: Maybe<Scalars['String']['output']>;
+  countryName?: Maybe<Scalars['String']['output']>;
 };
 
 export type CreateAccountInput = {
@@ -179,9 +179,9 @@ export type DepositCashSuccessResponse = {
 
 export type FileType = {
   __typename?: 'FileType';
-  extension: Scalars['String']['output'];
-  fileTypeId: Scalars['String']['output'];
-  fileTypeName: Scalars['String']['output'];
+  extension?: Maybe<Scalars['String']['output']>;
+  fileTypeId?: Maybe<Scalars['String']['output']>;
+  fileTypeName?: Maybe<Scalars['String']['output']>;
 };
 
 export type FileTypesFilters = {
@@ -696,7 +696,7 @@ export type Relation = {
   dob?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   idNumber?: Maybe<Scalars['String']['output']>;
-  name: Scalars['String']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   phoneNumber?: Maybe<Scalars['String']['output']>;
   relationshipId: Scalars['String']['output'];
 };
@@ -1239,9 +1239,9 @@ export type AmortizationScheduleItemResolvers<ContextType = any, ParentType exte
 };
 
 export type BankResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bank'] = ResolversParentTypes['Bank']> = {
-  bankCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bankId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  bankName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bankCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bankId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  bankName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
@@ -1257,8 +1257,8 @@ export type ChatResponseResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type CountryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Country'] = ResolversParentTypes['Country']> = {
-  countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  countryName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  countryCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  countryName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export interface CountryCodeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['CountryCode'], any> {
@@ -1310,9 +1310,9 @@ export interface EmailAddressScalarConfig extends GraphQLScalarTypeConfig<Resolv
 }
 
 export type FileTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['FileType'] = ResolversParentTypes['FileType']> = {
-  extension?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  fileTypeId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  fileTypeName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  extension?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fileTypeId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  fileTypeName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
 export type FundResolvers<ContextType = any, ParentType extends ResolversParentTypes['Fund'] = ResolversParentTypes['Fund']> = {
@@ -1696,7 +1696,7 @@ export type RelationResolvers<ContextType = any, ParentType extends ResolversPar
   dob?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   idNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   relationshipId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };

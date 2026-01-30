@@ -41,15 +41,15 @@ describe('Banks Service', () => {
         BankDetails: mockBanks,
       });
 
-      const result = await getBanks();
+      const result = await getBanks({});
 
       expect(result).toEqual([
         { bankId: 'BANK001', bankName: 'Test Bank', bankCode: 'TB001' },
         { bankId: 'BANK002', bankName: 'Another Bank', bankCode: 'AB002' },
       ]);
       expect(mockBclClientPost).toHaveBeenCalledWith(
-        '/api/partner/fetchbanklist_bcl',
-        {}
+        '/api/partner/fetchbanks',
+        { BankID: undefined }
       );
     });
 
@@ -58,7 +58,7 @@ describe('Banks Service', () => {
         Message: 'Banks not available',
       });
 
-      await expect(getBanks()).rejects.toThrow('Failed to fetch banks');
+      await expect(getBanks({})).rejects.toThrow('Failed to fetch banks');
     });
 
     test('should throw error when BCL returns failure status', async () => {
@@ -66,28 +66,28 @@ describe('Banks Service', () => {
         Status: [{ Status: '1', Description: 'Failed to fetch banks' }],
       });
 
-      await expect(getBanks()).rejects.toThrow('Failed to fetch banks');
+      await expect(getBanks({})).rejects.toThrow('Failed to fetch banks');
     });
 
     test('should throw error when request fails with status', async () => {
       const error = { status: 500, message: 'Server error' };
       mockBclClientPost.mockRejectedValue(error);
 
-      await expect(getBanks()).rejects.toThrow('Server error');
+      await expect(getBanks({})).rejects.toThrow('Server error');
     });
 
     test('should throw error when request fails with response message', async () => {
       const error = { response: { Message: 'Invalid request' } };
       mockBclClientPost.mockRejectedValue(error);
 
-      await expect(getBanks()).rejects.toThrow('Invalid request');
+      await expect(getBanks({})).rejects.toThrow('Invalid request');
     });
 
     test('should throw InternalServerError on unknown error', async () => {
       const error = new Error('Unknown error');
       mockBclClientPost.mockRejectedValue(error);
 
-      await expect(getBanks()).rejects.toThrow('Failed to fetch banks');
+      await expect(getBanks({})).rejects.toThrow('Failed to fetch banks');
     });
   });
 });

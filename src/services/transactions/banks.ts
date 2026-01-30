@@ -2,13 +2,13 @@ import createError from 'http-errors';
 import { bclClient } from 'src/services/bcl';
 import logger from 'src/loggers/logger';
 import { FetchBanksSuccessResponse } from 'src/common/interfaces/transactions';
+import { BanksFilters } from 'src/common/interfaces/graphql';
 
-export const getBanks = async () => {
+export const getBanks = async (filters: BanksFilters) => {
   try {
-    const response = (await bclClient.post(
-      '/api/partner/fetchbanklist_bcl',
-      {}
-    )) as FetchBanksSuccessResponse;
+    const response = (await bclClient.post('/api/partner/fetchbanks', {
+      BankID: filters.BankId,
+    })) as FetchBanksSuccessResponse;
 
     if (
       'Status' in response &&

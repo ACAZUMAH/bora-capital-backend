@@ -112,9 +112,17 @@ export type Bank = {
   bankName: Scalars['String']['output'];
 };
 
+export type BanksFilters = {
+  BankId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type ChatResponse = {
   __typename?: 'ChatResponse';
   response?: Maybe<Scalars['String']['output']>;
+};
+
+export type CountriesFilters = {
+  CountryId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Country = {
@@ -174,6 +182,10 @@ export type FileType = {
   extension: Scalars['String']['output'];
   fileTypeId: Scalars['String']['output'];
   fileTypeName: Scalars['String']['output'];
+};
+
+export type FileTypesFilters = {
+  FileTypeId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Fund = {
@@ -589,6 +601,21 @@ export type QueryGetAccountArgs = {
 };
 
 
+export type QueryGetBanksArgs = {
+  filters?: InputMaybe<BanksFilters>;
+};
+
+
+export type QueryGetCountriesArgs = {
+  filters?: InputMaybe<CountriesFilters>;
+};
+
+
+export type QueryGetFileTypesArgs = {
+  filters?: InputMaybe<FileTypesFilters>;
+};
+
+
 export type QueryGetFundByIdArgs = {
   fundId: Scalars['ID']['input'];
 };
@@ -918,10 +945,12 @@ export type ResolversTypes = {
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']['output']>;
   AmortizationScheduleItem: ResolverTypeWrapper<AmortizationScheduleItem>;
   Bank: ResolverTypeWrapper<Bank>;
+  BanksFilters: BanksFilters;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']['output']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']['output']>;
   ChatResponse: ResolverTypeWrapper<ChatResponse>;
+  CountriesFilters: CountriesFilters;
   Country: ResolverTypeWrapper<Country>;
   CountryCode: ResolverTypeWrapper<Scalars['CountryCode']['output']>;
   CountryName: ResolverTypeWrapper<Scalars['CountryName']['output']>;
@@ -941,6 +970,7 @@ export type ResolversTypes = {
   Duration: ResolverTypeWrapper<Scalars['Duration']['output']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>;
   FileType: ResolverTypeWrapper<FileType>;
+  FileTypesFilters: FileTypesFilters;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   Fund: ResolverTypeWrapper<Fund>;
   FundPerformance: ResolverTypeWrapper<FundPerformance>;
@@ -1055,10 +1085,12 @@ export type ResolversParentTypes = {
   AccountNumber: Scalars['AccountNumber']['output'];
   AmortizationScheduleItem: AmortizationScheduleItem;
   Bank: Bank;
+  BanksFilters: BanksFilters;
   BigInt: Scalars['BigInt']['output'];
   Boolean: Scalars['Boolean']['output'];
   Byte: Scalars['Byte']['output'];
   ChatResponse: ChatResponse;
+  CountriesFilters: CountriesFilters;
   Country: Country;
   CountryCode: Scalars['CountryCode']['output'];
   CountryName: Scalars['CountryName']['output'];
@@ -1078,6 +1110,7 @@ export type ResolversParentTypes = {
   Duration: Scalars['Duration']['output'];
   EmailAddress: Scalars['EmailAddress']['output'];
   FileType: FileType;
+  FileTypesFilters: FileTypesFilters;
   Float: Scalars['Float']['output'];
   Fund: Fund;
   FundPerformance: FundPerformance;
@@ -1624,9 +1657,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   calculateInvestmentGrowth?: Resolver<ResolversTypes['InvestmentGrowthResult'], ParentType, ContextType, RequireFields<QueryCalculateInvestmentGrowthArgs, 'data'>>;
   calculateLoanAmortization?: Resolver<ResolversTypes['LoanAmortizationResult'], ParentType, ContextType, RequireFields<QueryCalculateLoanAmortizationArgs, 'data'>>;
   getAccount?: Resolver<Maybe<ResolversTypes['Account']>, ParentType, ContextType, RequireFields<QueryGetAccountArgs, 'accountNumber'>>;
-  getBanks?: Resolver<Array<Maybe<ResolversTypes['Bank']>>, ParentType, ContextType>;
-  getCountries?: Resolver<Array<Maybe<ResolversTypes['Country']>>, ParentType, ContextType>;
-  getFileTypes?: Resolver<Array<Maybe<ResolversTypes['FileType']>>, ParentType, ContextType>;
+  getBanks?: Resolver<Array<Maybe<ResolversTypes['Bank']>>, ParentType, ContextType, Partial<QueryGetBanksArgs>>;
+  getCountries?: Resolver<Array<Maybe<ResolversTypes['Country']>>, ParentType, ContextType, Partial<QueryGetCountriesArgs>>;
+  getFileTypes?: Resolver<Array<Maybe<ResolversTypes['FileType']>>, ParentType, ContextType, Partial<QueryGetFileTypesArgs>>;
   getFundById?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<QueryGetFundByIdArgs, 'fundId'>>;
   getFundPerformanceById?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
   getFundPerformances?: Resolver<ResolversTypes['FundPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;

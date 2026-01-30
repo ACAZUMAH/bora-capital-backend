@@ -97,13 +97,13 @@ describe('Transaction Services', () => {
       );
     });
 
-    test('should return undefined (log only) when http error has status', async () => {
+    test('should throw error when http error has status', async () => {
       const error = { status: 500, message: 'Server error' };
       (bclClient.post as jest.Mock<any>).mockRejectedValue(error);
 
-      const result = await withdrawCash(mockWithdrawData);
-
-      expect(result).toBeUndefined();
+      await expect(withdrawCash(mockWithdrawData)).rejects.toThrow(
+        'Invalid account number'
+      );
     });
 
     test('should throw BadRequest when BCL response has error message', async () => {

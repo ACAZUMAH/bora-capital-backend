@@ -98,7 +98,7 @@ describe('Transaction Services', () => {
     });
 
     test('should throw error when http error has status', async () => {
-      const error = { status: 500, message: 'Server error' };
+      const error = { status: 500, message: 'Invalid account number' };
       (bclClient.post as jest.Mock<any>).mockRejectedValue(error);
 
       await expect(withdrawCash(mockWithdrawData)).rejects.toThrow(

@@ -2,13 +2,13 @@ import createError from 'http-errors';
 import { bclClient } from 'src/services/bcl';
 import logger from 'src/loggers/logger';
 import { FetchFileTypesSuccessResponse } from 'src/common/interfaces';
+import { FileTypesFilters } from 'src/common/interfaces/graphql';
 
-export const getFileTypes = async () => {
+export const getFileTypes = async (filters: FileTypesFilters) => {
   try {
-    const response = (await bclClient.post(
-      '/api/partner/fetchfiletypelist_bcl',
-      {}
-    )) as FetchFileTypesSuccessResponse;
+    const response = (await bclClient.post('/api/partner/fetchfiletypes', {
+      FileTypeID: filters.FileTypeId,
+    })) as FetchFileTypesSuccessResponse;
 
     if (
       'Status' in response &&

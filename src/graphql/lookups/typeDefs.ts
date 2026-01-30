@@ -26,9 +26,24 @@ export const lookupsTypeDefs = `#graphql
     beneficiaryPercentage: String
   }
 
+  input BanksFilters {
+    BankId: String
+    
+  }
+
+  input CountriesFilters {
+    CountryId: String
+    
+  }
+
+  input FileTypesFilters {
+    FileTypeId: String
+    
+  }
+
   extend type Query {
-    getBanks: [Bank]!
-    getCountries: [Country]!
-    getFileTypes: [FileType]!
+    getBanks(filters: BanksFilters): [Bank]!
+    getCountries(filters: CountriesFilters): [Country]!
+    getFileTypes(filters: FileTypesFilters): [FileType]!
   }
 `;

@@ -64,6 +64,7 @@ export const withdrawCash = async (data: WithdrawCashInput) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('withdraw cash failed', error);
+
       throw createError.BadRequest(error.message);
     }
     if (error.response?.Message) {

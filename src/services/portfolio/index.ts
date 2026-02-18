@@ -17,24 +17,44 @@ export const fetchPortfolios = async (portfolioId?: string) => {
     )) as FetchPortfoliosResponse;
 
     if ('Message' in response) {
+      logger.error(
+        'fetching portfolios failed',
+        JSON.stringify(response, null, 2)
+      );
       throw createError.BadRequest(response.Message);
     }
     if (isSuccessResponse(response) && response.Status?.[0]?.Status === '0') {
       return response.Portfolios.map(normalizePortfolio);
     }
 
+    logger.error(
+      'fetching portfolios failed',
+      JSON.stringify(
+        response.Status?.[0]?.Description || 'Failed to fetch portfolios',
+        null,
+        2
+      )
+    );
     throw createError.BadRequest(
       response.Status?.[0]?.Description || 'Failed to fetch portfolios'
     );
   } catch (error: any) {
     if (error.status) {
-      logger.error('fetching portfolios failed', error);
+      logger.error(
+        'fetching portfolios failed',
+        JSON.stringify(error, null, 2)
+      );
       throw createError.BadRequest(error.response.Message);
     }
     if (error.response?.Message) {
+      logger.error(
+        'fetching portfolios failed',
+        JSON.stringify(error.response.Message, null, 2)
+      );
       throw createError.BadRequest(error.response.Message);
     }
-    throw createError.BadRequest(`bad request: ${error}`);
+    logger.error('fetching portfolios failed', JSON.stringify(error, null, 2));
+    throw createError.BadRequest(error);
   }
 };
 

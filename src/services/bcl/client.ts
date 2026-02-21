@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import https from 'https';
 
 /**
  * BCL API Client
@@ -17,6 +18,8 @@ class BclApiClient {
       headers: {
         'Content-Type': 'application/json',
       },
+      // TODO: Remove once BCL renews their SSL certificate
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
 
     // Add request interceptor to include access token

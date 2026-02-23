@@ -192,10 +192,7 @@ export const updateKycRecords = async (data: KycRecordsInput) => {
 
     const updatedUser = await userModel.findByIdAndUpdate(
       { _id: user._id, identityId: { $exists: false } },
-      {
-        identityId,
-        kycStatus: KycStatus.APPROVED,
-      },
+      { $set: { identityId, kycStatus: KycStatus.APPROVED } },
       { new: true }
     );
 

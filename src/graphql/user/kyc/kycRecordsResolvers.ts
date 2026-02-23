@@ -1,5 +1,5 @@
 import { MutationUpdateKycArgs } from 'src/common/interfaces/graphql';
-import { updateKycRecords } from 'src/services/users/kyc';
+import { updateKycRecords } from 'src/services/users';
 import { GraphqlContext } from 'src/common/interfaces';
 
 const updateKyc = (

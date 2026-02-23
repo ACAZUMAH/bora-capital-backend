@@ -85,11 +85,14 @@ export const fetchIdentity = async (data: FetchIdentityInput) => {
   } catch (error: any) {
     if (error.status) {
       logger.error('fetching identity failed', error);
-      throw createError.BadRequest(error.response.Message);
+      throw createError.BadRequest(
+        error.response?.Message ?? error.message ?? 'Failed to fetch identity'
+      );
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(error.message ?? 'Failed to fetch identity');
   }
 };
 
@@ -112,14 +115,17 @@ export const getRelations = async (requestID: string) => {
       return response.data;
     }
 
-    throw createError.BadRequest('Identity details not found in response');
+    return null;
   } catch (error: any) {
     if (error.status) {
-      logger.error('fetching identity failed', error);
-      throw createError.BadRequest(error.response.Message);
+      logger.error('fetching relations failed', error);
+      throw createError.BadRequest(
+        error.response?.Message ?? error.message ?? 'Failed to fetch relations'
+      );
     }
     if (error.response?.Message) {
       throw createError.BadRequest(error.response.Message);
     }
+    throw createError.BadRequest(error.message ?? 'Failed to fetch relations');
   }
 };

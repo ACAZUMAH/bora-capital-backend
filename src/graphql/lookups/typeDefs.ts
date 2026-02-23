@@ -17,7 +17,7 @@ export const lookupsTypeDefs = `#graphql
   }
 
   type Relation {
-    relationshipId: String!
+    relationshipId: ID!
     name: String
     email: String
     phoneNumber: String

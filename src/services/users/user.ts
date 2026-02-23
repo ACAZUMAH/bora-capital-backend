@@ -176,26 +176,32 @@ export const linkAccountNumber = async (
 export const updateKycRecords = async (data: KycRecordsInput) => {
   const user = await getUserById(data.userId);
 
-  if (user.identityId) {
-    throw createError.BadRequest('KYC already submitted for this user');
-  }
-
-  if (!user.phoneNumber) {
-    throw createError.BadRequest('Phone number is required for KYC submission');
-  }
-
   try {
+    if (user.identityId) {
+      throw createError.BadRequest('KYC already submitted for this user');
+    }
+
+    if (!user.phoneNumber) {
+      throw createError.BadRequest(
+        'Phone number is required for KYC submission'
+      );
+    }
+
     const payload = formatPayload(user, data);
     const identityId = await addIndividualIdentity({ ...payload });
 
     const updatedUser = await userModel.findByIdAndUpdate(
-      user._id,
+      { _id: user._id, identityId: { $exists: false } },
       {
         identityId,
         kycStatus: KycStatus.APPROVED,
       },
       { new: true }
     );
+
+    if (!updatedUser) {
+      throw createError.Conflict('KYC already submitted for this user');
+    }
 
     return updatedUser;
   } catch (error: any) {

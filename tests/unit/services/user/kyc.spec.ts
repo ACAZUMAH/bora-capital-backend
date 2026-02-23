@@ -85,16 +85,16 @@ describe('KYC Service', () => {
       );
     });
 
-    test('should return undefined when identity not found', async () => {
+    test('should throw when identity not found', async () => {
       mockBclClientPost.mockRejectedValue({
         response: {
-          data: { Message: 'Request failed, no records retrieved' },
+          Message: 'Request failed, no records retrieved',
         },
       });
 
-      const result = await fetchIdentity(mockFetchData);
-
-      expect(result).toBeUndefined();
+      await expect(fetchIdentity(mockFetchData)).rejects.toThrow(
+        'Request failed, no records retrieved'
+      );
     });
   });
 });

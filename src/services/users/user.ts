@@ -1,13 +1,20 @@
 import {
   CreateUserInput,
+  KycRecordsInput,
   ResetPasswordInput,
   UpdateUserInput,
+  UserDocument,
 } from 'src/common/interfaces';
 import { validateCreateUserData } from './validations/validateSignUpData';
 import { userModel } from 'src/models';
 import { Types } from 'mongoose';
 import createError from 'http-errors';
 import { hashPassword } from 'src/common/helpers';
+import { addIndividualIdentity, fetchIdentity } from './kyc.service';
+import { formatPayload, formatResponse } from './helper';
+import { KycStatus } from 'src/common/enums';
+import { rollbar } from 'src/loggers/rollbar';
+import logger from 'src/loggers/logger';
 
 /**
  * @description create new user (local database only)
@@ -154,4 +161,82 @@ export const linkAccountNumber = async (
   );
 
   return updated;
+};
+
+/**
+ * @description Submit/Update KYC data for a user.
+ * @param data.userId - id of the user
+ * @param data.firstName - first name of the user
+ * @param data.lastName - last name of the user
+ * @param data.dateOfBirth - date of birth of the user
+ * @param data.gender - gender of the user
+ * @param data.kycStatus - kyc status of the user
+ * Merges existing user data with KYC fields and sends to BCL API.
+ */
+export const updateKycRecords = async (data: KycRecordsInput) => {
+  const user = await getUserById(data.userId);
+
+  if (user.identityId) {
+    throw createError.BadRequest('KYC already submitted for this user');
+  }
+
+  if (!user.phoneNumber) {
+    throw createError.BadRequest('Phone number is required for KYC submission');
+  }
+
+  try {
+    const payload = formatPayload(user, data);
+    const identityId = await addIndividualIdentity({ ...payload });
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      user._id,
+      {
+        identityId,
+        kycStatus: KycStatus.APPROVED,
+      },
+      { new: true }
+    );
+
+    return updatedUser;
+  } catch (error: any) {
+    rollbar.error('KYC submission failed', { error, userId: data.userId });
+    logger.error('KYC submission failed', { error, userId: data.userId });
+    throw createError.BadGateway(
+      error.message || 'Failed to submit KYC. Please try again.'
+    );
+  }
+};
+
+/**
+ * @description Fetch KYC records from BCL for a user.
+ * @param user - user object
+ * Returns null if user hasn't completed KYC yet.
+ */
+export const getKycRecords = async (user: UserDocument) => {
+  if (!user.identityId) {
+    return null;
+  }
+
+  try {
+    const kycData = await fetchIdentity({
+      IdentityID: user.identityId,
+      PrimaryEmail: user.email,
+      MobileNumber: user.phoneNumber || '',
+    });
+
+    if (!kycData) {
+      logger.warn('KYC records not found for user', { userId: user._id });
+      return null;
+    }
+
+    await userModel.findByIdAndUpdate(user._id, {
+      kycStatus: user.kycStatus !== KycStatus.APPROVED && KycStatus.APPROVED,
+    });
+
+    return formatResponse(kycData);
+  } catch (error: any) {
+    logger.error('Error fetching KYC records:', error.message, error);
+    rollbar.error('Failed to fetch KYC records', { error, userId: user._id });
+    return null;
+  }
 };

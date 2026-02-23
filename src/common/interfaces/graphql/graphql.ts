@@ -154,15 +154,6 @@ export type CreateFundPerformancesInput = {
   returnPeriod: Scalars['Float']['input'];
 };
 
-export type CreateGoalInput = {
-  name: Scalars['String']['input'];
-  targetAmount: Scalars['Float']['input'];
-  targetCurrency: Scalars['String']['input'];
-  targetDate: Scalars['Date']['input'];
-  type: Scalars['String']['input'];
-  userId: Scalars['ID']['input'];
-};
-
 export type DepositCashInput = {
   accountNumber: Scalars['String']['input'];
   amount: Scalars['String']['input'];
@@ -233,71 +224,6 @@ export enum Gender {
 export type GetFundsFilters = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
-  search?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type Goal = {
-  __typename?: 'Goal';
-  createdAt: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
-  progress: Scalars['Float']['output'];
-  targetAmount: Scalars['Float']['output'];
-  targetCurrency: Scalars['String']['output'];
-  targetDate: Scalars['Date']['output'];
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['Date']['output'];
-  user: User;
-};
-
-export type GoalsConnection = {
-  __typename?: 'GoalsConnection';
-  edges?: Maybe<Array<Goal>>;
-  pageInfo: PageInfo;
-};
-
-export type GoalsFilters = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-  progress?: InputMaybe<Scalars['Float']['input']>;
-  search?: InputMaybe<Scalars['String']['input']>;
-  targetAmount?: InputMaybe<Scalars['Float']['input']>;
-  targetCurrency?: InputMaybe<Scalars['String']['input']>;
-  targetDate?: InputMaybe<Scalars['Date']['input']>;
-  userId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-export type Holdings = {
-  __typename?: 'Holdings';
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  currency: Scalars['String']['output'];
-  currentPrice: Scalars['Float']['output'];
-  currentValue: Scalars['Float']['output'];
-  fundId: Scalars['ID']['output'];
-  funds?: Maybe<Fund>;
-  id: Scalars['ID']['output'];
-  lastPricedAt?: Maybe<Scalars['DateTime']['output']>;
-  name: Scalars['String']['output'];
-  portfolioId: Scalars['ID']['output'];
-  purchasePrice: Scalars['Float']['output'];
-  quantity: Scalars['Float']['output'];
-  realizedPL: Scalars['Float']['output'];
-  symbol: Scalars['String']['output'];
-  unrealizedPL: Scalars['Float']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type HoldingsConnection = {
-  __typename?: 'HoldingsConnection';
-  edges: Array<Holdings>;
-  pageInfo: PageInfo;
-};
-
-export type HoldingsFilters = {
-  fundId?: InputMaybe<Scalars['ID']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  page?: InputMaybe<Scalars['Int']['input']>;
-  portfolioId?: InputMaybe<Scalars['ID']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -410,7 +336,6 @@ export type Mutation = {
   createAccount: Account;
   createFund: Fund;
   createFundPerformances: FundPerformance;
-  createGoal: Goal;
   deleteFund: Scalars['Boolean']['output'];
   depositCash: DepositCashSuccessResponse;
   forgetPassword: AuthResponse;
@@ -423,7 +348,6 @@ export type Mutation = {
   signup: AuthResponse;
   updateFund: Fund;
   updateFundPerformances: FundPerformance;
-  updateGoal: Goal;
   updateKyc: User;
   updateUser: User;
   verifyOtpAndCompleteAuth: Authenticated;
@@ -443,11 +367,6 @@ export type MutationCreateFundArgs = {
 
 export type MutationCreateFundPerformancesArgs = {
   data: CreateFundPerformancesInput;
-};
-
-
-export type MutationCreateGoalArgs = {
-  data: CreateGoalInput;
 };
 
 
@@ -506,11 +425,6 @@ export type MutationUpdateFundPerformancesArgs = {
 };
 
 
-export type MutationUpdateGoalArgs = {
-  data: UpdateGoalInput;
-};
-
-
 export type MutationUpdateKycArgs = {
   data: UpdateKycInput;
 };
@@ -566,10 +480,6 @@ export type Query = {
   getFundPerformanceById: FundPerformance;
   getFundPerformances: FundPerformanceConnection;
   getFunds: FundsConnection;
-  getGoalById: Goal;
-  getGoals: GoalsConnection;
-  getHoldings: HoldingsConnection;
-  getHoldingsById: Holdings;
   getMarketNews: MarketNewsConnection;
   getMarketNewsById?: Maybe<MarketNews>;
   getMyAccounts: Array<Account>;
@@ -633,26 +543,6 @@ export type QueryGetFundPerformancesArgs = {
 
 export type QueryGetFundsArgs = {
   filters: GetFundsFilters;
-};
-
-
-export type QueryGetGoalByIdArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type QueryGetGoalsArgs = {
-  filters?: InputMaybe<GoalsFilters>;
-};
-
-
-export type QueryGetHoldingsArgs = {
-  filters: HoldingsFilters;
-};
-
-
-export type QueryGetHoldingsByIdArgs = {
-  holdingsId: Scalars['ID']['input'];
 };
 
 
@@ -761,16 +651,6 @@ export type UpdateFundPerformancesInput = {
   nav?: InputMaybe<Scalars['Float']['input']>;
   performanceId: Scalars['ID']['input'];
   returnPeriod?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type UpdateGoalInput = {
-  id: Scalars['ID']['input'];
-  name?: InputMaybe<Scalars['String']['input']>;
-  targetAmount?: InputMaybe<Scalars['Float']['input']>;
-  targetCurrency?: InputMaybe<Scalars['String']['input']>;
-  targetDate?: InputMaybe<Scalars['Date']['input']>;
-  type?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type UpdateKycInput = {
@@ -957,7 +837,6 @@ export type ResolversTypes = {
   CreateAccountInput: CreateAccountInput;
   CreateFundInput: CreateFundInput;
   CreateFundPerformancesInput: CreateFundPerformancesInput;
-  CreateGoalInput: CreateGoalInput;
   Cuid: ResolverTypeWrapper<Scalars['Cuid']['output']>;
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>;
   DID: ResolverTypeWrapper<Scalars['DID']['output']>;
@@ -980,16 +859,10 @@ export type ResolversTypes = {
   Gender: Gender;
   GeoJSON: ResolverTypeWrapper<Scalars['GeoJSON']['output']>;
   GetFundsFilters: GetFundsFilters;
-  Goal: ResolverTypeWrapper<Goal>;
-  GoalsConnection: ResolverTypeWrapper<GoalsConnection>;
-  GoalsFilters: GoalsFilters;
   HSL: ResolverTypeWrapper<Scalars['HSL']['output']>;
   HSLA: ResolverTypeWrapper<Scalars['HSLA']['output']>;
   HexColorCode: ResolverTypeWrapper<Scalars['HexColorCode']['output']>;
   Hexadecimal: ResolverTypeWrapper<Scalars['Hexadecimal']['output']>;
-  Holdings: ResolverTypeWrapper<Holdings>;
-  HoldingsConnection: ResolverTypeWrapper<HoldingsConnection>;
-  HoldingsFilters: HoldingsFilters;
   IBAN: ResolverTypeWrapper<Scalars['IBAN']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   IP: ResolverTypeWrapper<Scalars['IP']['output']>;
@@ -1064,7 +937,6 @@ export type ResolversTypes = {
   UnsignedInt: ResolverTypeWrapper<Scalars['UnsignedInt']['output']>;
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
-  UpdateGoalInput: UpdateGoalInput;
   UpdateKycInput: UpdateKycInput;
   UpdateUserInput: UpdateUserInput;
   User: ResolverTypeWrapper<User>;
@@ -1097,7 +969,6 @@ export type ResolversParentTypes = {
   CreateAccountInput: CreateAccountInput;
   CreateFundInput: CreateFundInput;
   CreateFundPerformancesInput: CreateFundPerformancesInput;
-  CreateGoalInput: CreateGoalInput;
   Cuid: Scalars['Cuid']['output'];
   Currency: Scalars['Currency']['output'];
   DID: Scalars['DID']['output'];
@@ -1119,16 +990,10 @@ export type ResolversParentTypes = {
   GUID: Scalars['GUID']['output'];
   GeoJSON: Scalars['GeoJSON']['output'];
   GetFundsFilters: GetFundsFilters;
-  Goal: Goal;
-  GoalsConnection: GoalsConnection;
-  GoalsFilters: GoalsFilters;
   HSL: Scalars['HSL']['output'];
   HSLA: Scalars['HSLA']['output'];
   HexColorCode: Scalars['HexColorCode']['output'];
   Hexadecimal: Scalars['Hexadecimal']['output'];
-  Holdings: Holdings;
-  HoldingsConnection: HoldingsConnection;
-  HoldingsFilters: HoldingsFilters;
   IBAN: Scalars['IBAN']['output'];
   ID: Scalars['ID']['output'];
   IP: Scalars['IP']['output'];
@@ -1201,7 +1066,6 @@ export type ResolversParentTypes = {
   UnsignedInt: Scalars['UnsignedInt']['output'];
   UpdateFundInput: UpdateFundInput;
   UpdateFundPerformancesInput: UpdateFundPerformancesInput;
-  UpdateGoalInput: UpdateGoalInput;
   UpdateKycInput: UpdateKycInput;
   UpdateUserInput: UpdateUserInput;
   User: User;
@@ -1356,24 +1220,6 @@ export interface GeoJsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTy
   name: 'GeoJSON';
 }
 
-export type GoalResolvers<ContextType = any, ParentType extends ResolversParentTypes['Goal'] = ResolversParentTypes['Goal']> = {
-  createdAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  progress?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  targetAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  targetCurrency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  targetDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-};
-
-export type GoalsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['GoalsConnection'] = ResolversParentTypes['GoalsConnection']> = {
-  edges?: Resolver<Maybe<Array<ResolversTypes['Goal']>>, ParentType, ContextType>;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-};
-
 export interface HslScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['HSL'], any> {
   name: 'HSL';
 }
@@ -1389,30 +1235,6 @@ export interface HexColorCodeScalarConfig extends GraphQLScalarTypeConfig<Resolv
 export interface HexadecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Hexadecimal'], any> {
   name: 'Hexadecimal';
 }
-
-export type HoldingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Holdings'] = ResolversParentTypes['Holdings']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  currency?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  currentPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  currentValue?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  fundId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  funds?: Resolver<Maybe<ResolversTypes['Fund']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  lastPricedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  portfolioId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  purchasePrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  quantity?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  realizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  unrealizedPL?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-};
-
-export type HoldingsConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['HoldingsConnection'] = ResolversParentTypes['HoldingsConnection']> = {
-  edges?: Resolver<Array<ResolversTypes['Holdings']>, ParentType, ContextType>;
-  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
-};
 
 export interface IbanScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['IBAN'], any> {
   name: 'IBAN';
@@ -1567,7 +1389,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationCreateAccountArgs, 'data'>>;
   createFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationCreateFundArgs, 'data'>>;
   createFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationCreateFundPerformancesArgs, 'data'>>;
-  createGoal?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<MutationCreateGoalArgs, 'data'>>;
   deleteFund?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteFundArgs, 'fundId'>>;
   depositCash?: Resolver<ResolversTypes['DepositCashSuccessResponse'], ParentType, ContextType, RequireFields<MutationDepositCashArgs, 'data'>>;
   forgetPassword?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationForgetPasswordArgs, 'email'>>;
@@ -1580,7 +1401,6 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   signup?: Resolver<ResolversTypes['authResponse'], ParentType, ContextType, RequireFields<MutationSignupArgs, 'data'>>;
   updateFund?: Resolver<ResolversTypes['Fund'], ParentType, ContextType, RequireFields<MutationUpdateFundArgs, 'data'>>;
   updateFundPerformances?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<MutationUpdateFundPerformancesArgs, 'data'>>;
-  updateGoal?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<MutationUpdateGoalArgs, 'data'>>;
   updateKyc?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateKycArgs, 'data'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'data'>>;
   verifyOtpAndCompleteAuth?: Resolver<ResolversTypes['authenticated'], ParentType, ContextType, RequireFields<MutationVerifyOtpAndCompleteAuthArgs, 'otp'>>;
@@ -1664,10 +1484,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFundPerformanceById?: Resolver<ResolversTypes['FundPerformance'], ParentType, ContextType, RequireFields<QueryGetFundPerformanceByIdArgs, 'id'>>;
   getFundPerformances?: Resolver<ResolversTypes['FundPerformanceConnection'], ParentType, ContextType, Partial<QueryGetFundPerformancesArgs>>;
   getFunds?: Resolver<ResolversTypes['FundsConnection'], ParentType, ContextType, RequireFields<QueryGetFundsArgs, 'filters'>>;
-  getGoalById?: Resolver<ResolversTypes['Goal'], ParentType, ContextType, RequireFields<QueryGetGoalByIdArgs, 'id'>>;
-  getGoals?: Resolver<ResolversTypes['GoalsConnection'], ParentType, ContextType, Partial<QueryGetGoalsArgs>>;
-  getHoldings?: Resolver<ResolversTypes['HoldingsConnection'], ParentType, ContextType, RequireFields<QueryGetHoldingsArgs, 'filters'>>;
-  getHoldingsById?: Resolver<ResolversTypes['Holdings'], ParentType, ContextType, RequireFields<QueryGetHoldingsByIdArgs, 'holdingsId'>>;
   getMarketNews?: Resolver<ResolversTypes['MarketNewsConnection'], ParentType, ContextType, RequireFields<QueryGetMarketNewsArgs, 'filters'>>;
   getMarketNewsById?: Resolver<Maybe<ResolversTypes['MarketNews']>, ParentType, ContextType, RequireFields<QueryGetMarketNewsByIdArgs, 'id'>>;
   getMyAccounts?: Resolver<Array<ResolversTypes['Account']>, ParentType, ContextType>;
@@ -1840,14 +1656,10 @@ export type Resolvers<ContextType = any> = {
   FundsConnection?: FundsConnectionResolvers<ContextType>;
   GUID?: GraphQLScalarType;
   GeoJSON?: GraphQLScalarType;
-  Goal?: GoalResolvers<ContextType>;
-  GoalsConnection?: GoalsConnectionResolvers<ContextType>;
   HSL?: GraphQLScalarType;
   HSLA?: GraphQLScalarType;
   HexColorCode?: GraphQLScalarType;
   Hexadecimal?: GraphQLScalarType;
-  Holdings?: HoldingsResolvers<ContextType>;
-  HoldingsConnection?: HoldingsConnectionResolvers<ContextType>;
   IBAN?: GraphQLScalarType;
   IP?: GraphQLScalarType;
   IPCPatent?: GraphQLScalarType;

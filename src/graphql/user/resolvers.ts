@@ -1,7 +1,6 @@
 import { GraphqlContext, UserDocument } from 'src/common/interfaces';
 import { MutationUpdateUserArgs } from 'src/common/interfaces/graphql';
 import * as UserService from 'src/services/users';
-import { getKycRecords } from 'src/services/users/kyc';
 import { getRelations } from 'src/services/users/kyc.service';
 import { KycRecordsResolvers } from './kyc/kycRecordsResolvers';
 
@@ -19,7 +18,7 @@ const updateUser = (_: any, args: MutationUpdateUserArgs) => {
 
 // Field resolver for User.kycRecords - fetches from BCL
 const kycRecords = async (parent: UserDocument) => {
-  return await getKycRecords(parent);
+  return await UserService.getKycRecords(parent);
 };
 
 const relations = async (parent: UserDocument) => {

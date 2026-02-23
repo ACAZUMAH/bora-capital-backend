@@ -229,9 +229,11 @@ export const getKycRecords = async (user: UserDocument) => {
       return null;
     }
 
-    await userModel.findByIdAndUpdate(user._id, {
-      kycStatus: user.kycStatus !== KycStatus.APPROVED && KycStatus.APPROVED,
-    });
+    if (user.kycStatus !== KycStatus.APPROVED) {
+      await userModel.findByIdAndUpdate(user._id, {
+        kycStatus: KycStatus.APPROVED,
+      });
+    }
 
     return formatResponse(kycData);
   } catch (error: any) {

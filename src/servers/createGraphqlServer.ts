@@ -5,6 +5,7 @@ import {
   ExpressContextFunctionArgument,
   expressMiddleware,
 } from '@as-integrations/express5';
+import cors from 'cors';
 import { createGraphqlSubscriptionServer } from './createGraphqlSubscriptionServer';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { formatGraphqlErrors } from './formatGraphqlErrors';
@@ -52,7 +53,7 @@ export const createGraphqlServer = async ({
 
   const apolloExpressMiddleware = expressMiddleware(server, { context });
 
-  app.use('/graphql', json(), apolloExpressMiddleware);
+  app.use('/graphql', cors(), json(), apolloExpressMiddleware);
 
   return server;
 };

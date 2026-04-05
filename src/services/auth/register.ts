@@ -16,14 +16,12 @@ import createError from 'http-errors';
  * @returns Success message
  */
 export const register = async (data: CreateUserInput) => {
-  const { email, password } = data;
+  const { email } = data;
 
   // Check if user already exists
   await checkUserExist(email);
 
-  // Hash password and create user
-  const hash = await hashPassword(password);
-  const user = await createUser({ ...data, password: hash });
+  const user = await createUser({ ...data });
 
   // Generate OTP for email verification
   const otp = await createAuth({

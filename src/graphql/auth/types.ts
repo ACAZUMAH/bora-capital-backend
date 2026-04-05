@@ -1,45 +1,47 @@
 export const authTypeDefs = `#graphql
-    enum Gender {
-        M
-        F
-    }
-    type authenticated {
+
+    type Authenticated {
        user: User,
        accessToken: String!
        refreshToken: String!
     }
 
-    type authResponse {
+    type AuthResponse {
         message: String
     }
 
-    type refreshTokenResponse {
+    type RefreshTokenResponse {
         accessToken: String!
     }
 
-    input signupInput {
+    input SignupInput {
+        firstName: String!
+        lastName: String!
         email: String!
         phoneNumber: String!
         password: String!
-        firstName: String!
-        lastName: String!
-        dateOfBirth: DateTime!
-        gender: Gender!
     }
 
-    input signinInput {
+    input SigninInput {
         email: String!
         password: String!
     }
 
+    input AuthenticateExistingCustomerInput {
+        email: String!
+        phoneNumber: String!
+        identityId: String!
+    }
+
     extend type Mutation {
-        signup(data: signupInput!): authResponse!
-        signin(data: signinInput!): authResponse!
-        logout: authResponse!
-        forgetPassword(email: String!): authResponse!
-        resetUserPassword(newPassword: String!): authResponse!
-        resendOtp(email: String!): authResponse!
-        verifyOtpAndCompleteAuth(otp: String!): authenticated!
-        refreshToken(refreshToken: String!): refreshTokenResponse!
+        signup(data: SignupInput!): AuthResponse!
+        signin(data: SigninInput!): AuthResponse!
+        logout: AuthResponse!
+        forgetPassword(email: String!): AuthResponse!
+        resetUserPassword(newPassword: String!): AuthResponse!
+        resendOtp(email: String!): AuthResponse!
+        verifyOtpAndCompleteAuth(otp: String!): Authenticated!
+        refreshToken(refreshToken: String!): RefreshTokenResponse!
+        authenticateExistingCustomer(data: AuthenticateExistingCustomerInput!): AuthResponse!
     }
 `;

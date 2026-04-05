@@ -32,29 +32,14 @@ const userValidationSchema = {
   properties: {
     email: { type: 'string', format: 'email' },
     phoneNumber: { type: 'string', format: 'phone' },
-    password: { type: 'string' },
+    password: { type: 'string', format: 'password' },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', minLength: 1 },
-    dateOfBirth: {
-      anyOf: [
-        { type: 'string', format: 'date' },
-        { type: 'string', format: 'date-time' },
-      ],
-    },
-    gender: { type: 'string', minLength: 1 },
   },
 
   additionalProperties: false,
 
-  required: [
-    'email',
-    'password',
-    'phoneNumber',
-    'firstName',
-    'lastName',
-    'dateOfBirth',
-    'gender',
-  ],
+  required: ['email', 'password', 'phoneNumber', 'firstName', 'lastName'],
 
   errorMessage: {
     properties: {
@@ -64,8 +49,6 @@ const userValidationSchema = {
         'Password must be at least 8 characters long, include (A-Z), (a-z), (1-9), and a special character',
       firstName: 'First name is required',
       lastName: 'Last name is required',
-      dateOfBirth: 'Date of birth is required',
-      gender: 'Gender is required',
     },
 
     required: {
@@ -74,8 +57,6 @@ const userValidationSchema = {
       phoneNumber: 'Phone number is required',
       firstName: 'First name is required',
       lastName: 'Last name is required',
-      dateOfBirth: 'Date of birth is required',
-      gender: 'Gender is required',
     },
   },
 };
@@ -83,19 +64,7 @@ const userValidationSchema = {
 export const validateCreateUserData = (data: CreateUserInput) => {
   const validate = ajv.compile(userValidationSchema);
 
-  const normalizedDob =
-    data.dateOfBirth instanceof Date
-      ? Number.isNaN(data.dateOfBirth.getTime())
-        ? data.dateOfBirth
-        : data.dateOfBirth.toISOString()
-      : data.dateOfBirth;
-
-  const validationData = {
-    ...data,
-    dateOfBirth: normalizedDob,
-  };
-
-  const isValid = validate(validationData);
+  const isValid = validate(data);
 
   if (!isValid) {
     throw createError(400, ajv.errorsText(validate.errors));

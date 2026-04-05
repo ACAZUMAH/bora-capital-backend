@@ -1,7 +1,6 @@
 import { ClientApp, UserDocument } from 'src/common/interfaces';
 import createError from 'http-errors';
 import { isCustomerApp } from 'src/common/helpers';
-import { role } from 'src/common/enums';
 import { isProduction } from 'src/common/constants';
 
 /**
@@ -16,8 +15,6 @@ export const validateSigninAccess = (
 ) => {
   if (isProduction && !app)
     throw createError.Unauthorized('Unknown client app');
-
-  if (user?.role === role.ADMIN) return true;
 
   if (isProduction && isCustomerApp(app!)) {
     if (user) {

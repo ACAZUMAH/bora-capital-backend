@@ -21,7 +21,18 @@ const getTransactions = (
   });
 };
 
-const getTransactionsWithDateRanges = () => {};
+const getTransactionsWithDateRanges = (
+  _: any,
+  args: GraphqlTypes.QueryGetTransactionsWithDateRangesArgs,
+  { user }: GraphqlContext
+) => {
+  return services.fetchTransactionsWithDateRanges({
+    userId: user?._id!,
+    accountNumber: args.filters.accountNumber,
+    fromDate: args.filters.fromDate,
+    toDate: args.filters.toDate,
+  });
+};
 
 export const transactionsResolvers = {
   Query: {

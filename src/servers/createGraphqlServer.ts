@@ -1,5 +1,6 @@
 import { ApolloServer, ContextFunction } from '@apollo/server';
 import { GraphqlContext, GraphqlServer } from 'src/common/interfaces';
+import depthLimit from 'graphql-depth-limit';
 import {
   ExpressContextFunctionArgument,
   expressMiddleware,
@@ -10,6 +11,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { formatGraphqlErrors } from './formatGraphqlErrors';
 import { json } from 'express';
 import { createDataLoaders } from 'src/dataLoaders';
+import { isDevelopment } from 'src/common/constants';
 
 const context: ContextFunction<
   [ExpressContextFunctionArgument],
@@ -30,6 +32,8 @@ export const createGraphqlServer = async ({
 
   const server = new ApolloServer({
     schema,
+    introspection: isDevelopment,
+    validationRules: [depthLimit(5)],
     formatError: formatGraphqlErrors,
     plugins: [
       {

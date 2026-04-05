@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import { KycStatus, role } from 'src/common/enums';
+import { KycStatus } from 'src/common/enums';
 import { Gender } from '../graphql';
 import { BclStatus } from '../bcl';
 
@@ -9,14 +9,13 @@ export interface UserDocument {
   email: string;
   phoneNumber?: string;
   password: string;
-  role: role;
   refreshToken?: string;
 
   // Basic profile (from signup)
   firstName: string;
   lastName: string;
-  dateOfBirth: string;
-  gender: Gender;
+  dateOfBirth?: string;
+  gender?: Gender;
 
   // BCL linking (set after KYC)
   kycStatus: KycStatus;
@@ -33,8 +32,6 @@ export interface CreateUserInput {
   password: string;
   firstName: string;
   lastName: string;
-  dateOfBirth: string | Date;
-  gender: Gender;
 }
 
 export interface RelationInput {
@@ -59,6 +56,8 @@ export interface KycRecordsInput {
   residencyCountryCode: string;
   currencyCode: string;
   physicalAddress: string;
+  dateOfBirth: string | Date;
+  gender: Gender;
   // Optional
   middleName?: string | null;
   title?: string | null;

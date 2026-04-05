@@ -9,7 +9,15 @@ import {
 } from 'src/common/constants';
 
 const helmetOptions: HelmetOptions = {
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      connectSrc: ["'self'", 'https://portal.boradvisors.com:6443'],
+      imgSrc: ["'self'", 'data:'],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  },
   crossOriginEmbedderPolicy: false,
 };
 
@@ -37,7 +45,7 @@ const corsOptions = {
 export const createExpressApp = () => {
   const app = express();
 
-  app.use(express.json({ limit: '50mb' }));
+  app.use(express.json({ limit: '2mb' }));
 
   app.use(express.urlencoded({ extended: true }));
 

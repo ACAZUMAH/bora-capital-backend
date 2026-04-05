@@ -1,35 +1,33 @@
-import { allow, shield } from 'graphql-shield';
+import { deny, shield } from 'graphql-shield';
 import { authShield } from './auth';
 import { userShield } from './user';
 import { portfolioShield } from './portfolio';
-import { performanceShield } from './performance';
-import { fundsShield } from './funds';
-// import { holdingsShield } from './holdings';
 import { transactionsShield } from './transactions';
-// import { goalsShield } from './goals';
-import { accountShield } from './account';
+import { portfolioAccountShield } from './portfolioAccount';
+import { chatBotShield } from './chatbot';
+import { newsShield } from './news';
+import { lookupsShield } from './lookups';
 
 export const permissions = shield(
   {
     Query: {
       ...userShield.Query,
       ...portfolioShield.Query,
-      ...performanceShield.Query,
-      ...fundsShield.Query,
       ...transactionsShield.Query,
-      ...accountShield.Query,
+      ...portfolioAccountShield.Query,
+      ...newsShield.Query,
+      ...lookupsShield.Query,
     },
     Mutation: {
       ...authShield.Mutation,
       ...userShield.Mutation,
-      ...performanceShield.Mutation,
-      ...fundsShield.Mutation,
       ...transactionsShield.Mutation,
-      ...accountShield.Mutation,
+      ...portfolioAccountShield.Mutation,
+      ...chatBotShield.Mutation,
     },
   },
   {
-    fallbackRule: allow,
+    fallbackRule: deny,
     allowExternalErrors: true,
   }
 );

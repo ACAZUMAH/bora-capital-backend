@@ -7,6 +7,7 @@ export interface AuthDocument {
   otp: string;
   otpPurpose: OtpPurpose;
   expiresIn: Date;
+  attempts: number;
 }
 
 export interface AuthInput {
@@ -18,4 +19,10 @@ export interface AuthInput {
 export interface SigninInput {
   email: string;
   password: string;
+}
+
+export interface AuthExistingCustomerInput {
+  email: string;
+  phoneNumber: string;
+  identityId: string;
 }

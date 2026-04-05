@@ -9,16 +9,15 @@ import {
   resolvers as scalarResolvers,
 } from 'graphql-scalars';
 import { portfolioResolvers, portfolioTypeDefs } from './portfolio';
-// import { holdingsTypeDefs } from './holdings/typeDefs';
-// import { holdingsResolvers } from './holdings/resolvers';
 import { transactionsResolvers, transactionsTypeDefs } from './transactions';
-import { fundsResolvers, fundsTypeDefs } from './funds';
-// import { documentsResolvers, documentsTypedefs } from './documents';
 import { marketNewsResolvers, marketNewsTypeDefs } from './news';
 import { calculatorsResolvers, calculatorsTypeDefs } from './calculators';
 // import { goalsResolvers, goalsTypeDefs } from './goals';
 import { chatBotResolvers, chatBotTypeDefs } from './chatBot';
-import { accountResolvers, accountTypeDefs } from './accounts';
+import {
+  portfolioAccountResolvers,
+  portfolioAccountTypeDefs,
+} from './portfolioAccounts';
 import { lookupsResolvers, lookupsTypeDefs } from './lookups';
 
 const typeDefs = [
@@ -27,15 +26,11 @@ const typeDefs = [
   userTypeDefs,
   scalarTypeDefs,
   portfolioTypeDefs,
-  // holdingsTypeDefs,
   transactionsTypeDefs,
-  fundsTypeDefs,
-  // documentsTypedefs,
   marketNewsTypeDefs,
   calculatorsTypeDefs,
-  // goalsTypeDefs,
   chatBotTypeDefs,
-  accountTypeDefs,
+  portfolioAccountTypeDefs,
   lookupsTypeDefs,
 ];
 
@@ -45,15 +40,11 @@ const resolvers = [
   UserResolvers,
   scalarResolvers,
   portfolioResolvers,
-  // holdingsResolvers,
   transactionsResolvers,
-  fundsResolvers,
-  // documentsResolvers,
   marketNewsResolvers,
   calculatorsResolvers,
-  // goalsResolvers,
   chatBotResolvers,
-  accountResolvers,
+  portfolioAccountResolvers,
   lookupsResolvers,
 ];
 

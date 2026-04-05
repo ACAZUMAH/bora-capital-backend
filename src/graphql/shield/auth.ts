@@ -27,6 +27,16 @@ export const authShield = {
       window: '1m',
       message: 'Too many OTP resend attempts, please try again later.',
     }),
+    refreshToken: rateLimitRule({
+      max: 10,
+      window: '1m',
+      message: 'Too many refresh token attempts, please try again later.',
+    }),
+    authenticateExistingCustomer: rateLimitRule({
+      max: 3,
+      window: '1m',
+      message: 'Too many authentication attempts, please try again later.',
+    }),
     resetUserPassword: isAuthenticated,
     logout: isAuthenticated,
   },

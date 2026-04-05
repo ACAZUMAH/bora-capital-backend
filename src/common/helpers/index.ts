@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { createHash, randomInt } from 'crypto';
 import createError from 'http-errors';
 import { ClientApp } from '../interfaces';
 import { apps, customerMobileApp } from '../constants';
@@ -162,7 +163,7 @@ export const constructHTTPResponse = (
 };
 
 /**
- * @description Generates a random numeric OTP (One-Time Password) of the specified length.
+ * @description Generates a cryptographically secure numeric OTP (One-Time Password).
  * @param len - The length of the OTP to generate.
  * @returns A string representing the generated OTP.
  */
@@ -171,9 +172,16 @@ export const generateOtp = (len: number) => {
   const charLength = chars.length;
   let otp = '';
   for (let i = 0; i < len; i++) {
-    otp += chars.charAt(Math.floor(Math.random() * charLength));
+    otp += chars.charAt(randomInt(0, charLength));
   }
   return otp;
+};
+
+/**
+ * Hashes a token using SHA-256 for secure storage.
+ */
+export const hashToken = (token: string) => {
+  return createHash('sha256').update(token).digest('hex');
 };
 
 /**

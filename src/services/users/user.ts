@@ -25,7 +25,11 @@ import logger from 'src/loggers/logger';
  */
 export const createUser = async (data: CreateUserInput) => {
   validateCreateUserData(data);
-  const user = await userModel.create({ ...data });
+
+  // Hash password and create user
+  const hash = await hashPassword(data.password);
+
+  const user = await userModel.create({ ...data, password: hash });
   return user;
 };
 
@@ -108,7 +112,6 @@ export const updateUser = async (data: UpdateUserInput) => {
     ...(data.lastName && { lastName: data.lastName }),
     ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
     ...(data.gender && { gender: data.gender }),
-    ...(data.kycStatus && { kycStatus: data.kycStatus }),
   };
 
   const updated = await userModel.findByIdAndUpdate(

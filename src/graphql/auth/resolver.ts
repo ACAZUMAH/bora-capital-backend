@@ -53,6 +53,13 @@ const refreshToken = (_: any, args: { refreshToken: string }) => {
   return refreshAccessToken(args.refreshToken);
 };
 
+const authenticateExistingCustomer = (
+  _: any,
+  args: GraphqlTypes.MutationAuthenticateExistingCustomerArgs
+) => {
+  return services.authExistingCustomer(args.data);
+};
+
 export const authResolvers = {
   Mutation: {
     signup,
@@ -63,5 +70,6 @@ export const authResolvers = {
     resendOtp,
     verifyOtpAndCompleteAuth,
     refreshToken,
+    authenticateExistingCustomer,
   },
 };

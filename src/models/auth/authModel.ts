@@ -9,8 +9,9 @@ const authSchema = new Schema<AuthDocument>({
     required: true,
   },
   otp: { type: String, required: true },
-  expiresIn: { type: Date },
+  expiresIn: { type: Date, index: { expires: 0 } },
   otpPurpose: { type: String, enum: Object.values(OtpPurpose), required: true },
+  attempts: { type: Number, default: 0 },
 });
 
 export const authModel = model<AuthDocument>(Collections.Auth, authSchema);

@@ -10,7 +10,6 @@ import { schema } from './graphql';
 import { errorHandler } from './middlewares/errorHandler';
 import { createGraphqlServer } from './servers';
 import { applyCrons } from './crons';
-// import { syncSeeds } from './common/db/seeds';
 const PORT = process.env.PORT || 8080;
 
 export const StartServer = async () => {
@@ -41,5 +40,4 @@ export const StartServer = async () => {
   logger.info(`🚀 Graphql Server ready at http://localhost:${PORT}/graphql`);
 
   applyCrons();
-  //syncSeeds();
 };

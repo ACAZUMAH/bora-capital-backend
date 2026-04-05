@@ -4,7 +4,7 @@ import createError from 'http-errors';
 import { constructHTTPResponse } from 'src/common/helpers';
 import { rollbar } from 'src/loggers/rollbar';
 
-export const errorHandler = async (
+export const errorHandler = (
   error: any,
   _req: Request,
   res: Response,
@@ -14,21 +14,12 @@ export const errorHandler = async (
   rollbar.error(error);
 
   if (createError.isHttpError(error)) {
-    res.status(error.status).json(constructHTTPResponse(null, error));
+    return res.status(error.status).json(constructHTTPResponse(null, error));
   }
 
-  if (process.env.NODE_ENV !== 'production') {
-    res
-      .status(500)
-      .json(
-        constructHTTPResponse(
-          null,
-          createError(500, error.message, { details: error.stack })
-        )
-      );
-  }
-
-  res
+  return res
     .status(500)
-    .json(constructHTTPResponse(null, createError(500, 'Server error')));
+    .json(
+      constructHTTPResponse(null, createError(500, 'Internal server error'))
+    );
 };

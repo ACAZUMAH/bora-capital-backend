@@ -21,12 +21,12 @@ import {
 import logger from 'src/loggers/logger';
 
 /**
- * Create an investment account in BCL
+ * Create an investment portfolio account in BCL
  * @param userId - Local user ID
  * @param data - Account creation data (portfolioId, accountName, currencyCode)
  * @returns Created account with account number
  */
-export const createAccount = async (
+export const createPortfolioAccount = async (
   userId: string | Types.ObjectId,
   data: CreateAccountInput
 ) => {
@@ -89,11 +89,11 @@ export const createAccount = async (
 };
 
 /**
- * Fetch all investment accounts for a user from BCL with NAV
+ * Fetch all investment portfolio accounts for a user from BCL with NAV
  * @param userId - Local user ID
  * @returns Array of user's investment accounts
  */
-export const fetchUserAccountsWithNav = async (
+export const fetchUserPortfolioAccountsWithNav = async (
   userId: string | Types.ObjectId
 ) => {
   const user = await getUserById(userId);
@@ -140,11 +140,13 @@ export const fetchUserAccountsWithNav = async (
 };
 
 /**
- * Fetch all investment accounts for a user from BCL without NAV
+ * Fetch all investment portfolio accounts for a user from BCL without NAV
  * @param userId - Local user ID
  * @returns Array of user's investment accounts
  */
-export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
+export const fetchUserPortfolioAccounts = async (
+  userId: string | Types.ObjectId
+) => {
   const user = await getUserById(userId);
 
   if (!user.identityId) {
@@ -191,12 +193,12 @@ export const fetchUserAccounts = async (userId: string | Types.ObjectId) => {
 };
 
 /**
- * Fetch a single investment account by account number
+ * Fetch a single investment portfolio account by account number
  * @param userId - Local user ID
  * @param accountNumber - BCL account number
  * @returns Account details or null
  */
-export const fetchAccount = async (
+export const fetchPortfolioAccount = async (
   userId: string | Types.ObjectId,
   accountNumber: string
 ) => {

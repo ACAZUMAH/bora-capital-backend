@@ -3,9 +3,7 @@ import {
   AddIdentityResponse,
   AddIdentitySuccessResponse,
   FetchIdentityInput,
-  FetchIdentityResponse,
   FetchIdentityApiResponse,
-  FetchIdentitySuccessResponse,
 } from 'src/common/interfaces/user/kyc';
 import createError from 'http-errors';
 import { bclClient } from '../bcl';
@@ -81,7 +79,7 @@ export const fetchIdentity = async (data: FetchIdentityInput) => {
       return response.IdentityDetails[0];
     }
 
-    throw createError.BadRequest('Identity details not found in response');
+    throw createError.BadRequest('Identity details not found.');
   } catch (error: any) {
     if (error.status) {
       logger.error('fetching identity failed', error);

@@ -6,9 +6,16 @@ export const kycRecordsTypeDefs = `#graphql
         REJECTED
     }
 
+    enum Gender {
+        M
+        F
+    }
+
     type KycRecords {
         middleName: String
         title: String
+        dateOfBirth: DateTime
+        gender: Gender
         residencyStatus: String
         passportNumber: String
         idNumber: String
@@ -55,6 +62,8 @@ export const kycRecordsTypeDefs = `#graphql
         residencyCountryCode: String!
         currencyCode: String!
         physicalAddress: String!
+        dateOfBirth: DateTime!
+        gender: Gender!
         # Optional
         middleName: String
         title: String

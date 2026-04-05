@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { UserDocument } from '../../common/interfaces/user';
-import { Collections, Gender, KycStatus, role } from 'src/common/enums';
+import { Collections, Gender, KycStatus } from 'src/common/enums';
 
 const userSchema = new Schema<UserDocument>(
   {
@@ -8,14 +8,13 @@ const userSchema = new Schema<UserDocument>(
     email: { type: String, required: true, unique: true },
     phoneNumber: { type: String, sparse: true },
     password: { type: String, required: true },
-    role: { type: String, enum: Object.values(role), default: role.CLIENT },
     refreshToken: { type: String },
 
     // Basic profile (from signup)
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    dateOfBirth: { type: String, required: true },
-    gender: { type: String, enum: Object.values(Gender), required: true },
+    dateOfBirth: { type: String },
+    gender: { type: String, enum: Object.values(Gender) },
 
     // BCL linking (set after KYC)
     kycStatus: {

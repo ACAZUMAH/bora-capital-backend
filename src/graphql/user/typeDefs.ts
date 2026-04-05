@@ -47,7 +47,6 @@ export const userTypeDefs = `#graphql
         lastName: String
         dateOfBirth: String
         gender: String
-        kycStatus: KycStatus
     }
 
     extend type Mutation {

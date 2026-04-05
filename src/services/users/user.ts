@@ -108,7 +108,6 @@ export const updateUser = async (data: UpdateUserInput) => {
     ...(data.lastName && { lastName: data.lastName }),
     ...(data.dateOfBirth && { dateOfBirth: data.dateOfBirth }),
     ...(data.gender && { gender: data.gender }),
-    ...(data.kycStatus && { kycStatus: data.kycStatus }),
   };
 
   const updated = await userModel.findByIdAndUpdate(

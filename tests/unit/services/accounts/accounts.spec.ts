@@ -25,13 +25,13 @@ jest.mock('uuid', () => ({
 }));
 
 import {
-  createAccount,
-  fetchUserAccounts,
-  fetchUserAccountsWithNav,
-  fetchAccount,
-} from 'src/services/accounts';
+  createPortfolioAccount,
+  fetchUserPortfolioAccounts,
+  fetchUserPortfolioAccountsWithNav,
+  fetchPortfolioAccount,
+} from 'src/services/portfolioAccounts';
 
-describe('Account Service', () => {
+describe('Portfolio Account Service', () => {
   const mockUserId = new Types.ObjectId();
   const mockUser = {
     _id: mockUserId,
@@ -59,7 +59,7 @@ describe('Account Service', () => {
       });
       mockLinkAccountNumber.mockResolvedValue(mockUser);
 
-      const result = await createAccount(mockUserId, mockCreateData);
+      const result = await createPortfolioAccount(mockUserId, mockCreateData);
 
       expect(result).toEqual({
         accountNumber: 'BB00252',
@@ -99,7 +99,7 @@ describe('Account Service', () => {
         Accounts: mockAccounts,
       });
 
-      const result = await fetchUserAccountsWithNav(mockUserId);
+      const result = await fetchUserPortfolioAccountsWithNav(mockUserId);
 
       expect(result).toEqual([
         {
@@ -123,7 +123,7 @@ describe('Account Service', () => {
     test('should return empty array if user has no identityId', async () => {
       mockGetUserById.mockResolvedValue({ ...mockUser, identityId: undefined });
 
-      const result = await fetchUserAccountsWithNav(mockUserId);
+      const result = await fetchUserPortfolioAccountsWithNav(mockUserId);
 
       expect(result).toEqual([]);
       expect(mockBclClientPost).not.toHaveBeenCalled();
@@ -149,7 +149,7 @@ describe('Account Service', () => {
         Accounts: mockAccounts,
       });
 
-      const result = await fetchUserAccounts(mockUserId);
+      const result = await fetchUserPortfolioAccounts(mockUserId);
 
       expect(result).toEqual([
         {
@@ -179,7 +179,7 @@ describe('Account Service', () => {
     test('should return empty array if user has no identityId', async () => {
       mockGetUserById.mockResolvedValue({ ...mockUser, identityId: undefined });
 
-      const result = await fetchUserAccounts(mockUserId);
+      const result = await fetchUserPortfolioAccounts(mockUserId);
 
       expect(result).toEqual([]);
       expect(mockBclClientPost).not.toHaveBeenCalled();
@@ -191,7 +191,7 @@ describe('Account Service', () => {
         Status: [{ Status: '1', Description: 'No accounts found' }],
       });
 
-      const result = await fetchUserAccounts(mockUserId);
+      const result = await fetchUserPortfolioAccounts(mockUserId);
 
       expect(result).toEqual([]);
     });
@@ -214,7 +214,7 @@ describe('Account Service', () => {
         Account: [mockAccount],
       });
 
-      const result = await fetchAccount(mockUserId, 'BB00252');
+      const result = await fetchPortfolioAccount(mockUserId, 'BB00252');
 
       expect(result).toEqual({
         accountNumber: 'BB00252',
@@ -236,7 +236,7 @@ describe('Account Service', () => {
     test('should return null if user has no identityId', async () => {
       mockGetUserById.mockResolvedValue({ ...mockUser, identityId: undefined });
 
-      const result = await fetchAccount(mockUserId, 'BB00252');
+      const result = await fetchPortfolioAccount(mockUserId, 'BB00252');
 
       expect(result).toBeNull();
       expect(mockBclClientPost).not.toHaveBeenCalled();
@@ -249,7 +249,7 @@ describe('Account Service', () => {
         Account: [],
       });
 
-      const result = await fetchAccount(mockUserId, 'NONEXISTENT');
+      const result = await fetchPortfolioAccount(mockUserId, 'NONEXISTENT');
 
       expect(result).toBeNull();
     });

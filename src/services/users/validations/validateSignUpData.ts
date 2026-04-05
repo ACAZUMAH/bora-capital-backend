@@ -32,7 +32,7 @@ const userValidationSchema = {
   properties: {
     email: { type: 'string', format: 'email' },
     phoneNumber: { type: 'string', format: 'phone' },
-    password: { type: 'string' },
+    password: { type: 'string', format: 'password' },
     firstName: { type: 'string', minLength: 1 },
     lastName: { type: 'string', minLength: 1 },
   },

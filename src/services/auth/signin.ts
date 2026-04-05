@@ -20,15 +20,15 @@ export const signin = async (data: SigninInput, app: ClientApp) => {
 
   const user = await userModel.findOne({ email });
 
-  if (!validateSigninAccess(app, user)) {
-    throw createError.Forbidden(`You do not have access to ${app.name}.`);
-  }
-
   if (!user) throw createError.BadRequest('Invalid credentials');
 
   const isMatch = await comparePassword(password, user?.password);
 
   if (!isMatch) throw createError.BadRequest('Invalid credentials');
+
+  if (!validateSigninAccess(app, user)) {
+    throw createError.Forbidden(`You do not have access to ${app.name}.`);
+  }
 
   const otp = await createAuth({
     userId: user._id!,

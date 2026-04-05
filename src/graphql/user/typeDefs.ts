@@ -19,8 +19,8 @@ export const userTypeDefs = `#graphql
 
         firstName: String!
         lastName: String!
-        dateOfBirth: String!
-        gender: String!
+        dateOfBirth: String
+        gender: String
         
         # KYC status
         kycStatus: KycStatus!

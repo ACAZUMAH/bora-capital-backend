@@ -410,7 +410,6 @@ export type Query = {
   getMyPortfolioAccountsWithNav: Array<PortfolioAccount>;
   getPortfolioById?: Maybe<Portfolio>;
   getPortfolios: Array<Portfolio>;
-  getTransactionById: Transaction;
   getTransactions: Array<Maybe<Transaction>>;
   getTransactionsWithDateRanges: Array<Maybe<Transaction>>;
   getUserById: User;
@@ -462,11 +461,6 @@ export type QueryGetMyPortfolioAccountArgs = {
 
 export type QueryGetPortfolioByIdArgs = {
   portfolioId: Scalars['ID']['input'];
-};
-
-
-export type QueryGetTransactionByIdArgs = {
-  id: Scalars['ID']['input'];
 };
 
 
@@ -595,10 +589,10 @@ export type User = {
   __typename?: 'User';
   accountNumbers?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
-  dateOfBirth: Scalars['String']['output'];
+  dateOfBirth?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
-  gender: Scalars['String']['output'];
+  gender?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   identityId?: Maybe<Scalars['String']['output']>;
   kycRecords?: Maybe<KycRecords>;
@@ -1319,7 +1313,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMyPortfolioAccountsWithNav?: Resolver<Array<ResolversTypes['PortfolioAccount']>, ParentType, ContextType>;
   getPortfolioById?: Resolver<Maybe<ResolversTypes['Portfolio']>, ParentType, ContextType, RequireFields<QueryGetPortfolioByIdArgs, 'portfolioId'>>;
   getPortfolios?: Resolver<Array<ResolversTypes['Portfolio']>, ParentType, ContextType>;
-  getTransactionById?: Resolver<ResolversTypes['Transaction'], ParentType, ContextType, RequireFields<QueryGetTransactionByIdArgs, 'id'>>;
   getTransactions?: Resolver<Array<Maybe<ResolversTypes['Transaction']>>, ParentType, ContextType, RequireFields<QueryGetTransactionsArgs, 'filters'>>;
   getTransactionsWithDateRanges?: Resolver<Array<Maybe<ResolversTypes['Transaction']>>, ParentType, ContextType, RequireFields<QueryGetTransactionsWithDateRangesArgs, 'filters'>>;
   getUserById?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryGetUserByIdArgs, 'userId'>>;
@@ -1420,10 +1413,10 @@ export interface UnsignedIntScalarConfig extends GraphQLScalarTypeConfig<Resolve
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   accountNumbers?: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  dateOfBirth?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  dateOfBirth?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  gender?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   identityId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   kycRecords?: Resolver<Maybe<ResolversTypes['KycRecords']>, ParentType, ContextType>;

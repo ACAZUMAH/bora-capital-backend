@@ -24,11 +24,6 @@ export const transactionsTypeDefs = `#graphql
         toDate: String!
     }
 
-    extend type Query {
-        getTransactionById(id: ID!): Transaction!
-        getTransactions(filters: TransactionFilters!): [Transaction]!
-        getTransactionsWithDateRanges(filters: TransactionsWithDateRangesFilters!): [Transaction]!
-    }
 
     type DepositCashSuccessResponse {
         erpReffID: String
@@ -54,6 +49,11 @@ export const transactionsTypeDefs = `#graphql
         transactionDate: String!
         amount: String!
         comment: String!
+    }
+
+    extend type Query {
+        getTransactions(filters: TransactionFilters!): [Transaction]!
+        getTransactionsWithDateRanges(filters: TransactionsWithDateRangesFilters!): [Transaction]!
     }
 
     extend type Mutation {
